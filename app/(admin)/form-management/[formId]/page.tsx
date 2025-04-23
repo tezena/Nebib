@@ -60,7 +60,7 @@ export default function FormIdPage() {
   const copyLink = () => {
     if (data?.link) {
       navigator.clipboard
-        .writeText(`http://localhost:3000/forms/${data.link}`)
+        .writeText(`https://nebib-forms-9dng.vercel.app/forms/${data.link}`)
         .then(() => {
           alert("Text copied to clipboard!");
         })
