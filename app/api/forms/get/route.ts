@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import getSession from "@/lib/get-session-user";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export const GET = async function () {
   try {
     const session = await getSession();
 
@@ -26,4 +26,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+};
