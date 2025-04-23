@@ -5,7 +5,7 @@ import { Type } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-export async function POST(request: Request) {
+export const POST = async function (request: Request) {
   try {
     const session = await getSession();
     console.log("*****************888888888", session);
@@ -72,4 +72,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-}
+};
