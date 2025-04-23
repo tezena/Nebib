@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useGetForm } from "./_hooks/formId-hooks";
+import { RenderedForm, useGetForm } from "./_hooks/formId-hooks";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -13,37 +13,61 @@ import {
 import { Skeleton } from "@/components/ui/skeleton2";
 import { CalendarIcon, LinkIcon, Users2Icon } from "lucide-react";
 import { betterFetch } from "@better-fetch/fetch";
-import { Form } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-const getForm = async (formId: string) => {
-  const res = await betterFetch<Form[]>(`/api/forms/${formId}`);
+interface FormData {
+  id: string;
+  topic: string;
+  description: string;
+  status: string;
+  type: string;
+  submissions: number;
+  createdAt: string;
+  link: string;
+  fields: {
+    id: string;
+    label: string;
+    type: string;
+    required: boolean;
+    category?: string;
+  }[];
+}
 
+const getForm = async (formId: string): Promise<FormData> => {
+  const res = await betterFetch<FormData>(`/api/forms/${formId}`);
   console.log("response: ", res);
+  if (!res.data) {
+    throw new Error("Failed to fetch form data");
+  }
   return res.data;
 };
 
 export default function FormIdPage() {
   const [text, setText] = useState("");
   const params = useParams();
-  const formId = params?.formId as string;
-  console.log(formId);
-  const { data, isPending, error } = useQuery({
-    queryFn: () => getForm(formId),
+  const formId = params?.formId;
+
+  if (!formId) {
+    return <div>Error: Form ID is missing</div>;
+  }
+
+  const { data, isLoading, error } = useQuery<FormData>({
+    queryFn: () => getForm(formId as string),
     queryKey: ["form", formId],
   });
-  console.log(data);
 
   const copyLink = () => {
-    navigator.clipboard
-      .writeText(`http://localhost:3000/forms/${data?.link}`)
-      .then(() => {
-        alert("Text copied to clipboard!");
-      })
-      .catch((err) => {
-        console.error("Failed to copy text: ", err);
-      });
+    if (data?.link) {
+      navigator.clipboard
+        .writeText(`http://localhost:3000/forms/${data.link}`)
+        .then(() => {
+          alert("Text copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+        });
+    }
   };
 
   if (error) {
@@ -59,20 +83,20 @@ export default function FormIdPage() {
 
   return (
     <div className="container mx-auto py-8">
-      {isPending ? (
+      {isLoading ? (
         <FormSkeleton />
-      ) : (
+      ) : data ? (
         <>
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-3xl font-bold">{data?.topic}</h1>
-              <p className="text-muted-foreground mt-1">{data?.description}</p>
+              <h1 className="text-3xl font-bold">{data.topic}</h1>
+              <p className="text-muted-foreground mt-1">{data.description}</p>
             </div>
             <Badge
-              variant={data?.status === "active" ? "success" : "secondary"}
+              variant={data.status === "active" ? "default" : "secondary"}
               className="px-3 py-1"
             >
-              {data?.status}
+              {data.status}
             </Badge>
           </div>
 
@@ -84,7 +108,7 @@ export default function FormIdPage() {
               <CardContent>
                 <div className="flex items-center">
                   <Users2Icon className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="font-medium">{data?.type}</span>
+                  <span className="font-medium">{data.type}</span>
                 </div>
               </CardContent>
             </Card>
@@ -97,7 +121,7 @@ export default function FormIdPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {data?.submissions || 0}
+                  {data.submissions || 0}
                 </div>
               </CardContent>
             </Card>
@@ -109,7 +133,11 @@ export default function FormIdPage() {
               <CardContent>
                 <div className="flex items-center">
                   <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{new Date(data?.createdAt).toLocaleDateString()}</span>
+                  <span>
+                    {data.createdAt
+                      ? new Date(data.createdAt).toLocaleDateString()
+                      : "N/A"}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -127,9 +155,9 @@ export default function FormIdPage() {
                 <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />
                 <span
                   className="text-sm font-medium cursor-pointer"
-                  onClick={copyLink} // Fix: Just pass the reference, don't call it immediately
+                  onClick={copyLink}
                 >
-                  {data?.link}
+                  {data.link}
                 </span>
               </div>
             </CardContent>
@@ -143,7 +171,7 @@ export default function FormIdPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {data?.fields && data.fields.length > 0 ? (
+              {data.fields && data.fields.length > 0 ? (
                 <div className="space-y-4">
                   {data.fields.map((field) => (
                     <div key={field.id} className="border rounded-md p-4">
@@ -178,6 +206,8 @@ export default function FormIdPage() {
             </CardContent>
           </Card>
         </>
+      ) : (
+        <div>Loading...</div>
       )}
     </div>
   );

@@ -297,17 +297,19 @@ export default function FormLinkPage() {
     <div className="container mx-auto py-8 px-4">
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>{form.topic}</CardTitle>
-          <CardDescription>{form.description}</CardDescription>
+          <CardTitle className="text-4xl capitalize font-extrabold">
+            {form.topic}
+          </CardTitle>
+          <CardDescription className="text-base">
+            {form.description}
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-12">
             {/* Render categorized fields */}
             {Object.entries(groupedFields).map(([category, fields]) => (
               <div key={category} className="space-y-4">
-                <h3 className="text-lg font-medium border-b pb-2">
-                  {category}
-                </h3>
+                <h3 className="text-2xl font-bold border-b pb-2">{category}</h3>
                 <div className="space-y-4">
                   {fields.map((field) => renderField(field))}
                 </div>
@@ -322,7 +324,11 @@ export default function FormLinkPage() {
             )}
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full mt-8"
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

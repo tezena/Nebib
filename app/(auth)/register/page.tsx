@@ -77,7 +77,7 @@ const RegisterPage = () => {
           name: values.adminName,
           organizationName: values.organizationName,
           callbackURL: "/",
-        },
+        } as any,
         {
           onSuccess: (ctx) => {
             router.push("/");

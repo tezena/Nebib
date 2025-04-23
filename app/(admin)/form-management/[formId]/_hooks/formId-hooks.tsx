@@ -19,7 +19,7 @@ export const useGetForm = (formId: string) => {
   });
 };
 
-interface RenderedForm extends Form {
+export interface RenderedForm extends Form {
   fields: Array<{
     id: string;
     label: string;

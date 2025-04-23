@@ -21,7 +21,7 @@ const FormManagementTable = () => {
     );
   };
 
-  const columns: ColumnDef<typeof data>[] = [
+  const columns: ColumnDef<NonNullable<typeof data>[number]>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -82,7 +82,10 @@ const FormManagementTable = () => {
     {
       accessorKey: "updatedAt",
       header: "Late Submission",
-      cell: (info) => new Date(info.getValue()).toDateString(),
+      cell: (info) => {
+        const value = info.getValue() as string | number | Date;
+        return new Date(value).toDateString();
+      },
       filterFn: numericFilter,
     },
     {
