@@ -6,6 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <Sidebar />
+
       <div className="flex flex-col w-full">
         <TopPart />
         <main className="bg-[#E1E8ED] flex flex-1 flex-col p-2 transition-all duration-300 ease-in-out">

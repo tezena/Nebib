@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { RenderedForm, useGetForm } from "./_hooks/formId-hooks";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -11,7 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton2";
-import { CalendarIcon, LinkIcon, Users2Icon } from "lucide-react";
+import {
+  CalendarIcon,
+  Link,
+  LinkIcon,
+  PersonStanding,
+  Users2Icon,
+} from "lucide-react";
 import { betterFetch } from "@better-fetch/fetch";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -44,9 +50,9 @@ const getForm = async (formId: string): Promise<FormData> => {
 };
 
 export default function FormIdPage() {
-  const [text, setText] = useState("");
   const params = useParams();
   const formId = params?.formId;
+  const router = useRouter();
 
   if (!formId) {
     return <div>Error: Form ID is missing</div>;
@@ -60,7 +66,7 @@ export default function FormIdPage() {
   const copyLink = () => {
     if (data?.link) {
       navigator.clipboard
-        .writeText(`https://nebib-forms-9dng.vercel.app/forms/${data.link}`)
+        .writeText(`http://localhost:3000/forms/${data.link}`)
         .then(() => {
           alert("Text copied to clipboard!");
         })
@@ -89,15 +95,31 @@ export default function FormIdPage() {
         <>
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-3xl font-bold">{data.topic}</h1>
+              <h1 className="text-3xl font-bold uppercase text-[#4A90E2]">
+                {data.topic}
+              </h1>
               <p className="text-muted-foreground mt-1">{data.description}</p>
             </div>
+
             <Badge
               variant={data.status === "active" ? "default" : "secondary"}
-              className="px-3 py-1"
+              className="px-3 py-1 bg-[#4A90E2]"
             >
               {data.status}
             </Badge>
+          </div>
+
+          <div className="my-8">
+            <button
+              onClick={() => {
+                router.push(`/attendance-management/${formId}`);
+              }}
+              className="flex items-center px-4 py-3 font-bold text-lg rounded-md 
+            bg-blue-500 text-white"
+            >
+              <PersonStanding />
+              <span className="ml-3">Attendance Management</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

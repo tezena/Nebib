@@ -77,24 +77,26 @@ enum Type {
 }
 
 model Form {
-  id          String   @id @default(cuid()) 
+  id          String   @id @default(cuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   topic       String
   description String
   categories  String?
   status      String
-  link        String @unique
+  link        String   @unique
   submissions Int
   type        Type
   accessMode  String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  fields      Field[]  // Relation to fields model
-
+  fields      Field[] 
+  datas Data[]  
+  
   @@map("form")
 }
+
 
 model Field {
   id        String  @id @default(cuid())
@@ -107,3 +109,14 @@ model Field {
 
   @@map("field")
 }
+
+
+model Data {
+  id        String   @id @default(cuid())
+  data      Json
+  formId    String
+  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

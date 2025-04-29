@@ -8,6 +8,8 @@ import {
   FileText,
   Settings,
   LogOut,
+  PersonStanding,
+  PersonStandingIcon,
 } from "lucide-react";
 export default function Sidebar() {
   const [activeItem, setActiveItem] = useState("Form Generator");
