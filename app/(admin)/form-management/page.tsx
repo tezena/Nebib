@@ -11,11 +11,17 @@ import { Form } from "@prisma/client";
 export default async function page() {
   const queryClient = new QueryClient();
 
+  console.log(
+    "******************************",
+    process.env.NEXT_PUBLIC_BASE_URL,
+    "&&&&&&&&&&&&&&&&&&&&&&&&"
+  );
+
   await queryClient.prefetchQuery({
     queryKey: ["forms"],
     queryFn: async () => {
       const res = await betterFetch<Form[]>(
-        "http://localhost:3000/api/forms/get"
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/forms/get`
       );
       return res.data;
     },

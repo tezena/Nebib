@@ -3,11 +3,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { betterFetch } from "@better-fetch/fetch";
 
 const getForms = async () => {
+  console.log(
+    "******************************",
+    process.env.NEXT_PUBLIC_BASE_URL,
+    "&&&&&&&&&&&&&&&&&&&&&&&&"
+  );
+
   const res = await betterFetch<Form[]>(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/forms/get`
   );
 
-  console.log("response: ", res);
+  // console.log("response: ", res);
   return res.data;
 };
 
