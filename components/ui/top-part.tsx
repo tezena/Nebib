@@ -6,8 +6,8 @@ import { SidebarTrigger } from "./sidebar";
 export default function TopPart() {
   return (
     <div className="w-full flex items-center justify-between px-4 py-2 border-b">
+      <SidebarTrigger />
       <div className="flex gap-2">
-        <SidebarTrigger />
         <div className="relative  w-[350px]">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input

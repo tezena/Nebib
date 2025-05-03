@@ -11,7 +11,8 @@ import {
   PersonStanding,
   PersonStandingIcon,
 } from "lucide-react";
-export default function Sidebar() {
+import { Sidebar } from "./sidebar";
+export default function AppSidebar() {
   const [activeItem, setActiveItem] = useState("Form Generator");
 
   const menuItems = [
@@ -26,7 +27,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="w-[300px] h-full bg-white border-r border-gray-200 flex flex-col">
+    <Sidebar className="w-[300px] h-full bg-white border-r border-gray-200 flex flex-col">
       <div className="p-4 border-b border-gray-200">
         <Link href="/" className="flex items-center">
           <img src="/images/logo.svg" className="h-8 w-8 text-blue-500" />
@@ -75,6 +76,6 @@ export default function Sidebar() {
           );
         })}
       </div>
-    </div>
+    </Sidebar>
   );
 }

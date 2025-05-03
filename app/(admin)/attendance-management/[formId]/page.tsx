@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useGetStudents } from "../_hooks/student_hooks";
 import { useParams } from "next/navigation";
 import Statistics from "@/components/attendance-management/statistics";
+import CheckIn from "@/components/attendance-management/check-in";
 
 export default function AttendanceManagementPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -14,6 +15,12 @@ export default function AttendanceManagementPage() {
   const { formId } = useParams();
   console.log(formId);
   const { data } = useGetStudents(formId as string);
+
+  if (!data) {
+    return (
+      <div className="flex justify-center text-center">DATA NOT FOUND</div>
+    );
+  }
 
   console.log(data);
 
@@ -28,7 +35,7 @@ export default function AttendanceManagementPage() {
       </div>
 
       {currentStep === 0 && data && <Students data={data} />}
-      {currentStep === 1 && <ReviewStep />}
+      {currentStep === 1 && <CheckIn data={data} />}
       {currentStep === 2 && <Statistics />}
     </div>
   );
