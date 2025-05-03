@@ -1,20 +1,23 @@
 "use client";
 
-import { Data, Field } from "@prisma/client";
+import { Data, Field, Form } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
 import { DataTable } from "../table";
 import { Button } from "../ui/button";
 
 export interface StudentsDatasProps {
-  data: Form & { datas: Data[] | null | undefined; fields: Field[] };
+  data: Form & {
+    datas: Data[] | null | undefined;
+    fields: Field[];
+  };
 }
 
 interface TableData {
   [key: string]: any;
 }
 
-const Students = ({ data }: { data: StudentsDatasProps }) => {
+const Students = ({ data }: StudentsDatasProps) => {
   const fieldLabelMap =
     data.fields?.reduce((acc: Record<string, string>, field: Field) => {
       acc[field.id] = field.label;
@@ -23,7 +26,7 @@ const Students = ({ data }: { data: StudentsDatasProps }) => {
 
   const tableData: TableData[] =
     data.datas?.map((entry) => ({
-      ...entry.data,
+      ...(entry.data as Record<string, any>),
       createdAt: new Date(entry.createdAt).toLocaleString(),
     })) || [];
 

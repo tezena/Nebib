@@ -47,9 +47,7 @@ export default function FormPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!data) return;
-
-    const form = Array.isArray(data) ? data[0] : data;
+    if (!form) return;
 
     // Validate required fields
     const missingRequiredFields = form.fields
@@ -77,13 +75,13 @@ export default function FormPage() {
       // Submit with hook or API
       await addData({
         datas: JSON.parse(JSON.stringify(formValues)),
-        formId: JSON.parse(JSON.stringify(data?.id)),
+        formId: form.id, // Use the extracted form's id
       });
 
-      // setFormValues({});
+      // Optionally reset form values
+      setFormValues({});
     } catch (error) {
       console.error("Failed to submit form", error);
-    } finally {
     }
   };
 
