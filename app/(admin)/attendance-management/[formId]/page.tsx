@@ -1,8 +1,6 @@
 "use client";
 
 import Students from "@/components/attendance-management/students";
-import FormGeneratorStep from "@/components/form-generator/form-generator-step";
-import PublishStep from "@/components/form-generator/publish-step";
 import ReviewStep from "@/components/form-generator/review-step";
 import StepNavigation from "@/components/form-generator/step-navigation";
 import { useState } from "react";
