@@ -30,7 +30,7 @@ export interface RenderedForm extends Form {
 }
 const getRenderedForm = async (link: string) => {
   const res = await betterFetch<RenderedForm[]>(
-    `http://localhost:3000/api/forms/link/${link}`
+    `https://nebib-forms-nebib.vercel.app/api/forms/link/${link}`
   );
 
   console.log("response: ", res);
