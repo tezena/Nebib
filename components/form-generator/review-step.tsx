@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2 } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowLeft,
+  ArrowRight,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { z } from "zod";
 
 const fieldSchema = z.object({
@@ -23,7 +29,11 @@ const formSchema = z.object({
 type Field = z.infer<typeof fieldSchema>;
 type FormData = z.infer<typeof formSchema>;
 
-export default function ReviewStep() {
+interface ReviewStepProps {
+  setCurrentStep: (arg0: number) => void;
+}
+
+export default function ReviewStep({ setCurrentStep }: ReviewStepProps) {
   const [formData, setFormData] = useState<FormData>(() => {
     if (typeof window !== "undefined") {
       const storedData = JSON.parse(
@@ -120,11 +130,23 @@ export default function ReviewStep() {
         </div>
       </div>
       <div className="pt-4 flex justify-between">
-        <Button className="bg-[#4A90E2] hover:bg-[#4A90E2]">
-          Back: Form Generator
+        <Button
+          className="bg-[#4A90E2] hover:bg-[#4A90E2]"
+          onClick={() => {
+            setCurrentStep(0);
+          }}
+        >
+          <ArrowLeft />
+          back
         </Button>
-        <Button className="bg-[#4A90E2] hover:bg-[#4A90E2]">
-          Next: Publish
+        <Button
+          className="bg-[#4A90E2] hover:bg-[#4A90E2]"
+          onClick={() => {
+            setCurrentStep(2);
+          }}
+        >
+          Next
+          <ArrowRight />
         </Button>
       </div>
     </div>

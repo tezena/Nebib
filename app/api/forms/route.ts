@@ -22,6 +22,17 @@ export const POST = async function (request: Request) {
         { status: 400 }
       );
     }
+
+    const formExist = await db.form.findFirst({
+      where: {
+        topic: formData.topic,
+      },
+    });
+
+    if (formExist) {
+      throw new Error("form with this name already exists");
+    }
+
     // Create form with fields in a transaction
     const newForm = await db.$transaction(async (tx) => {
       // 1. Create the Form
@@ -65,11 +76,8 @@ export const POST = async function (request: Request) {
       success: true,
       form: newForm,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("[FORM_PUBLISH_ERROR]", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

@@ -21,8 +21,8 @@ export default function Page() {
       </div>
 
       {currentStep === 0 && <FormGeneratorStep />}
-      {currentStep === 1 && <ReviewStep />}
-      {currentStep === 2 && <PublishStep />}
+      {currentStep === 1 && <ReviewStep setCurrentStep={setCurrentStep} />}
+      {currentStep === 2 && <PublishStep setCurrentStep={setCurrentStep} />}
     </div>
   );
 }

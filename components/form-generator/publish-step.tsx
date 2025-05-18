@@ -8,6 +8,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { toast } from "sonner";
+import FormPreview from "./form-preview";
+import { ArrowLeft } from "lucide-react";
 
 const publishSchema = z.object({
   accessCode: z.string().optional(),
@@ -17,7 +19,11 @@ const publishSchema = z.object({
 
 type PublishData = z.infer<typeof publishSchema>;
 
-export default function PublishStep() {
+interface PublishStepProps {
+  setCurrentStep: (arg0: number) => void;
+}
+
+export default function PublishStep({ setCurrentStep }: PublishStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("setting");
   const [publishData, setPublishData] = useState<PublishData>(() => {
@@ -51,13 +57,16 @@ export default function PublishStep() {
           "Content-Type": "application/json",
         },
       });
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to publish form.");
+        throw new Error(data.error);
       }
-      toast.success("Form Published Successfully");
+      toast("Success", {
+        description: "Form published successfully",
+      });
       // localStorage.removeItem("form_data");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error("Error publishing form", {});
     } finally {
       setIsLoading(false);
     }
@@ -161,20 +170,27 @@ export default function PublishStep() {
 
       {activeTab === "preview" && (
         <div className="border rounded-md p-4 min-h-[300px] flex items-center justify-center text-gray-500">
-          Form preview will be displayed here
+          <FormPreview />
         </div>
       )}
 
       <div className="pt-4 flex justify-between">
         <Button
           className="bg-[#4A90E2] hover:bg-[#4A90E2]"
+          onClick={() => {
+            setCurrentStep(1);
+          }}
+        >
+          <ArrowLeft />
+          back
+        </Button>
+
+        <Button
+          className="bg-[#4A90E2] hover:bg-[#4A90E2]"
           onClick={saveToDatabase}
           disabled={isLoading}
         >
           {isLoading ? "Publishing" : "Publish"}
-        </Button>
-        <Button className="bg-[#4A90E2] hover:bg-[#4A90E2]">
-          Back: Review
         </Button>
       </div>
     </div>
