@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:11111111@localhost:5432/nebb-forms?schema=public"
 }
 
 model User {
@@ -20,7 +20,7 @@ model User {
 
   sessions Session[]
   accounts Account[]
-  forms    Form[]
+  forms    Form[] 
 
   @@map("user")
 }

@@ -1,5 +1,5 @@
-import RenderedForm from "@/components/form-management/rendered-form";
+import PublicFormRenderer from "@/components/form-management/public-form-renderer"
 
-export default function Page() {
-  return <RenderedForm />;
+export default function PublicFormPage() {
+  return <PublicFormRenderer />
 }

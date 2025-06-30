@@ -82,7 +82,7 @@ export default function FormPage() {
       setFormValues({});
     } catch (error) {
       console.error("Failed to submit form", error);
-    }
+    } 
   };
 
   if (submissionError) {

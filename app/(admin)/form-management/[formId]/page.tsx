@@ -1,284 +1,181 @@
-"use client";
+"use client"
 
-import { useParams, useRouter } from "next/navigation";
-import { RenderedForm, useGetForm } from "./_hooks/formId-hooks";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton2";
-import {
-  CalendarIcon,
-  Link,
-  LinkIcon,
-  PersonStanding,
-  Users2Icon,
-} from "lucide-react";
-import { betterFetch } from "@better-fetch/fetch";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useParams } from "next/navigation"
+import { useGetForm, type FormWithFields } from "./_hooks/formId-hooks"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Loader2, Copy, ExternalLink, Users, Calendar, Lock } from "lucide-react"
+import { toast } from "sonner"
+import { LinkIcon } from "lucide-react"
 
-interface FormData {
-  id: string;
-  topic: string;
-  description: string;
-  status: string;
-  type: string;
-  submissions: number;
-  createdAt: string;
-  link: string;
-  fields: {
-    id: string;
-    label: string;
-    type: string;
-    required: boolean;
-    category?: string;
-  }[];
-}
-
-const getForm = async (formId: string): Promise<FormData> => {
-  const res = await betterFetch<FormData>(`/api/forms/${formId}`);
-  console.log("response: ", res);
-  if (!res.data) {
-    throw new Error("Failed to fetch form data");
-  }
-  return res.data;
-};
-
-export default function FormIdPage() {
-  const params = useParams();
-  const formId = params?.formId;
-  const router = useRouter();
-
-  if (!formId) {
-    return <div>Error: Form ID is missing</div>;
-  }
-
-  const { data, isLoading, error } = useQuery<FormData>({
-    queryFn: () => getForm(formId as string),
-    queryKey: ["form", formId],
-  });
+export default function FormDetailPage() {
+  const params = useParams()
+  const formId = params?.formId as string
+  const { data: form, isPending, error } = useGetForm(formId)
 
   const copyLink = () => {
-    if (data?.link) {
+    if (form && form[0]) {
+      const publicLink = `${window.location.origin}/form/${form[0].id}`
       navigator.clipboard
-        .writeText(`https://nebib-forms-nebib.vercel.app/forms/${data.link}`)
+        .writeText(publicLink)
         .then(() => {
-          alert("Text copied to clipboard!");
+          toast.success("Form link copied to clipboard!")
         })
         .catch((err) => {
-          console.error("Failed to copy text: ", err);
-        });
+          console.error("Failed to copy text: ", err)
+          toast.error("Failed to copy link")
+        })
     }
-  };
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[60vh]">
-        <h2 className="text-2xl font-bold text-red-500">Error loading form</h2>
-        <p className="text-muted-foreground">
-          {error.message || "Failed to load form details"}
-        </p>
-      </div>
-    );
   }
 
+  const openFormLink = () => {
+    if (form && form[0]) {
+      const publicLink = `${window.location.origin}/form/${form[0].id}`
+      window.open(publicLink, "_blank")
+    }
+  }
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <span className="ml-2">Loading form details...</span>
+      </div>
+    )
+  }
+
+  if (error || !form || !form[0]) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Card className="w-full max-w-2xl border rounded-md p-8">
+          <h1 className="text-xl text-red-500">Form Not Found</h1>
+          <p>The form you're looking for doesn't exist.</p>
+        </Card>
+      </div>
+    )
+  }
+
+  const formData: FormWithFields = form[0]
+
   return (
-    <div className="container mx-auto py-8">
-      {isLoading ? (
-        <FormSkeleton />
-      ) : data ? (
-        <>
-          <div className="flex justify-between items-center mb-6">
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-6xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="bg-white rounded-lg p-6 shadow-sm">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold uppercase text-[#4A90E2]">
-                {data.topic}
-              </h1>
-              <p className="text-muted-foreground mt-1">{data.description}</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{formData.topic}</h1>
+              <p className="text-gray-600">{formData.description}</p>
             </div>
-
-            <Badge
-              variant={data.status === "active" ? "default" : "secondary"}
-              className="px-3 py-1 bg-[#4A90E2]"
-            >
-              {data.status}
-            </Badge>
+            <div className="flex items-center space-x-2">
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                {formData.status || "Active"}
+              </span>
+            </div>
           </div>
+        </div>
 
-          <div className="my-8">
-            <button
-              onClick={() => {
-                router.push(`/attendance-management/${formId}`);
-              }}
-              className="flex items-center px-4 py-3 font-bold text-lg rounded-md 
-            bg-blue-500 text-white"
-            >
-              <PersonStanding />
-              <span className="ml-3">Attendance Management</span>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Form Type</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <Users2Icon className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span className="font-medium">{data.type}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Submissions
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {data.submissions || 0}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Created</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center">
-                  <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>
-                    {data.createdAt
-                      ? new Date(data.createdAt).toLocaleDateString()
-                      : "N/A"}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Form Link</CardTitle>
-              <CardDescription>
-                Share this link to collect responses
-              </CardDescription>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Form Type</CardTitle>
+              <Lock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="flex items-center p-3 bg-muted rounded-md">
-                <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                <span
-                  className="text-sm font-medium cursor-pointer"
-                  onClick={copyLink}
-                >
-                  {data.link}
-                </span>
+              <div className="flex items-center space-x-2">
+                <Lock className="h-4 w-4 text-gray-500" />
+                <span className="text-lg font-semibold">{formData.type || "Private"}</span>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle>Form Fields</CardTitle>
-              <CardDescription>
-                Fields that respondents will see
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Submissions</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              {data.fields && data.fields.length > 0 ? (
-                <div className="space-y-4">
-                  {data.fields.map((field) => (
-                    <div key={field.id} className="border rounded-md p-4">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-medium">{field.label}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Type: {field.type}
-                          </p>
-                        </div>
-                        {field.required && (
-                          <Badge variant="outline" className="text-xs">
-                            Required
-                          </Badge>
-                        )}
-                      </div>
-                      {field.category && (
-                        <div className="mt-2">
-                          <span className="text-xs text-muted-foreground">
-                            Category: {field.category}
-                          </span>
-                        </div>
-                      )}
+              <div className="text-2xl font-bold">{formData.submissions || 0}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Created</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-lg font-semibold">{new Date(formData.createdAt).toLocaleDateString()}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Form Link Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Form Link</CardTitle>
+            <CardDescription>Share this link to collect responses</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center p-3 bg-muted rounded-md">
+              <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />
+              <span className="text-sm font-medium flex-1">{formData.id}</span>
+            </div>
+
+            <div className="flex space-x-2">
+              <button
+                onClick={copyLink}
+                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                <Copy className="h-4 w-4" />
+                <span>Copy Link</span>
+              </button>
+
+              <button
+                onClick={openFormLink}
+                className="flex items-center space-x-2 px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#3a7bc8] transition-colors"
+              >
+                <ExternalLink className="h-4 w-4" />
+                <span>Open Form</span>
+              </button>
+            </div>
+
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800">
+                <strong>Public URL:</strong> {window.location.origin}/form/{formData.id}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Form Fields Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Form Fields</CardTitle>
+            <p className="text-sm text-gray-600">Fields configured for this form</p>
+          </CardHeader>
+          <CardContent>
+            {formData.fields && formData.fields.length > 0 ? (
+              <div className="space-y-3">
+                {formData.fields.map((field, index) => (
+                  <div key={field.id || index} className="flex items-center justify-between p-3 border rounded-md">
+                    <div>
+                      <span className="font-medium">{field.label}</span>
+                      <span className="ml-2 text-sm text-gray-500">({field.type})</span>
+                      {field.required && <span className="ml-1 text-red-500">*</span>}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground">
-                  No fields found for this form.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </>
-      ) : (
-        <div>Loading...</div>
-      )}
-    </div>
-  );
-}
-
-function FormSkeleton() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <Skeleton className="h-10 w-1/3 mb-2" />
-        <Skeleton className="h-4 w-2/3" />
+                    {field.category && (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{field.category}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No fields configured for this form.</p>
+            )}
+          </CardContent>
+        </Card>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[1, 2, 3].map((i) => (
-          <Card key={i}>
-            <CardHeader className="pb-2">
-              <Skeleton className="h-4 w-24" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-6 w-16" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-6 w-32 mb-2" />
-          <Skeleton className="h-4 w-48" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-10 w-full" />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-6 w-32 mb-2" />
-          <Skeleton className="h-4 w-48" />
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-24 w-full" />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
-  );
+  )
 }

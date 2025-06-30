@@ -1,83 +1,57 @@
-// app/api/forms/route.ts
-import { db } from "@/lib/db";
-import getSession from "@/lib/get-session-user";
-import { Type } from "@prisma/client";
-import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+import { db } from "@/lib/db"
+import { NextResponse } from "next/server"
 
-export const POST = async function (request: Request) {
+export const GET = async (request: Request, { params }: { params: Promise<{ formid: string }> }) => {
   try {
-    const session = await getSession();
-    console.log("*****************888888888", session);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // In Next.js 15+, params is a Promise that needs to be awaited
+    const { formid } = await params
+    const formId = formid
+
+    console.log("🔍 Looking for form with ID:", formId)
+    console.log("📋 Params object:", { formid })
+
+    // Validate that formId exists
+    if (!formId) {
+      console.error("❌ No formId provided in params")
+      return NextResponse.json({ error: "Form ID is required" }, { status: 400 })
     }
 
-    const { formData, publishData } = await request.json();
-
-    // Validate required data
-    if (!formData?.topic || !formData?.description || !formData?.fields) {
-      return NextResponse.json(
-        { error: "Missing required form data" },
-        { status: 400 }
-      );
-    }
-
-    const formExist = await db.form.findFirst({
+    // Rest of the code remains the same...
+    const form = await db.form.findUnique({
       where: {
-        topic: formData.topic,
+        id: formId,
       },
-    });
+      include: {
+        fields: true,
+        datas: true,
+      },
+    })
 
-    if (formExist) {
-      throw new Error("form with this name already exists");
+    console.log("📋 Form query result:", form ? "Found" : "Not found")
+
+    if (form) {
+      console.log("📊 Form details:", {
+        id: form.id,
+        topic: form.topic,
+        fieldsCount: form.fields?.length || 0,
+        datasCount: form.datas?.length || 0,
+      })
     }
 
-    // Create form with fields in a transaction
-    const newForm = await db.$transaction(async (tx) => {
-      // 1. Create the Form
-      const form = await db.form.create({
-        data: {
-          userId: session.session.userId,
-          topic: formData.topic,
-          link: uuidv4(),
-          description: formData.description,
-          categories: formData.categories?.join(",") || null,
-          status: "active",
-          submissions: 0,
-          type:
-            publishData.shareSetting === "Public" ? Type.Public : Type.Private,
-          accessMode:
-            publishData.shareSetting === "private"
-              ? publishData.accessCode
-              : null,
-        },
-      });
+    if (!form) {
+      return NextResponse.json({ error: "Form not found" }, { status: 404 })
+    }
 
-      // 2. Create all associated Fields
-      await db.field.createMany({
-        data: formData.fields.map((field: any) => ({
-          formId: form.id,
-          label: field.label,
-          type: field.type,
-          category: field.category || null,
-          required: field.required || false,
-        })),
-      });
-
-      // 3. Return the form with its fields
-      return await tx.form.findUnique({
-        where: { id: form.id },
-        include: { fields: true },
-      });
-    });
-
-    return NextResponse.json({
-      success: true,
-      form: newForm,
-    });
-  } catch (error: any) {
-    console.error("[FORM_PUBLISH_ERROR]", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Return the form wrapped in an array to match your hook expectation
+    return NextResponse.json([form], { status: 200 })
+  } catch (error) {
+    console.error("🚨 [FORM_DETAIL_FETCH_ERROR]", error)
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
-};
+}
