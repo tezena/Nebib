@@ -1,31 +1,41 @@
-import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { db } from "@/lib/db"
+import { NextResponse } from "next/server"
 
-type GetParams = Promise<{ id: string }>;
-export const GET = async function (
-  request: Request,
-  { params }: { params: GetParams }
-) {
+type RouteParams = {
+  formId: string
+}
+
+export const GET = async (request: Request, context: { params: RouteParams }) => {
   try {
-    const { id } = await params;
+    // Direct access to params without awaiting
+    const formId = context.params.formId
 
+    console.log("🔍 Public API - Looking for form with ID:", formId)
+    console.log("📋 Public API - Request URL:", request.url)
+
+    if (!formId) {
+      return NextResponse.json({ error: "Form ID is required" }, { status: 400 })
+    }
+
+    // Find the form by ID and include fields
     const form = await db.form.findUnique({
       where: {
-        id: id,
+        id: formId,
       },
       include: {
         fields: true,
       },
-    });
+    })
 
-    console.log(form);
+    if (!form) {
+      return NextResponse.json({ error: "Form not found" }, { status: 404 })
+    }
 
-    return new Response(JSON.stringify(form), { status: 200 });
+    console.log("✅ Public form fetched successfully")
+
+    return NextResponse.json(form, { status: 200 })
   } catch (error) {
-    console.error("[FORMS_FETCH_ERROR]", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    console.error("[PUBLIC_FORM_FETCH_ERROR]", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
-};
+}

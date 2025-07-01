@@ -4,6 +4,7 @@ import { betterFetch } from "@better-fetch/fetch"
 
 // Define the complete form type with fields included
 export interface FormWithFields extends Form {
+  shareSetting: string
   fields: Field[]
   datas?: any[]
 }
@@ -12,7 +13,7 @@ const getForm = async (formId: string): Promise<FormWithFields[]> => {
   console.log("🔗 Hook: Fetching form with ID:", formId)
 
   try {
-    // Updated to use lowercase formid to match the API route
+    // Use the correct API route that matches our backend
     const res = await betterFetch<FormWithFields[]>(`/api/forms/${formId}`)
     console.log("📡 Hook: API response:", res)
 
@@ -53,7 +54,6 @@ const getPublicForm = async (formId: string) => {
   console.log("🔗 Hook: Fetching public form with ID:", formId)
 
   try {
-    // Updated to use lowercase formid to match the API route
     const res = await betterFetch<RenderedForm>(`/api/forms/${formId}/public`)
     console.log("📡 Hook: Public form response:", res)
 

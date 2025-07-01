@@ -1,46 +1,40 @@
+import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
 export const GET = async () => {
   try {
-    // Try to import your database client
-    const { db } = await import("@/lib/db")
+    console.log("🔍 Debugging all forms in database...")
 
-    console.log("✅ Database client imported")
-
-    // Test basic connection
-    await db.$queryRaw`SELECT 1 as test`
-    console.log("✅ Database connection successful")
-
-    // Try to count forms
-    const formCount = await db.form.count()
-    console.log("📊 Total forms in database:", formCount)
-
-    // Get first few forms
-    const forms = await db.form.findMany({
-      take: 3,
+    // Get all forms with their basic info
+    const allForms = await db.form.findMany({
       select: {
         id: true,
         topic: true,
+        description: true,
         createdAt: true,
+        status: true,
       },
+      take: 10, // Limit to first 10 forms
     })
 
-    console.log("📋 Sample forms:", forms)
+    console.log("📊 Total forms found:", allForms.length)
+    console.log("📋 Forms:", allForms)
+
+    // Also get the count
+    const totalCount = await db.form.count()
 
     return NextResponse.json({
       success: true,
-      message: "Database connection successful",
-      formCount,
-      sampleForms: forms,
+      totalCount,
+      forms: allForms,
+      message: `Found ${allForms.length} forms in database`,
     })
   } catch (error) {
-    console.error("🚨 Database test failed:", error)
-
+    console.error("🚨 Debug forms error:", error)
     return NextResponse.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
-        stack: error instanceof Error ? error.stack : undefined,
       },
       { status: 500 },
     )

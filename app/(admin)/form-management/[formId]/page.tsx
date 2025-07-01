@@ -6,11 +6,25 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Loader2, Copy, ExternalLink, Users, Calendar, Lock } from "lucide-react"
 import { toast } from "sonner"
 import { LinkIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function FormDetailPage() {
   const params = useParams()
-  const formId = params?.formId as string
+  const [formId, setFormId] = useState<string>("")
+
+  // Handle params properly to avoid hydration issues
+  useEffect(() => {
+    if (params?.formId) {
+      setFormId(params.formId as string)
+    }
+  }, [params])
+
+  console.log("🔗 Current formId from params:", formId)
+  console.log("🔗 Raw params:", params)
+
   const { data: form, isPending, error } = useGetForm(formId)
+
+  console.log("📡 Hook response:", { form, isPending, error })
 
   const copyLink = () => {
     if (form && form[0]) {
@@ -34,6 +48,16 @@ export default function FormDetailPage() {
     }
   }
 
+  
+  if (!formId) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <span className="ml-2">Loading...</span>
+      </div>
+    )
+  }
+
   if (isPending) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -43,12 +67,57 @@ export default function FormDetailPage() {
     )
   }
 
-  if (error || !form || !form[0]) {
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Card className="w-full max-w-2xl border rounded-md p-8">
+          <h1 className="text-xl text-red-500">Error Loading Form</h1>
+          <p className="text-gray-600 mb-4">{error instanceof Error ? error.message : "Failed to load form details"}</p>
+          <div className="bg-gray-100 p-3 rounded text-sm">
+            <strong>Form ID:</strong> {formId}
+          </div>
+          <div className="mt-4 space-y-2">
+            <button
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => window.open(`/api/test-form/${formId}`, "_blank")}
+              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            >
+              Debug API
+            </button>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
+  if (!form || !form[0]) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <Card className="w-full max-w-2xl border rounded-md p-8">
           <h1 className="text-xl text-red-500">Form Not Found</h1>
-          <p>The form you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-4">The form you're looking for doesn't exist in the database.</p>
+          <div className="bg-gray-100 p-3 rounded text-sm">
+            <strong>Form ID:</strong> {formId}
+          </div>
+          <div className="mt-4 space-y-2">
+            <p className="text-sm text-gray-500">Possible reasons:</p>
+            <ul className="text-sm text-gray-500 list-disc list-inside">
+              <li>The form ID is incorrect</li>
+              <li>The form was deleted</li>
+              <li>Database connection issue</li>
+            </ul>
+            <button
+              onClick={() => window.open(`/api/debug-forms`, "_blank")}
+              className="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            >
+              Debug Database
+            </button>
+          </div>
         </Card>
       </div>
     )
@@ -84,7 +153,7 @@ export default function FormDetailPage() {
             <CardContent>
               <div className="flex items-center space-x-2">
                 <Lock className="h-4 w-4 text-gray-500" />
-                <span className="text-lg font-semibold">{formData.type || "Private"}</span>
+                <span className="text-lg font-semibold">{formData.shareSetting || "Private"}</span>
               </div>
             </CardContent>
           </Card>
@@ -95,7 +164,7 @@ export default function FormDetailPage() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{formData.submissions || 0}</div>
+              <div className="text-2xl font-bold">{formData.datas?.length || 0}</div>
             </CardContent>
           </Card>
 
@@ -119,7 +188,7 @@ export default function FormDetailPage() {
           <CardContent className="space-y-4">
             <div className="flex items-center p-3 bg-muted rounded-md">
               <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-              <span className="text-sm font-medium flex-1">{formData.id}</span>
+              <span className="text-sm font-medium flex-1 break-all">{`${typeof window !== "undefined" ? window.location.origin : ""}/form/${formData.id}`}</span>
             </div>
 
             <div className="flex space-x-2">
@@ -139,12 +208,6 @@ export default function FormDetailPage() {
                 <span>Open Form</span>
               </button>
             </div>
-
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
-              <p className="text-sm text-blue-800">
-                <strong>Public URL:</strong> {window.location.origin}/form/{formData.id}
-              </p>
-            </div>
           </CardContent>
         </Card>
 
@@ -152,7 +215,9 @@ export default function FormDetailPage() {
         <Card>
           <CardHeader>
             <CardTitle>Form Fields</CardTitle>
-            <p className="text-sm text-gray-600">Fields configured for this form</p>
+            <p className="text-sm text-gray-600">
+              Fields configured for this form ({formData.fields?.length || 0} fields)
+            </p>
           </CardHeader>
           <CardContent>
             {formData.fields && formData.fields.length > 0 ? (

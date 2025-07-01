@@ -1,14 +1,18 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-export const GET = async (request: Request, { params }: { params: Promise<{ formid: string }> }) => {
-  try {
-    // In Next.js 15+, params is a Promise that needs to be awaited
-    const { formid } = await params
-    const formId = formid
+type RouteParams = {
+  formId: string
+}
 
-    console.log("🔍 Looking for form with ID:", formId)
-    console.log("📋 Params object:", { formid })
+export const GET = async (request: Request, context: { params: RouteParams }) => {
+  try {
+    // Direct access to params without awaiting (for compatibility)
+    const formId = context.params.formId
+
+    console.log("🔍 API Route - Looking for form with ID:", formId)
+    console.log("📋 API Route - Full context:", context)
+    console.log("📋 API Route - Request URL:", request.url)
 
     // Validate that formId exists
     if (!formId) {
@@ -16,7 +20,7 @@ export const GET = async (request: Request, { params }: { params: Promise<{ form
       return NextResponse.json({ error: "Form ID is required" }, { status: 400 })
     }
 
-    // Rest of the code remains the same...
+    // Query the database for the form
     const form = await db.form.findUnique({
       where: {
         id: formId,
