@@ -1,61 +1,112 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
 
-type RouteParams = {
-  formId: string
-}
-
-export const GET = async (request: Request, context: { params: RouteParams }) => {
+export const POST = async (request: Request) => {
   try {
-    // Direct access to params without awaiting (for compatibility)
-    const formId = context.params.formId
-
-    console.log("🔍 API Route - Looking for form with ID:", formId)
-    console.log("📋 API Route - Full context:", context)
-    console.log("📋 API Route - Request URL:", request.url)
-
-    // Validate that formId exists
-    if (!formId) {
-      console.error("❌ No formId provided in params")
-      return NextResponse.json({ error: "Form ID is required" }, { status: 400 })
+    console.log("🔍 Attempting to get session...")
+    console.log("🍪 Request cookies:", request.headers.get("cookie"))
+    
+    // Create a proper headers object for better-auth
+    const headers = new Headers(request.headers)
+    const session = await auth.api.getSession({ headers })
+    
+    console.log("📋 Session result:", session ? "Found" : "Not found")
+    if (session) {
+      console.log("👤 User ID:", session.user.id)
+      console.log("📧 User email:", session.user.email)
+    }
+    
+    if (!session) {
+      console.log("❌ No session found - returning unauthorized")
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Query the database for the form
-    const form = await db.form.findUnique({
-      where: {
-        id: formId,
+    const body = await request.json()
+    const { topic, description, categories, fields } = body
+
+    // Validate required fields
+    if (!topic || !description) {
+      return NextResponse.json(
+        { error: "Topic and description are required" },
+        { status: 400 }
+      )
+    }
+
+    // Generate a unique link for the form
+    const link = `form-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
+    // Create the form
+    const form = await db.form.create({
+      data: {
+        topic,
+        description,
+        categories: categories ? categories.join(',') : '',
+        status: 'active',
+        link,
+        submissions: 0,
+        type: 'Private',
+        userId: session.user.id,
+        fields: {
+          create: fields.map((field: any) => ({
+            label: field.label,
+            type: field.type,
+            category: field.category || '',
+            required: field.required || false,
+          }))
+        }
       },
       include: {
         fields: true,
-        datas: true,
-      },
+      }
     })
 
-    console.log("📋 Form query result:", form ? "Found" : "Not found")
-
-    if (form) {
-      console.log("📊 Form details:", {
-        id: form.id,
-        topic: form.topic,
-        fieldsCount: form.fields?.length || 0,
-        datasCount: form.datas?.length || 0,
-      })
-    }
-
-    if (!form) {
-      return NextResponse.json({ error: "Form not found" }, { status: 404 })
-    }
-
-    // Return the form wrapped in an array to match your hook expectation
-    return NextResponse.json([form], { status: 200 })
+    return NextResponse.json(form, { status: 201 })
   } catch (error) {
-    console.error("🚨 [FORM_DETAIL_FETCH_ERROR]", error)
+    console.error("🚨 [FORM_CREATION_ERROR]", error)
     return NextResponse.json(
       {
         error: "Internal server error",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 },
+      { status: 500 }
+    )
+  }
+}
+
+export const GET = async (request: Request) => {
+  try {
+    // Create a proper headers object for better-auth
+    const headers = new Headers(request.headers)
+    const session = await auth.api.getSession({ headers })
+    
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    // Get all forms for the current user
+    const forms = await db.form.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      include: {
+        fields: true,
+        datas: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return NextResponse.json(forms, { status: 200 })
+  } catch (error) {
+    console.error("🚨 [FORMS_FETCH_ERROR]", error)
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
     )
   }
 }

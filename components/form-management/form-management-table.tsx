@@ -93,6 +93,7 @@ const FormManagementTable = () => {
       header: "Actions",
       enableHiding: false,
       cell: ({ row }) => {
+        console.log(row);
         return (
           <div className="mr-3 flex gap-5">
             <Button variant="outline" size="sm" onClick={() => {}}>

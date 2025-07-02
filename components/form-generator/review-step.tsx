@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  ArrowBigLeft,
   ArrowLeft,
   ArrowRight,
   Pencil,
@@ -19,14 +18,13 @@ const fieldSchema = z.object({
   required: z.boolean(),
 });
 
-const formSchema = z.object({
+export const formSchema = z.object({
   topic: z.string().min(1, "Topic is required"),
   description: z.string().min(1, "Description is required"),
   categories: z.array(z.string()).min(1, "At least one category is required"),
   fields: z.array(fieldSchema),
 });
 
-type Field = z.infer<typeof fieldSchema>;
 type FormData = z.infer<typeof formSchema>;
 
 interface ReviewStepProps {

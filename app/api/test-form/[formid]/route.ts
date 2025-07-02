@@ -2,12 +2,12 @@ import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
 interface RouteParams {
-  params: { formId: string }
+  params: Promise<{ formId: string }>
 }
 
 export const GET = async (request: Request, { params }: RouteParams) => {
   try {
-    const formId = params.formId
+    const { formId } = await params
 
     console.log("🧪 Testing form ID:", formId)
     console.log("📋 Full params:", params)

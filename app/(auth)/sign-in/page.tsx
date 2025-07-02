@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import Image from "next/image";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,16 +50,17 @@ export default function LoginPage() {
       // Here you would typically send the data to your API
       console.log(values);
       // Simulate API call
-      const { data, error } = await authClient.signIn.email(
+      await authClient.signIn.email(
         {
           email: values.email,
           password: values.password,
-          callbackURL: "/",
+          callbackURL: "/form-generator",
           rememberMe: false,
         },
         {
           onSuccess: (ctx) => {
-            router.push("/");
+            console.log(ctx);
+            router.push("/form-generator");
           },
         }
       );
@@ -72,18 +73,25 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 p-4">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
         {/* Logo and Header */}
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-white" />
-            </div>
+            <Image
+              src="/images/logo.svg"
+              alt="NEBIB Logo"
+              width={32}
+              height={32}
+              className="w-8 h-8"
+            />
             <h1 className="text-2xl font-semibold text-gray-800">NEBIB</h1>
           </div>
           <h2 className="text-2xl font-bold text-gray-800">
             Generate forms of your own
           </h2>
+          <Link href="/" className="text-blue-600 hover:text-blue-700 hover:underline text-sm mt-2">
+            ← Back to Home
+          </Link>
         </div>
 
         {/* Login Form */}

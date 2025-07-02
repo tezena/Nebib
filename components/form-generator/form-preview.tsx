@@ -16,7 +16,7 @@ const fieldSchema = z.object({
   required: z.boolean(),
 });
 
-const formSchema = z.object({
+export const formSchema = z.object({
   topic: z.string().min(1, "Topic is required"),
   description: z.string().min(1, "Description is required"),
   categories: z.array(z.string()).min(1, "At least one category is required"),

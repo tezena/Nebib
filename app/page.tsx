@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, FileText, Zap, Shield, Users, BarChart3, CheckCircle } from "lucide-react";
+import { ArrowRight, Zap, Shield, Users, BarChart3, CheckCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -11,9 +12,13 @@ export default function HomePage() {
       <header className="border-b border-blue-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-white" />
-            </div>
+            <Image
+              src="/images/logo.svg"
+              alt="NEBIB Logo"
+              width={20}
+              height={32}
+              className="w-8 h-8"
+            />
             <span className="text-xl font-bold text-gray-800">NEBIB</span>
           </div>
           <div className="flex items-center gap-4">
@@ -114,7 +119,13 @@ export default function HomePage() {
           <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/80 backdrop-blur-sm">
             <CardHeader>
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4">
-                <FileText className="w-6 h-6 text-white" />
+                <Image
+                  src="/images/Subtract.png"
+                  alt="Custom Templates"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6"
+                />
               </div>
               <CardTitle className="text-gray-800">Custom Templates</CardTitle>
               <CardDescription className="text-gray-600">
@@ -162,13 +173,17 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-indigo-600 rounded flex items-center justify-center">
-                <FileText className="w-4 h-4 text-white" />
-              </div>
+              <Image
+                src="/images/logo.svg"
+                alt="NEBIB Logo"
+                width={24}
+                height={24}
+                className="w-8 h-8"
+              />
               <span className="font-semibold text-gray-800">NEBIB</span>
             </div>
             <p className="text-sm text-gray-600">
-              © 2024 NEBIB. All rights reserved.
+              © 2025 NEBIB. All rights reserved.
             </p>
           </div>
         </div>

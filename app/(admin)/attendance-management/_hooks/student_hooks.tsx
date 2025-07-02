@@ -1,7 +1,6 @@
 import { Data, Field, Form } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { betterFetch } from "@better-fetch/fetch";
-import { StudentsDatasProps } from "@/components/attendance-management/students";
 
 const getStudents = async (formId: string) => {
   const res = await betterFetch<Form & { datas: Data[]; fields: Field[] }>(

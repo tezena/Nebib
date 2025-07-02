@@ -2,13 +2,13 @@ import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
 type RouteParams = {
-  formId: string
+  id: string
 }
 
-export const GET = async (request: Request, context: { params: RouteParams }) => {
+export const GET = async (request: Request, context: { params: Promise<RouteParams> }) => {
   try {
-    // Direct access to params without awaiting
-    const formId = context.params.formId
+    // Await the params promise
+    const { id: formId } = await context.params
 
     console.log("🔍 Public API - Looking for form with ID:", formId)
     console.log("📋 Public API - Request URL:", request.url)

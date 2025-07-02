@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Loader2 } from "lucide-react"
 import { useAddData } from "@/app/(admin)/form-management/_hooks/form_hooks"
 import { toast } from "sonner"
+import Link from "next/link"
 
 export default function PublicFormRenderer() {
   const params = useParams()
@@ -216,19 +217,19 @@ export default function PublicFormRenderer() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center">
-            <img src="/images/logo.svg" className="h-10 w-10" alt="Logo" />
-            <span className="ml-2 text-2xl font-bold text-blue-500">Nebib</span>
-          </div>
+          <Link href="/" className="flex items-center">
+            <img src="/images/logo.svg" className="h-10 w-10" alt="NEBIB Logo" />
+            <span className="ml-2 text-2xl font-bold text-blue-500">NEBIB</span>
+          </Link>
         </div>
       </div>
 
       {/* Form Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="flex-1 max-w-4xl mx-auto px-4 py-8 w-full">
         <Card className="w-full border rounded-lg p-8 bg-white shadow-sm">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">{form.topic}</h1>
@@ -271,14 +272,24 @@ export default function PublicFormRenderer() {
         </Card>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center mb-4">
-            <img src="/images/logo.svg" alt="Nebib Logo" className="h-8 w-8" />
-            <span className="ml-2 text-xl font-bold">Nebib</span>
+      {/* Footer - matches landing page */}
+      <footer className="border-t border-blue-200 bg-white/60 mt-auto">
+        <div className="container mx-auto px-4 py-12">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <Link href="/" className="flex items-center gap-2">
+              <img
+                src="/images/logo.svg"
+                alt="NEBIB Logo"
+                width={24}
+                height={24}
+                className="w-8 h-8"
+              />
+              <span className="font-semibold text-gray-800">NEBIB</span>
+            </Link>
+            <p className="text-sm text-gray-600">
+              © {new Date().getFullYear()} NEBIB. All rights reserved.
+            </p>
           </div>
-          <p className="text-gray-400">&copy; {new Date().getFullYear()} Nebib. All rights reserved.</p>
         </div>
       </footer>
     </div>
