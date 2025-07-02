@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { GraduationCap } from "lucide-react";
+import { FileText } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -92,15 +92,17 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="text-white min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8 ">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100">
+      <div className="max-w-md w-full space-y-8">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2 mb-2">
-            <GraduationCap className="h-8 w-8" />
-            <h1 className="text-2xl font-semibold">EduAdmin</h1>
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+              <FileText className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-2xl font-semibold text-gray-800">NEBIB</h1>
           </div>
-          <h2 className="text-2xl font-bold">
-            Sunday School Registration System
+          <h2 className="text-2xl font-bold text-gray-800">
+            Generate forms of your own
           </h2>
         </div>
 
@@ -115,13 +117,13 @@ const RegisterPage = () => {
                 name="organizationName"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-slate-300">
+                    <Label className="text-sm font-medium text-gray-700">
                       Organization Name
                     </Label>
                     <FormControl>
                       <Input
                         placeholder="Example Org"
-                        className="border-neutral-700 rounded-md h-10 px-4 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
                         {...field}
                       />
                     </FormControl>
@@ -135,13 +137,13 @@ const RegisterPage = () => {
                 name="adminName"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-slate-300">
+                    <Label className="text-sm font-medium text-gray-700">
                       Admin Name
                     </Label>
                     <FormControl>
                       <Input
                         placeholder="John Doe"
-                        className="border-neutral-700 rounded-md h-10 px-4 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
                         {...field}
                       />
                     </FormControl>
@@ -155,13 +157,13 @@ const RegisterPage = () => {
                 name="adminEmail"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-slate-300">
+                    <Label className="text-sm font-medium text-gray-700">
                       Admin Email
                     </Label>
                     <FormControl>
                       <Input
                         placeholder="example@gmail.com"
-                        className="border-neutral-700 rounded-md h-10 px-4 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
                         {...field}
                       />
                     </FormControl>
@@ -175,14 +177,14 @@ const RegisterPage = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-slate-300">
+                    <Label className="text-sm font-medium text-gray-700">
                       Password
                     </Label>
                     <FormControl>
                       <Input
                         type="password"
                         placeholder="••••••••"
-                        className="border-neutral-700 rounded-md h-10 px-4 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
                         {...field}
                       />
                     </FormControl>
@@ -196,14 +198,14 @@ const RegisterPage = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-slate-300">
+                    <Label className="text-sm font-medium text-gray-700">
                       Confirm Password
                     </Label>
                     <FormControl>
                       <Input
                         type="password"
                         placeholder="••••••••"
-                        className="border-neutral-700 rounded-md h-10 px-4 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                        className="border-gray-300 rounded-md h-10 px-4 focus:border-blue-500 transition-all duration-200 bg-white"
                         {...field}
                       />
                     </FormControl>
@@ -214,7 +216,7 @@ const RegisterPage = () => {
 
               <Button
                 type="submit"
-                className="w-full hover:bg-muted-foreground h-10 mt-2 font-medium bg-white text-neutral-900"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white h-10 mt-2 font-medium"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Registering..." : "Register Organization"}
@@ -222,9 +224,9 @@ const RegisterPage = () => {
             </form>
           </Form>
 
-          <p className="text-muted-foreground text-sm text-center mt-3">
+          <p className="text-gray-600 text-sm text-center mt-3">
             Already have an account?{" "}
-            <Link className="text-white" href="/sign-in">
+            <Link className="text-blue-600 hover:text-blue-700 hover:underline" href="/sign-in">
               Sign In
             </Link>
           </p>

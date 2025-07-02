@@ -21,5 +21,5 @@ export default async function authMiddleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/generate-form(.*)", "/form-management(.*)"],
+  matcher: ["/generate-form(.*)", "/form-management(.*)"],
 };
