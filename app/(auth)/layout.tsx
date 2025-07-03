@@ -7,7 +7,7 @@ export default function layout({
 }>) {
   return (
     <div className=" bg-black h-screen flex items-center justify-center overflow-hidden">
-      <div className=" w-5xl">{children}</div>
+      <div className="w-full ">{children}</div>
     </div>
   );
 }

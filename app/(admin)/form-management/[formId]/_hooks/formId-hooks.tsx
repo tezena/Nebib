@@ -74,10 +74,7 @@ const getPublicForm = async (formId: string) => {
   console.log("🔗 Hook: Fetching public form with ID:", formId)
 
   try {
-    const url = `/api/forms/${formId}/public`
-    console.log("🔗 Hook: Making public request to:", url)
-
-    const res = await betterFetch<RenderedForm>(url)
+    const res = await betterFetch<RenderedForm>(`/api/forms/${formId}`)
     console.log("📡 Hook: Public form response:", res)
 
     if (res.error) {

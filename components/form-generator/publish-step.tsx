@@ -51,9 +51,20 @@ export default function PublishStep({ setCurrentStep }: PublishStepProps) {
     const formData = JSON.parse(localStorage.getItem("form_data") || "null")
     try {
       setIsLoading(true)
+      
+      // Prepare the data in the format expected by the API
+      const requestBody = {
+        topic: formData.topic,
+        description: formData.description,
+        categories: formData.categories,
+        fields: formData.fields,
+      }
+      
+      console.log("Sending form data:", requestBody)
+      
       const response = await fetch("/api/forms", {
         method: "POST",
-        body: JSON.stringify({ formData, publishData }),
+        body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
         },
@@ -69,6 +80,7 @@ export default function PublishStep({ setCurrentStep }: PublishStepProps) {
       // Store the published form ID
       localStorage.setItem("published_form_id", data.id)
     } catch (error: any) {
+      console.error("Publish error:", error)
       toast.error("Error publishing form")
     } finally {
       setIsLoading(false)

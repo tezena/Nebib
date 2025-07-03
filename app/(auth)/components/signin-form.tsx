@@ -2,11 +2,9 @@
 
 import type React from "react";
 
-import Link from "next/link";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import LoginBackground from "@/components/ui/blue-pattern-background";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -45,7 +43,7 @@ export default function SigninForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      const { data, error } = await authClient.signIn.email(
+      await authClient.signIn.email(
         {
           email: values.email, // Correct the destructuring here
           password: values.password,

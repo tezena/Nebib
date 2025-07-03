@@ -6,18 +6,7 @@ import {
 } from "@/components/ui/chart";
 
 export default function Statistics() {
-  // Sample data for the chart
-  const sessionData = [
-    { session: "session 1", value: 180, color: "#a5a6f6" },
-    { session: "session 2", value: 260, color: "#5de0c4" },
-    { session: "session 3", value: 220, color: "#000000" },
-    { session: "session 4", value: 200, color: "#a5c8f6" },
-    { session: "session 5", value: 280, color: "#a5b8f6" },
-    { session: "session 6", value: 240, color: "#8de0a5" },
-  ];
 
-  // Find the maximum value for scaling the chart
-  const maxValue = Math.max(...sessionData.map((item) => item.value));
 
   const attendanceData = [
     { session: "session 1", students: 180 },

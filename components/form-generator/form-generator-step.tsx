@@ -25,7 +25,7 @@ const fieldSchema = z.object({
   required: z.boolean(),
 });
 
-const formSchema = z.object({
+export const formSchema = z.object({
   topic: z.string().min(1, "Topic is required"),
   description: z.string().min(1, "Description is required"),
   categories: z.array(z.string()).min(1, "At least one category is required"),
@@ -36,35 +36,41 @@ type Field = z.infer<typeof fieldSchema>;
 type FormData = z.infer<typeof formSchema>;
 
 export default function FormGeneratorStep() {
-  const [formData, setFormData] = useState<FormData>(() => {
-    if (typeof window !== "undefined") {
-      const storedData = JSON.parse(
-        localStorage.getItem("form_data") || "null"
-      );
-      return storedData
-        ? {
-            topic: storedData.topic || "",
-            description: storedData.description || "",
-            categories: Array.isArray(storedData.categories)
-              ? storedData.categories
-              : [],
-            fields: storedData.fields || [],
-          }
-        : {
-            topic: "",
-            description: "",
-            categories: [],
-            fields: [],
-          };
-    }
-    return { topic: "", description: "", categories: [], fields: [] };
+  const [formData, setFormData] = useState<FormData>({
+    topic: "",
+    description: "",
+    categories: [],
+    fields: [],
   });
 
   const [newCategory, setNewCategory] = useState("");
+  const [isHydrated, setIsHydrated] = useState(false);
 
+  // Load data from localStorage after hydration
   useEffect(() => {
-    localStorage.setItem("form_data", JSON.stringify(formData));
-  }, [formData]);
+    const storedData = localStorage.getItem("form_data");
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        setFormData({
+          topic: parsedData.topic || "",
+          description: parsedData.description || "",
+          categories: Array.isArray(parsedData.categories) ? parsedData.categories : [],
+          fields: parsedData.fields || [],
+        });
+      } catch (error) {
+        console.error("Error parsing stored form data:", error);
+      }
+    }
+    setIsHydrated(true);
+  }, []);
+
+  // Save to localStorage after hydration
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem("form_data", JSON.stringify(formData));
+    }
+  }, [formData, isHydrated]);
 
   const addField = () => {
     setFormData((prev) => ({
