@@ -1,16 +1,14 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-type RouteParams = {
-  formId: string
-}
-
-export const GET = async (request: Request, context: { params: RouteParams }) => {
+export const GET = async (request: Request, { params }: { params: Promise<{ formId: string }> }) => {
   try {
-    // Direct access to params without awaiting
-    const formId = context.params.formId
+    // In Next.js 15, params is a Promise and must be awaited
+    const resolvedParams = await params
+    const formId = resolvedParams.formId
 
     console.log("🔍 Public API - Looking for form with ID:", formId)
+    console.log("📋 Public API - Resolved params:", resolvedParams)
     console.log("📋 Public API - Request URL:", request.url)
 
     if (!formId) {

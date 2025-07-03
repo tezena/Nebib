@@ -14,18 +14,38 @@ const getForm = async (formId: string): Promise<FormWithFields[]> => {
 
   try {
     // Use the correct API route that matches our backend
-    const res = await betterFetch<FormWithFields[]>(`/api/forms/${formId}`)
-    console.log("📡 Hook: API response:", res)
+    const url = `/api/forms/${formId}`
+    console.log("🔗 Hook: Making request to:", url)
+
+    const res = await betterFetch<FormWithFields[]>(url)
+    console.log("📡 Hook: Full API response:", res)
+    console.log("📡 Hook: Response data:", res.data)
+    console.log("📡 Hook: Response error:", res.error)
 
     if (res.error) {
       console.error("❌ Hook: API returned error:", res.error)
-      throw new Error(res.error.message || "Failed to fetch form")
+      // Provide more detailed error information
+      const errorMessage = res.error.message || JSON.stringify(res.error) || "Failed to fetch form"
+      throw new Error(errorMessage)
     }
 
-    return res.data || []
+    if (!res.data) {
+      console.error("❌ Hook: No data returned from API")
+      throw new Error("No data returned from API")
+    }
+
+    console.log("✅ Hook: Successfully fetched form data")
+    return res.data
   } catch (error) {
     console.error("🚨 Hook: Fetch error:", error)
-    throw error
+
+    // If it's already an Error, re-throw it
+    if (error instanceof Error) {
+      throw error
+    }
+
+    // Otherwise, create a new Error with more context
+    throw new Error(`Failed to fetch form: ${JSON.stringify(error)}`)
   }
 }
 
@@ -54,18 +74,27 @@ const getPublicForm = async (formId: string) => {
   console.log("🔗 Hook: Fetching public form with ID:", formId)
 
   try {
-    const res = await betterFetch<RenderedForm>(`/api/forms/${formId}/public`)
+    const url = `/api/forms/${formId}/public`
+    console.log("🔗 Hook: Making public request to:", url)
+
+    const res = await betterFetch<RenderedForm>(url)
     console.log("📡 Hook: Public form response:", res)
 
     if (res.error) {
       console.error("❌ Hook: Public form API returned error:", res.error)
-      throw new Error(res.error.message || "Failed to fetch public form")
+      const errorMessage = res.error.message || JSON.stringify(res.error) || "Failed to fetch public form"
+      throw new Error(errorMessage)
     }
 
     return res.data
   } catch (error) {
     console.error("🚨 Hook: Public form fetch error:", error)
-    throw error
+
+    if (error instanceof Error) {
+      throw error
+    }
+
+    throw new Error(`Failed to fetch public form: ${JSON.stringify(error)}`)
   }
 }
 

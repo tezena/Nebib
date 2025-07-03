@@ -48,7 +48,7 @@ export default function FormDetailPage() {
     }
   }
 
-  
+  // Don't render anything until we have the formId to avoid hydration issues
   if (!formId) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -73,22 +73,41 @@ export default function FormDetailPage() {
         <Card className="w-full max-w-2xl border rounded-md p-8">
           <h1 className="text-xl text-red-500">Error Loading Form</h1>
           <p className="text-gray-600 mb-4">{error instanceof Error ? error.message : "Failed to load form details"}</p>
-          <div className="bg-gray-100 p-3 rounded text-sm">
-            <strong>Form ID:</strong> {formId}
+          <div className="bg-gray-100 p-3 rounded text-sm space-y-2">
+            <div>
+              <strong>Form ID:</strong> {formId}
+            </div>
+            <div>
+              <strong>Error Details:</strong> {JSON.stringify(error)}
+            </div>
           </div>
           <div className="mt-4 space-y-2">
-            <button
-              onClick={() => window.location.reload()} 
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
-            >
-              Try Again
-            </button>
-            <button
-              onClick={() => window.open(`/api/test-form/${formId}`, "_blank")}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-            >
-              Debug API
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Try Again
+              </button>
+              <button
+                onClick={() => window.open(`/api/test-simple/${formId}`, "_blank")}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Test Route
+              </button>
+              <button
+                onClick={() => window.open(`/api/forms/${formId}`, "_blank")}
+                className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+              >
+                Test API Direct
+              </button>
+              <button
+                onClick={() => window.open(`/api/debug-forms`, "_blank")}
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                Debug Database
+              </button>
+            </div>
           </div>
         </Card>
       </div>

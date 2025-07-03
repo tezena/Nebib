@@ -1,32 +1,74 @@
+import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-export const GET = async (request: Request, { params }: { params: Promise<{ formId: string }> }) => {
+export async function GET() {
   try {
-    console.log("🔍 Debug Route - Raw params object:", params)
+    console.log("🔍 Debugging all forms in database...")
 
-    const resolvedParams = await params
-    console.log("🔍 Debug Route - Resolved params:", resolvedParams)
+    // Test database connection first
+    try {
+      await db.$queryRaw`SELECT 1`
+      console.log("✅ Database connection successful")
+    } catch (dbError) {
+      console.error("❌ Database connection failed:", dbError)
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Database connection failed",
+          details: dbError instanceof Error ? dbError.message : "Unknown DB error",
+        },
+        { status: 500 },
+      )
+    }
 
-    const formId = resolvedParams.formId
-    console.log("🔍 Debug Route - Extracted formId:", formId)
+    // Get all forms with their basic info
+    const allForms = await db.form.findMany({
+      select: {
+        id: true,
+        topic: true,
+        description: true,
+        createdAt: true,
+        status: true,
+      },
+      take: 20,
+    })
 
-    const url = new URL(request.url)
-    console.log("🔍 Debug Route - Full URL:", url.href)
-    console.log("🔍 Debug Route - Pathname:", url.pathname)
+    console.log("📊 Total forms found:", allForms.length)
+    console.log("📋 Forms:", allForms)
+
+    // Also get the count
+    const totalCount = await db.form.count()
+
+    // Check if the specific form ID exists
+    const specificFormId = "cmc31wrhf0001qigsyh9t829w"
+    const specificForm = await db.form.findUnique({
+      where: { id: specificFormId },
+      select: { id: true, topic: true, createdAt: true },
+    })
+
+    console.log(`🔍 Checking for specific form ${specificFormId}:`, specificForm ? "Found" : "Not found")
 
     return NextResponse.json({
       success: true,
-      rawParams: params,
-      resolvedParams,
-      formId,
-      url: request.url,
-      pathname: url.pathname,
+      totalCount,
+      forms: allForms,
+      specificFormCheck: {
+        formId: specificFormId,
+        exists: !!specificForm,
+        form: specificForm,
+      },
+      message: `Found ${allForms.length} forms in database`,
+      timestamp: new Date().toISOString(),
     })
   } catch (error) {
-    console.error("🚨 Debug Route Error:", error)
-    return NextResponse.json({
-      error: error instanceof Error ? error.message : "Unknown error",
-      stack: error instanceof Error ? error.stack : undefined,
-    })
+    console.error("🚨 Debug forms error:", error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
+      },
+      { status: 500 },
+    )
   }
 }

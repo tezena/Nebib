@@ -1,16 +1,15 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-interface RouteParams {
-  params: { formId: string }
-}
-
-export const GET = async (request: Request, { params }: RouteParams) => {
+export const GET = async (request: Request, { params }: { params: Promise<{ formId: string }> }) => {
   try {
-    const formId = params.formId
+    // In Next.js 15, params is a Promise and must be awaited
+    const resolvedParams = await params
+    const formId = resolvedParams.formId
 
     console.log("🧪 Testing form ID:", formId)
-    console.log("📋 Full params:", params)
+    console.log("📋 Resolved params:", resolvedParams)
+    console.log("📋 Request URL:", request.url)
 
     if (!formId) {
       return NextResponse.json({ error: "Form ID is required" }, { status: 400 })
