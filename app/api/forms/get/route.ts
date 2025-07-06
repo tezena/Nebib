@@ -14,7 +14,10 @@ export const GET = async function () {
 
     const forms = await db.form.findMany({
       where: { userId: session?.session.userId },
-      include: { fields: true },
+      include: { 
+        fields: true,
+        datas: true, // Include submissions
+      },
     });
     console.log(forms);
 

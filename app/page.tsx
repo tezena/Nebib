@@ -50,9 +50,11 @@ export default function HomePage() {
               <ArrowRight className="w-5 h-5" />
             </Button>
           </Link>
-          <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-blue-300 text-blue-700 hover:bg-blue-50">
-            View Examples
-          </Button>
+          <Link href="/examples">
+            <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-blue-300 text-blue-700 hover:bg-blue-50">
+              View Examples
+            </Button>
+          </Link>
         </div>
       </section>
 

@@ -10,7 +10,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Loader2 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { Loader2, Sparkles, Send, CheckCircle, AlertCircle } from "lucide-react"
 import { useAddData } from "@/app/(admin)/form-management/_hooks/form_hooks"
 import { toast } from "sonner"
 import Link from "next/link"
@@ -71,113 +73,101 @@ export default function PublicFormRenderer() {
     switch (type) {
       case "text":
         return (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Input
-              id={id}
-              value={formValues[id] || ""}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              required={required}
-            />
-          </div>
+          <Input
+            id={id}
+            type="text"
+            value={formValues[id] || ""}
+            onChange={(e) => handleInputChange(id, e.target.value)}
+            required={required}
+            placeholder={`Enter ${label.toLowerCase()}`}
+            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+          />
         )
 
       case "number":
         return (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Input
-              id={id}
-              type="number"
-              value={formValues[id] || ""}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              required={required}
-            />
-          </div>
+          <Input
+            id={id}
+            type="number"
+            value={formValues[id] || ""}
+            onChange={(e) => handleInputChange(id, e.target.value)}
+            required={required}
+            placeholder="Enter a number"
+            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+          />
         )
 
       case "email":
         return (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Input
-              id={id}
-              type="email"
-              value={formValues[id] || ""}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              required={required}
-            />
-          </div>
+          <Input
+            id={id}
+            type="email"
+            value={formValues[id] || ""}
+            onChange={(e) => handleInputChange(id, e.target.value)}
+            required={required}
+            placeholder="Enter your email address"
+            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+          />
         )
 
       case "date":
         return (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Input
-              id={id}
-              type="date"
-              value={formValues[id] || ""}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              required={required}
-            />
-          </div>
+          <Input
+            id={id}
+            type="date"
+            value={formValues[id] || ""}
+            onChange={(e) => handleInputChange(id, e.target.value)}
+            required={required}
+            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+          />
         )
 
       case "checkbox":
         return (
-          <div className="space-y-2" key={id}>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id={id}
-                checked={formValues[id] || false}
-                onCheckedChange={(checked) => handleInputChange(id, checked)}
-                required={required}
-              />
-              <Label htmlFor={id}>
-                {label} {required && <span className="text-red-500">*</span>}
-              </Label>
-            </div>
+          <div className="flex items-center space-x-3">
+            <Checkbox
+              id={id}
+              checked={formValues[id] || false}
+              onCheckedChange={(checked) => handleInputChange(id, checked)}
+              required={required}
+              className="border-gray-300 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
+            />
+            <Label htmlFor={id} className="text-sm font-medium leading-none cursor-pointer">
+              {label}
+            </Label>
           </div>
         )
 
       case "textarea":
         return (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Textarea
-              id={id}
-              value={formValues[id] || ""}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              required={required}
-            />
-          </div>
+          <Textarea
+            id={id}
+            value={formValues[id] || ""}
+            onChange={(e) => handleInputChange(id, e.target.value)}
+            required={required}
+            placeholder={`Enter ${label.toLowerCase()}`}
+            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 min-h-[100px]"
+          />
+        )
+
+      case "select":
+        return (
+          <Select value={formValues[id] || ""} onValueChange={(value) => handleInputChange(id, value)}>
+            <SelectTrigger className="border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              {field.options?.map((option: string, idx: number) => (
+                <SelectItem key={idx} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         )
 
       default:
-        return (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Input
-              id={id}
-              value={formValues[id] || ""}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              required={required}
-            />
-          </div>
-        )
+        return <Input placeholder="Field not supported" disabled />
     }
   }
 
@@ -201,97 +191,119 @@ export default function PublicFormRenderer() {
     )
   }
 
-  // Group fields by category
-  const groupedFields: Record<string, any[]> = {}
-  const uncategorizedFields: any[] = []
 
-  form.fields.forEach((field: any) => {
-    if (field.category) {
-      if (!groupedFields[field.category]) {
-        groupedFields[field.category] = []
-      }
-      groupedFields[field.category].push(field)
-    } else {
-      uncategorizedFields.push(field)
-    }
-  })
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link href="/" className="flex items-center">
-            <img src="/images/logo.svg" className="h-10 w-10" alt="NEBIB Logo" />
-            <span className="ml-2 text-2xl font-bold text-blue-500">NEBIB</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Form Content */}
-      <div className="flex-1 max-w-4xl mx-auto px-4 py-8 w-full">
-        <Card className="w-full border rounded-lg p-8 bg-white shadow-sm">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{form.topic}</h1>
-            <p className="text-gray-600 text-lg">{form.description}</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Nebib Header */}
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-t-xl">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold">Nebib Forms</h1>
+                <p className="text-sm text-blue-100">Professional form builder</p>
+              </div>
+            </div>
+            <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+              Powered by Nebib
+            </Badge>
           </div>
+          
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">{form.topic}</h2>
+            <p className="text-blue-100">{form.description}</p>
+          </div>
+        </div>
 
+        {/* Form Content */}
+        <div className="bg-white p-6 rounded-b-xl border border-gray-200">
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Render categorized fields */}
-            {Object.entries(groupedFields).map(([category, fields]) => (
-              <div key={category} className="space-y-6">
-                <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">{category}</h2>
-                <div className="grid gap-6">{fields.map((field) => renderField(field))}</div>
-              </div>
-            ))}
+            {/* Group fields by category */}
+            {(() => {
+              // Group fields by category
+              const groupedFields = form.fields.reduce((acc: any, field: any) => {
+                const category = field.category || 'General';
+                if (!acc[category]) {
+                  acc[category] = [];
+                }
+                acc[category].push(field);
+                return acc;
+              }, {} as Record<string, any[]>);
 
-            {/* Render uncategorized fields */}
-            {uncategorizedFields.length > 0 && (
-              <div className="space-y-6">
-                <div className="grid gap-6">{uncategorizedFields.map((field) => renderField(field))}</div>
-              </div>
-            )}
+              // Get unique categories in order
+              const categories = Object.keys(groupedFields);
+              
+              return categories.map((category) => (
+                <div key={category} className="space-y-4">
+                  {/* Category Header */}
+                  <div className="border-b border-gray-200 pb-2">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      {category}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {groupedFields[category].length} field{groupedFields[category].length !== 1 ? 's' : ''}
+                    </p>
+                  </div>
 
-            <div className="pt-6 border-t">
+                  {/* Fields in 2-column grid for this category */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {groupedFields[category].map((field: any) => (
+                      <div key={field.id} className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor={field.id} className="text-sm font-medium text-gray-700 flex items-center">
+                            {field.label}
+                            {field.required && <span className="text-red-500 ml-1">*</span>}
+                          </Label>
+                        </div>
+                        
+                        {renderField(field)}
+                        
+                        {field.required && (
+                          <p className="text-xs text-gray-500 flex items-center gap-1">
+                            <AlertCircle className="w-3 h-3" />
+                            This field is required
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ));
+            })()}
+
+            {/* Submit Button */}
+            <div className="pt-6 border-t border-gray-200">
               <Button
                 type="submit"
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 text-lg font-medium shadow-lg"
                 disabled={isSubmitting}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 text-lg"
               >
                 {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Submitting...
-                  </>
+                  </div>
                 ) : (
-                  "Submit Form"
+                  <div className="flex items-center gap-2">
+                    <Send className="w-5 h-5" />
+                    Submit Form
+                  </div>
                 )}
               </Button>
             </div>
           </form>
-        </Card>
-      </div>
-
-      {/* Footer - matches landing page */}
-      <footer className="border-t border-blue-200 bg-white/60 mt-auto">
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <img
-                src="/images/logo.svg"
-                alt="NEBIB Logo"
-                width={24}
-                height={24}
-                className="w-8 h-8"
-              />
-              <span className="font-semibold text-gray-800">NEBIB</span>
-            </Link>
-            <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} NEBIB. All rights reserved.
-            </p>
-          </div>
         </div>
-      </footer>
+
+        {/* Footer */}
+        <div className="text-center py-4 text-xs text-gray-500">
+          <p>This form was created with Nebib Forms</p>
+        </div>
+      </div>
     </div>
   )
 }
