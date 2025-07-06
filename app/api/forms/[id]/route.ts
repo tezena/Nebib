@@ -11,7 +11,7 @@ export const GET = async (request: Request, context: { params: Promise<RoutePara
     const { id: formId } = await context.params
 
     console.log("🔍 Public API - Looking for form with ID:", formId)
-    console.log("📋 Public API - Resolved params:", resolvedParams)
+    
     console.log("📋 Public API - Request URL:", request.url)
 
     if (!formId) {
