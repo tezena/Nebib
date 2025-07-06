@@ -1,40 +1,42 @@
-import { Search, Bell } from "lucide-react";
-import Image from "next/image";
+"use client";
+
+import { Search, Bell, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "./sidebar";
+import { Button } from "./button";
+import { Badge } from "./badge";
 
 export default function TopPart() {
   return (
-    <div className="w-full  flex items-center justify-between px-4 py-2 border-b">
-      <SidebarTrigger />
-      <div className="flex gap-2">
-        <div className="relative  w-full">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+    <div className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+      {/* Left Section */}
+      <div className="flex items-center gap-4">
+        <SidebarTrigger className="p-2 hover:bg-gray-100 rounded-lg transition-colors" />
+        {/* Search Bar */}
+        <div className="relative hidden md:block">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="Search"
-            className="pl-8 h-7 bg-[#E1E8ED] focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none"
+            placeholder="Search forms, users, or settings..."
+            className="pl-10 pr-4 h-10 w-80 bg-gray-50 border-gray-200 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
           />
         </div>
       </div>
-
+      {/* Right Section */}
       <div className="flex items-center gap-4">
+        {/* Notifications */}
         <div className="relative">
-          <Bell className="h-5 w-5 text-muted-foreground" />
-          <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-            2
-          </span>
+          <Button variant="ghost" size="sm" className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <Bell className="h-5 w-5 text-gray-600" />
+            <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center p-0">
+              3
+            </Badge>
+          </Button>
         </div>
-
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-full bg-gray-200 overflow-hidden">
-            <Image src="/man.jpg" alt="User avatar" width={32} height={32} />
-          </div>
-          <div className="hidden sm:block">
-            <p className="text-sm font-medium">Fita Wegene</p>
-            <p className="text-xs text-muted-foreground">Admin</p>
-          </div>
-        </div>
+        {/* Help */}
+        <Button variant="ghost" size="sm" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <HelpCircle className="h-5 w-5 text-gray-600" />
+        </Button>
       </div>
     </div>
   );

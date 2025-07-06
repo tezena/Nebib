@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "../ui/textarea";
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -15,14 +16,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus } from "lucide-react";
+import { 
+  Plus, 
+  Trash2, 
+  Sparkles,
+  FileText,
+  Mail,
+  Calendar,
+  Hash,
+  CheckSquare,
+  Type,
+  Settings,
+  Copy
+} from "lucide-react";
 
 // Zod Schema for Form Fields
 const fieldSchema = z.object({
+  id: z.string(),
   label: z.string().min(1, "Label is required"),
-  type: z.enum(["text", "number", "email", "date", "checkbox"]),
+  type: z.enum(["text", "number", "email", "date", "checkbox", "textarea", "select"]),
   category: z.string(),
   required: z.boolean(),
+  placeholder: z.string().optional(),
+  options: z.array(z.string()).optional(), // For select fields
 });
 
 export const formSchema = z.object({
@@ -35,11 +51,26 @@ export const formSchema = z.object({
 type Field = z.infer<typeof fieldSchema>;
 type FormData = z.infer<typeof formSchema>;
 
-export default function FormGeneratorStep() {
+interface FormGeneratorStepProps {
+  onComplete: () => void;
+  onIncomplete: () => void;
+}
+
+// Field templates for quick addition
+const fieldTemplates = [
+  { label: "Full Name", type: "text", icon: Type, category: "Personal" },
+  { label: "Email Address", type: "email", icon: Mail, category: "Contact" },
+  { label: "Phone Number", type: "text", icon: Hash, category: "Contact" },
+  { label: "Date of Birth", type: "date", icon: Calendar, category: "Personal" },
+  { label: "Terms & Conditions", type: "checkbox", icon: CheckSquare, category: "Legal" },
+  { label: "Additional Comments", type: "textarea", icon: FileText, category: "General" },
+];
+
+export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGeneratorStepProps) {
   const [formData, setFormData] = useState<FormData>({
     topic: "",
     description: "",
-    categories: [],
+    categories: ["Personal", "Contact", "General", "Legal"],
     fields: [],
   });
 
@@ -52,11 +83,21 @@ export default function FormGeneratorStep() {
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
+        // Ensure all fields have unique IDs
+        const fieldsWithIds = (parsedData.fields || []).map((field: any, index: number) => {
+          const timestamp = Date.now();
+          const randomId = Math.random().toString(36).substr(2, 9);
+          return {
+            ...field,
+            id: field.id || `field_${timestamp}_${randomId}_${index}`,
+          };
+        });
+        
         setFormData({
           topic: parsedData.topic || "",
           description: parsedData.description || "",
-          categories: Array.isArray(parsedData.categories) ? parsedData.categories : [],
-          fields: parsedData.fields || [],
+          categories: Array.isArray(parsedData.categories) ? parsedData.categories : ["Personal", "Contact", "General", "Legal"],
+          fields: fieldsWithIds,
         });
       } catch (error) {
         console.error("Error parsing stored form data:", error);
@@ -72,13 +113,62 @@ export default function FormGeneratorStep() {
     }
   }, [formData, isHydrated]);
 
-  const addField = () => {
+  // Check completion status
+  useEffect(() => {
+    const isComplete = formData.topic.trim() !== "" && 
+                      formData.description.trim() !== "" && 
+                      formData.categories.length > 0 &&
+                      formData.fields.length > 0 &&
+                      formData.fields.every(field => field.label.trim() !== "");
+    
+    if (isComplete) {
+      onComplete();
+    } else {
+      onIncomplete();
+    }
+  }, [formData, onComplete, onIncomplete]);
+
+  const addField = (template?: typeof fieldTemplates[0]) => {
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substr(2, 9);
+    const uniqueId = `field_${timestamp}_${randomId}`;
+    
+    const newField: Field = template ? {
+      id: uniqueId,
+      label: template.label,
+      type: template.type as Field['type'],
+      category: template.category,
+      required: false,
+      placeholder: `Enter ${template.label.toLowerCase()}`,
+      options: template.type === 'select' ? ['Option 1', 'Option 2', 'Option 3'] : undefined,
+    } : {
+      id: uniqueId,
+      label: "",
+      type: "text",
+      category: "",
+      required: false,
+      placeholder: "Enter field label",
+    };
+
     setFormData((prev) => ({
       ...prev,
-      fields: [
-        ...prev.fields,
-        { label: "", type: "text", category: "", required: false },
-      ],
+      fields: [...prev.fields, newField],
+    }));
+  };
+
+  const removeField = (fieldId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      fields: prev.fields.filter(field => field.id !== fieldId),
+    }));
+  };
+
+  const updateField = (fieldId: string, updates: Partial<Field>) => {
+    setFormData((prev) => ({
+      ...prev,
+      fields: prev.fields.map(field => 
+        field.id === fieldId ? { ...field, ...updates } : field
+      ),
     }));
   };
 
@@ -96,7 +186,6 @@ export default function FormGeneratorStep() {
     setFormData((prev) => ({
       ...prev,
       categories: prev.categories.filter((cat) => cat !== categoryToRemove),
-      // Also remove this category from any fields that were using it
       fields: prev.fields.map((field) =>
         field.category === categoryToRemove ? { ...field, category: "" } : field
       ),
@@ -110,148 +199,252 @@ export default function FormGeneratorStep() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const getFieldIcon = (type: Field['type']) => {
+    switch (type) {
+      case 'text': return Type;
+      case 'email': return Mail;
+      case 'date': return Calendar;
+      case 'number': return Hash;
+      case 'checkbox': return CheckSquare;
+      case 'textarea': return FileText;
+      case 'select': return Settings;
+      default: return Type;
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <h2 className="text-xl font-bold">Form Generator</h2>
-
-      <div className="space-y-2">
-        <Label htmlFor="topic">Topic</Label>
-        <Textarea
-          id="topic"
-          name="topic"
-          value={formData.topic}
-          onChange={handleChange}
-          className="max-w-[400px]"
-        />
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center">
+        <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <Sparkles className="w-8 h-8 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Your Form</h2>
+        <p className="text-gray-600">Design a professional form with our intuitive builder</p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Input
-          id="description"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          className="max-w-[400px]"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label>Categories</Label>
-        <div className="flex items-center gap-2">
-          {/* Display categories as tags */}
-          <div className="flex flex-wrap gap-2">
-            {formData.categories.map((category) => (
-              <div
-                key={category}
-                className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm"
-              >
-                {category}
-                <button
-                  type="button"
-                  onClick={() => removeCategory(category)}
-                  className="ml-2 text-gray-500 hover:text-gray-700"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
+      {/* Basic Information */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="w-5 h-5" />
+            Basic Information
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="topic" className="text-sm font-medium">Form Title *</Label>
+            <Textarea
+              id="topic"
+              name="topic"
+              value={formData.topic}
+              onChange={handleChange}
+              placeholder="Enter a descriptive title for your form..."
+              className="min-h-[80px] resize-none"
+            />
           </div>
 
-          {/* Category input with plus button */}
-          <div className="flex items-center gap-2 flex-1">
+          <div className="space-y-2">
+            <Label htmlFor="description" className="text-sm font-medium">Description *</Label>
             <Input
-              placeholder="Enter new category"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addCategory()}
-              className="flex-1 max-w-[400px]"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Briefly describe what this form is for..."
             />
-            <Button
-              type="button"
-              size="icon"
-              onClick={addCategory}
-              disabled={!newCategory.trim()}
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
           </div>
-        </div>
-      </div>
 
-      <div>
-        <Button onClick={addField} className="bg-[#4A90E2] hover:bg-[#4A90E2]">
-          Add Field
-        </Button>
-      </div>
-
-      {formData.fields.map((field, index) => (
-        <div key={index} className="space-y-2">
-          <Label>Field {index + 1}</Label>
-          <Input
-            placeholder="Label"
-            value={field.label}
-            onChange={(e) => {
-              const newFields = [...formData.fields];
-              newFields[index].label = e.target.value;
-              setFormData((prev) => ({ ...prev, fields: newFields }));
-            }}
-            className="max-w-[400px]"
-          />
-          <Select
-            value={field.type}
-            onValueChange={(value) => {
-              const newFields = [...formData.fields];
-              newFields[index].type = value as Field["type"];
-              setFormData((prev) => ({ ...prev, fields: newFields }));
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select field type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="text">Text</SelectItem>
-              <SelectItem value="number">Number</SelectItem>
-              <SelectItem value="email">Email</SelectItem>
-              <SelectItem value="date">Date</SelectItem>
-              <SelectItem value="checkbox">Checkbox</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={field.category}
-            onValueChange={(value) => {
-              const newFields = [...formData.fields];
-              newFields[index].category = value;
-              setFormData((prev) => ({ ...prev, fields: newFields }));
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              {formData.categories.map((category, idx) => (
-                <SelectItem key={idx} value={category}>
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Categories</Label>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {formData.categories.map((category) => (
+                <Badge
+                  key={category}
+                  variant="secondary"
+                  className="px-3 py-1 text-sm cursor-pointer hover:bg-red-100 hover:text-red-700 transition-colors"
+                  onClick={() => removeCategory(category)}
+                >
                   {category}
-                </SelectItem>
+                  <span className="ml-1 text-red-500">×</span>
+                </Badge>
               ))}
-            </SelectContent>
-          </Select>
-
-          <div className="flex items-center gap-2">
-            <Switch
-              checked={field.required}
-              onCheckedChange={(checked) => {
-                const newFields = [...formData.fields];
-                newFields[index].required = checked;
-                setFormData((prev) => ({ ...prev, fields: newFields }));
-              }}
-              className="data-[state=checked]:bg-[#4A90E2]"
-            />
-            <Label>Required</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Input
+                placeholder="Add new category..."
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && addCategory()}
+                className="flex-1"
+              />
+              <Button
+                type="button"
+                size="sm"
+                onClick={addCategory}
+                disabled={!newCategory.trim()}
+                className="px-4"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Field Templates */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Copy className="w-5 h-5" />
+            Quick Add Fields
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {fieldTemplates.map((template, index) => {
+              const Icon = template.icon;
+              return (
+                <Button
+                  key={`template_${template.label}_${index}`}
+                  variant="outline"
+                  onClick={() => addField(template)}
+                  className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition-all"
+                >
+                  <Icon className="w-5 h-5 text-blue-600" />
+                  <span className="text-sm font-medium">{template.label}</span>
+                  <span className="text-xs text-gray-500">{template.type}</span>
+                </Button>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Custom Fields */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Settings className="w-5 h-5" />
+            Form Fields ({formData.fields.length})
+          </CardTitle>
+          <Button
+            onClick={() => addField()}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Custom Field
+          </Button>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {formData.fields.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+              <p>No fields added yet. Start by adding some fields above.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {formData.fields.map((field, index) => {
+                const Icon = getFieldIcon(field.type);
+                return (
+                  <div key={field.id || `field_${index}`} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <Input
+                        placeholder="Field label..."
+                        value={field.label}
+                        onChange={(e) => updateField(field.id, { label: e.target.value })}
+                        className="font-medium"
+                      />
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeField(field.id)}
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <Select
+                      value={field.type}
+                      onValueChange={(value) => updateField(field.id, { type: value as Field['type'] })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Field type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="text">Text</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>
+                        <SelectItem value="number">Number</SelectItem>
+                        <SelectItem value="date">Date</SelectItem>
+                        <SelectItem value="checkbox">Checkbox</SelectItem>
+                        <SelectItem value="textarea">Text Area</SelectItem>
+                        <SelectItem value="select">Dropdown</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Select
+                      value={field.category}
+                      onValueChange={(value) => updateField(field.id, { category: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {formData.categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={field.required}
+                        onCheckedChange={(checked) => updateField(field.id, { required: checked })}
+                        className="data-[state=checked]:bg-blue-500"
+                      />
+                      <Label className="text-sm">Required</Label>
+                    </div>
+                  </div>
+
+                  {field.type === 'select' && (
+                    <div className="mt-3">
+                      <Label className="text-sm text-gray-600">Options (one per line)</Label>
+                      <Textarea
+                        placeholder="Option 1&#10;Option 2&#10;Option 3"
+                        value={field.options?.join('\n') || ''}
+                        onChange={(e) => updateField(field.id, { 
+                          options: e.target.value.split('\n').filter(opt => opt.trim()) 
+                        })}
+                        className="mt-1 min-h-[60px]"
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Completion Status */}
+      <div className="text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100">
+          <div className={`w-2 h-2 rounded-full ${formData.fields.length > 0 ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+          <span className="text-sm text-gray-600">
+            {formData.fields.length} fields added • {formData.fields.filter(f => f.required).length} required
+          </span>
         </div>
-      ))}
+      </div>
     </div>
   );
 }

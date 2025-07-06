@@ -108,8 +108,8 @@ const RegisterPage = () => {
           <h2 className="text-2xl font-bold text-gray-800">
             Generate forms of your own
           </h2>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 hover:underline text-sm mt-2">
-            ← Back to Home
+          <Link href="/dashboard" className="text-blue-600 hover:text-blue-700 hover:underline text-sm mt-2">
+            ← Back to Dashboard
           </Link>
         </div>
 

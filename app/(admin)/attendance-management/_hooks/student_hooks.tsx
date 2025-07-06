@@ -4,7 +4,7 @@ import { betterFetch } from "@better-fetch/fetch";
 
 const getStudents = async (formId: string) => {
   const res = await betterFetch<Form & { datas: Data[]; fields: Field[] }>(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/students-info/${formId}`
+    `/api/students-info/${formId}`
   );
 
   console.log("response: ", res);

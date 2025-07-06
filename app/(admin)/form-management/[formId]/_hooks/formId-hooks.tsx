@@ -14,13 +14,8 @@ const getForm = async (formId: string): Promise<FormWithFields[]> => {
 
   try {
     // Use the correct API route that matches our backend
-    const url = `/api/forms/${formId}`
-    console.log("🔗 Hook: Making request to:", url)
-
-    const res = await betterFetch<FormWithFields[]>(url)
-    console.log("📡 Hook: Full API response:", res)
-    console.log("📡 Hook: Response data:", res.data)
-    console.log("📡 Hook: Response error:", res.error)
+    const res = await betterFetch<FormWithFields>(`/api/forms/${formId}`)
+    console.log("📡 Hook: API response:", res)
 
     if (res.error) {
       console.error("❌ Hook: API returned error:", res.error)
@@ -29,13 +24,7 @@ const getForm = async (formId: string): Promise<FormWithFields[]> => {
       throw new Error(errorMessage)
     }
 
-    if (!res.data) {
-      console.error("❌ Hook: No data returned from API")
-      throw new Error("No data returned from API")
-    }
-
-    console.log("✅ Hook: Successfully fetched form data")
-    return res.data
+    return res.data ? [res.data] : []
   } catch (error) {
     console.error("🚨 Hook: Fetch error:", error)
 
@@ -74,7 +63,7 @@ const getPublicForm = async (formId: string) => {
   console.log("🔗 Hook: Fetching public form with ID:", formId)
 
   try {
-    const res = await betterFetch<RenderedForm>(`/api/forms/${formId}`)
+    const res = await betterFetch<RenderedForm>(`/api/forms/${formId}/public`)
     console.log("📡 Hook: Public form response:", res)
 
     if (res.error) {
