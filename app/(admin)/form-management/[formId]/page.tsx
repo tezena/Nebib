@@ -47,9 +47,7 @@ export default function FormDetailPage() {
     }
   }
 
-<<<<<<< HEAD
-  // Don't render anything until we have the formId to avoid hydration issues
-=======
+
   const downloadSubmissions = () => {
     if (formData.datas && formData.datas.length > 0) {
       // Create CSV content
@@ -87,7 +85,7 @@ export default function FormDetailPage() {
   }
 
   
->>>>>>> refactored-nebib
+
   if (!formId) {
     return (
       <div className="flex justify-center items-center min-h-screen">
