@@ -113,6 +113,7 @@ export default function LoginPage() {
                       <Input
                         id="email"
                         type="email"
+                        autoComplete="email"
                         className="w-full bg-white border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         {...field}
                       />
@@ -145,6 +146,7 @@ export default function LoginPage() {
                       <Input
                         id="password"
                         type="password"
+                        autoComplete="current-password"
                         className="w-full bg-white border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         {...field}
                       />
