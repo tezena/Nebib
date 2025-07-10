@@ -20,4 +20,9 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  trustedOrigins: [
+    "https://localhost:8080/api/auth",
+    "https://localhost:8080",
+    "https://nebib-forms-production.up.railway.app",
+  ],
 });
