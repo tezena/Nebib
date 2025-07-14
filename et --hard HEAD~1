@@ -1,0 +1,230 @@
+[33mcommit df7cf44628a79a9039c9136f93ab3e793167b360[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Jembere <B.Jembere@cgiar.org>
+Date:   Mon Jul 14 15:11:22 2025 +0300
+
+    adding a code on route.ts
+
+[33mcommit d0aec33a2cdbf66d57942d868b78ec7a72108810[m
+Author: Jembere <B.Jembere@cgiar.org>
+Date:   Mon Jul 14 14:46:19 2025 +0300
+
+    deleting localhost:8000 from auth.ts
+
+[33mcommit 331943f3edc3a07833aad967150116e4d5d79689[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Thu Jul 10 10:09:58 2025 +0300
+
+    adding autocomplete for the browser
+
+[33mcommit bf2a7e04a41aae052c686874ff9b610188b2f712[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Thu Jul 10 09:50:48 2025 +0300
+
+    editing trustorigin in auth.ts
+
+[33mcommit adb3ec00efe5039416be493cbcc0f2543afd39fd[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Thu Jul 10 09:18:48 2025 +0300
+
+    editing middleware
+
+[33mcommit adc5e695b927bc9258389774d844303d6464c6e3[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Wed Jul 9 16:53:21 2025 +0300
+
+    editting the url on auth-client.ys
+
+[33mcommit 48066833a57eb4180ce3512dba540ab6c21f4754[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Wed Jul 9 16:40:16 2025 +0300
+
+    editting the url on auth-client.ys
+
+[33mcommit 1e6e37b8013b688ecb58434fe1cf4de35276afc9[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Wed Jul 9 16:02:09 2025 +0300
+
+    Initial commit
+
+[33mcommit 4abf344aaf600b0f18fab71012e4b3c9087267f2[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Wed Jul 9 15:45:55 2025 +0300
+
+    without merging
+
+[33mcommit a3aa9b1ef317cf71b54b219782f9dca12c1fbe05[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Wed Jul 9 15:33:11 2025 +0300
+
+    changing the databse
+
+[33mcommit 1827f659ad189f8deba3ffc3c1cd9dafc2d475d9[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Mon Jul 7 10:59:30 2025 +0300
+
+    final commit
+
+[33mcommit 341922165614bd1a0a620dd277f4a6611220543a[m
+Author: fi-taa <fi27ta@gmail.com>
+Date:   Sun Jul 6 23:52:33 2025 +0300
+
+    -
+
+[33mcommit 456f1beae735080d0e1db74d69af0f288e1200bd[m
+Merge: 7d51d81 995c63a
+Author: fi-taa <fi27ta@gmail.com>
+Date:   Sun Jul 6 23:47:10 2025 +0300
+
+    fixed conflict
+
+[33mcommit 995c63ad14fbacbfb23790202e01a66ccdd7ba83[m
+Author: fi-taa <fi27ta@gmail.com>
+Date:   Sun Jul 6 23:42:05 2025 +0300
+
+    refactored nebib
+
+[33mcommit 7d51d81f4683c5e7e9934ebaddbb23750359f1c9[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Sun Jul 6 20:19:14 2025 +0300
+
+    m
+
+[33mcommit b7975f50c22ed1ec504122b7c0215c00e457026b[m
+Author: Betelehem Jembere <betelehemjembere@gmail.com>
+Date:   Sun Jul 6 20:03:00 2025 +0300
+
+    gh
+
+[33mcommit e010d5ef3d4e23ec51664f8f391e0dfdb78d92e2[m
+Merge: 5ae7968 ff06e8d
+Author: Jembere <B.Jembere@cgiar.org>
+Date:   Thu Jul 3 14:16:36 2025 +0300
+
+    adding some updates
+
+[33mcommit 5ae796895a06c28005ac6aeb3aeadc1b883a7c9b[m
+Author: Jembere <B.Jembere@cgiar.org>
+Date:   Thu Jul 3 14:11:54 2025 +0300
+
+    adding some updates
+
+[33mcommit ff06e8d096003605c44b9120ff70928612fba22f[m
+Author: fi-taa <fi27ta@gmail.com>
+Date:   Wed Jul 2 23:17:54 2025 +0300
+
+    fixed lint and build error
+
+[33mcommit 2ab832559e1ed059aeb690f6e52969e06ee1b2ab[m
+Author: fi-taa <fi27ta@gmail.com>
+Date:   Wed Jul 2 22:02:01 2025 +0300
+
+    -
+
+[33mcommit 7f4fbb5caf2f64af52211f0ba98d2acf81413b20[m
+Author: Jembere <B.Jembere@cgiar.org>
+Date:   Tue Jul 1 16:27:18 2025 +0300
+
+    adding debug-forms to check if the api is working
+
+[33mcommit 3fe03d4587593edfa12a59cf2e2e8bd054639667[m
+Author: Jembere <B.Jembere@cgiar.org>
+Date:   Mon Jun 30 11:52:57 2025 +0300
+
+    fixing the form management
+
+[33mcommit 2ae689cb2e6355e3331acf93fe2fd942f296ba30[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sun May 18 13:11:16 2025 -0700
+
+    most ui issues corrected
+
+[33mcommit 864b938c418eb5d638d4d17957d0e4cf43bec81c[m
+Merge: fec4086 135679c
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sat May 3 12:46:03 2025 -0700
+
+    Resolve merge conflict and finish checklist feature
+
+[33mcommit fec408659ed56fe64b01f310e40e7d916bf559e1[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sat May 3 10:57:47 2025 -0700
+
+    student checklist started
+
+[33mcommit 8dcf0a06aed257078cc77a8cb25e33325e4f21c0[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sat May 3 10:56:30 2025 -0700
+
+    student checklist started
+
+[33mcommit 135679ce75c9eb828afc9dbf0152319a6a763390[m
+Author: Yeabsirashimelis <165472503+Yeabsirashimelis@users.noreply.github.com>
+Date:   Sat May 3 06:46:00 2025 -0700
+
+    Update formId-hooks.tsx
+
+[33mcommit 607297eb566191558521cd80b9592467b9e6f160[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sat May 3 06:38:22 2025 -0700
+
+    deploy problems corrected
+
+[33mcommit b7d3d52dd86658773374f90e27a52cd27059659c[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sat May 3 06:13:02 2025 -0700
+
+    url for realtime website
+
+[33mcommit 0c1f8b77325f18858d28b94e40f0abd3cf33d2b8[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Sat May 3 05:53:15 2025 -0700
+
+    attendace management started
+
+[33mcommit 8e5a6d5ae197b3a5b559c608c91f10510b28fb7b[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Tue Apr 29 10:38:54 2025 -0700
+
+    submission of form
+
+[33mcommit 6377720db4eea702cb5579e28069bbde00da2cb0[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Wed Apr 23 11:27:15 2025 -0700
+
+    deploy errors corrected
+
+[33mcommit 0386f6972110e48b7795ff5468789d87942dc501[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Wed Apr 23 11:04:50 2025 -0700
+
+    deploy errors corrected
+
+[33mcommit b26ea467540b944acaa8f84563018110b02f8665[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Wed Apr 23 10:59:25 2025 -0700
+
+    deploy error2 corrected
+
+[33mcommit e9b612e035d8ae4588d1d8e0903f6046094bd80d[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Wed Apr 23 10:31:55 2025 -0700
+
+    correct build errors
+
+[33mcommit 007dc95233452f8f939d5cd4d7489bb4ea91b9e9[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Wed Apr 23 10:22:14 2025 -0700
+
+    deploy errors corrected
+
+[33mcommit a5dca1b0a942fa76763f62121b5e5e8d2b168cbd[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Wed Apr 23 10:01:35 2025 -0700
+
+    build errors corrected
+
+[33mcommit 8669cbc625209c6e4eaa6bf3c18e047d3263922a[m
+Author: yeabsira <shimelisyeabsiragithub@gmail.com>
+Date:   Tue Apr 15 10:20:39 2025 -0700
+
+    form publish and form in visible
