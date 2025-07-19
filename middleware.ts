@@ -82,27 +82,7 @@ export default async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
     
-    // Make a request to the auth API to validate the session
-    const authResponse = await fetch(`${request.nextUrl.origin}/api/auth/session`, {
-      headers: {
-        cookie: request.headers.get("cookie") || "",
-      },
-    });
-    
-    if (!authResponse.ok) {
-      console.log("❌ Middleware: Auth API returned error, redirecting to sign-in");
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-    
-    const sessionData = await authResponse.json();
-    console.log("📋 Middleware: Session data:", sessionData);
-    
-    if (!sessionData.user) {
-      console.log("❌ Middleware: No user in session, redirecting to sign-in");
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-    
-    console.log("✅ Middleware: Session valid, proceeding");
+    console.log("✅ Middleware: Session cookie found, proceeding");
     return NextResponse.next();
   } catch (err) {
     console.error("🚨 Middleware error:", err);

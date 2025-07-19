@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
           {
             key: "Access-Control-Allow-Origin",
             value: process.env.NODE_ENV === 'production' 
-              ? "https://nebib-forms-production-c7f6.up.railway.app" // Your actual domain
+              ? "https://nebib-production.up.railway.app" // Your actual domain
               : "*",
           },
           {
