@@ -50,6 +50,16 @@ export default async function middleware(request: NextRequest) {
     return response;
   }
 
+  // Skip authentication for sign-in, register, and auth-related pages
+  if (
+    request.nextUrl.pathname === '/sign-in' ||
+    request.nextUrl.pathname === '/register' ||
+    request.nextUrl.pathname === '/' ||
+    request.nextUrl.pathname.startsWith('/api/auth/')
+  ) {
+    return NextResponse.next();
+  }
+
   // Handle authentication for protected routes
   try {
     console.log("🔍 Middleware: Checking session for URL:", request.url);
@@ -105,6 +115,9 @@ export const config = {
     "/api/(.*)",
     "/form-generator(.*)", 
     "/form-management(.*)", 
-    "/generate-form(.*)"
+    "/generate-form(.*)",
+    "/dashboard(.*)",
+    "/attendance-management(.*)",
+    "/settings(.*)"
   ],
 };
