@@ -1,5 +1,10 @@
 import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { addCorsHeaders } from "@/lib/cors";
+
+export async function OPTIONS(request: NextRequest) {
+  return addCorsHeaders(new NextResponse(null, { status: 200 }), request);
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,7 +21,7 @@ export async function GET(request: NextRequest) {
       console.log("📧 Test Session API: User email:", session.user.email);
     }
     
-    return NextResponse.json({
+    const response = NextResponse.json({
       hasSession: !!session,
       user: session ? {
         id: session.user.id,
@@ -25,11 +30,13 @@ export async function GET(request: NextRequest) {
       } : null,
       cookies: request.headers.get("cookie")
     });
+    return addCorsHeaders(response, request);
   } catch (error) {
     console.error("🚨 Test Session API Error:", error);
-    return NextResponse.json({
+    const response = NextResponse.json({
       error: error instanceof Error ? error.message : "Unknown error",
       hasSession: false
     });
+    return addCorsHeaders(response, request);
   }
 } 

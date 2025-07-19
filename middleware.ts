@@ -1,6 +1,56 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-export default async function authMiddleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
+  // Handle CORS for API routes
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    const response = NextResponse.next();
+    
+    const origin = request.headers.get('origin');
+    const allowedOrigins = [
+      'https://nebib-forms-production-c7f6.up.railway.app',
+      'https://nebib-forms-production.up.railway.app',
+      'https://nebib-production.up.railway.app',
+      'https://www.nebibs.com',
+      'https://nebibs.com',
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001'
+    ];
+
+    // For deployment, be more permissive with CORS
+    const isAllowedOrigin = origin && (
+      allowedOrigins.includes(origin) || 
+      origin.includes('railway.app') ||
+      origin.includes('nebibs.com') ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1')
+    );
+
+    if (isAllowedOrigin) {
+      response.headers.set('Access-Control-Allow-Origin', origin);
+    } else {
+      // Fallback for requests without origin
+      response.headers.set('Access-Control-Allow-Origin', '*');
+    }
+
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    response.headers.set(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Authorization, X-Requested-With, Accept, Origin, Cache-Control, X-File-Name'
+    );
+    response.headers.set('Access-Control-Allow-Credentials', 'true');
+    response.headers.set('Access-Control-Max-Age', '86400');
+
+    // Handle preflight requests
+    if (request.method === 'OPTIONS') {
+      return new NextResponse(null, { status: 200, headers: response.headers });
+    }
+
+    return response;
+  }
+
+  // Handle authentication for protected routes
   try {
     console.log("🔍 Middleware: Checking session for URL:", request.url);
     console.log("🍪 Middleware: All cookies:", request.headers.get("cookie"));
@@ -51,5 +101,10 @@ export default async function authMiddleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/form-generator(.*)", "/form-management(.*)", "/generate-form(.*)"],
+  matcher: [
+    "/api/(.*)",
+    "/form-generator(.*)", 
+    "/form-management(.*)", 
+    "/generate-form(.*)"
+  ],
 };
