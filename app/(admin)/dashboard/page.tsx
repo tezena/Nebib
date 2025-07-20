@@ -30,29 +30,29 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
                 <p className="text-gray-600 mt-1">Loading dashboard data...</p>
               </div>
             </div>
           </div>
 
           {/* Stats Grid - Loading Skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
             {[1, 2, 3, 4].map((i) => (
               <Card key={i} className="border-0 shadow-lg">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="h-4 bg-gray-200 rounded w-24 mb-2 animate-pulse"></div>
-                      <div className="h-8 bg-gray-200 rounded w-16 animate-pulse"></div>
-                      <div className="h-4 bg-gray-200 rounded w-32 mt-2 animate-pulse"></div>
+                <CardContent className="p-3 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex-1">
+                      <div className="h-3 sm:h-4 bg-gray-200 rounded w-16 sm:w-24 mb-1 sm:mb-2 animate-pulse"></div>
+                      <div className="h-6 sm:h-8 bg-gray-200 rounded w-12 sm:w-16 animate-pulse"></div>
+                      <div className="h-3 sm:h-4 bg-gray-200 rounded w-20 sm:w-32 mt-1 sm:mt-2 animate-pulse"></div>
                     </div>
-                    <div className="w-12 h-12 bg-gray-200 rounded-lg animate-pulse"></div>
+                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gray-200 rounded-lg animate-pulse"></div>
                   </div>
                 </CardContent>
               </Card>
@@ -65,7 +65,7 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Dashboard</h2>
@@ -149,16 +149,16 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
               <p className="text-gray-600 mt-1">Welcome back! Here's what's happening with your forms.</p>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+              <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs sm:text-sm">
                 <Sparkles className="w-3 h-3 mr-1" />
                 Free Plan
               </Badge>
@@ -167,27 +167,27 @@ export default function DashboardPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
               <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                      <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                      <div className="flex items-center mt-2">
-                        <span className={`text-sm font-medium ${
+                <CardContent className="p-3 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex-1">
+                      <p className="text-xs sm:text-sm font-medium text-gray-600">{stat.title}</p>
+                      <p className="text-lg sm:text-2xl font-bold text-gray-900">{stat.value}</p>
+                      <div className="flex flex-col sm:flex-row sm:items-center mt-1 sm:mt-2 gap-1">
+                        <span className={`text-xs sm:text-sm font-medium ${
                           stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {stat.change}
                         </span>
-                        <span className="text-sm text-gray-500 ml-1">from last month</span>
+                        <span className="text-xs sm:text-sm text-gray-500">from last month</span>
                       </div>
                     </div>
-                    <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center`}>
-                      <Icon className="w-6 h-6 text-white" />
+                    <div className={`w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center`}>
+                      <Icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
                     </div>
                   </div>
                 </CardContent>
@@ -197,20 +197,20 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {quickActions.map((action, index) => {
               const Icon = action.icon;
               return (
                 <Link key={index} href={action.href}>
                   <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className={`w-12 h-12 bg-gradient-to-r ${action.color} rounded-lg flex items-center justify-center mb-4`}>
-                        <Icon className="w-6 h-6 text-white" />
+                    <CardContent className="p-4 sm:p-6">
+                      <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r ${action.color} rounded-lg flex items-center justify-center mb-3 sm:mb-4`}>
+                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{action.title}</h3>
-                      <p className="text-sm text-gray-600">{action.description}</p>
+                      <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{action.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-600">{action.description}</p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -219,62 +219,65 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Recent Forms */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Recent Forms and Activity Feed */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          {/* Recent Forms */}
           <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5" />
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                 Recent Forms
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm">
                 Your most recently created or updated forms
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {recentForms.length > 0 ? (
                   recentForms.map((form) => (
-                    <div key={form.id} className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-medium text-gray-900">{form.title}</h4>
-                          <Badge variant={form.status === 'active' ? 'default' : 'secondary'} className="text-xs">
-                            {form.status}
-                          </Badge>
+                    <div key={form.id} className="p-3 sm:p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                            <h4 className="font-medium text-gray-900 text-sm sm:text-base truncate">{form.title}</h4>
+                            <Badge variant={form.status === 'active' ? 'default' : 'secondary'} className="text-xs w-fit">
+                              {form.status}
+                            </Badge>
+                          </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <BarChart3 className="w-3 h-3" />
+                              {form.submissions} submissions
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {form.lastSubmission}
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <BarChart3 className="w-3 h-3" />
-                            {form.submissions} submissions
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {form.lastSubmission}
-                          </span>
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          <Link href={`/form-management/${form.id}`}>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0">
+                              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </Button>
+                          </Link>
+                          <Link href={`/form-management/${form.id}`}>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0">
+                              <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </Button>
+                          </Link>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Link href={`/form-management/${form.id}`}>
-                          <Button variant="ghost" size="sm">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                        </Link>
-                        <Link href={`/form-management/${form.id}`}>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                        </Link>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                    <p>No forms created yet</p>
+                  <div className="text-center py-6 sm:py-8 text-gray-500">
+                    <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-sm sm:text-base">No forms created yet</p>
                     <Link href="/form-generator">
-                      <Button className="mt-3">
-                        <Plus className="w-4 h-4 mr-2" />
+                      <Button className="mt-3 text-sm">
+                        <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                         Create Your First Form
                       </Button>
                     </Link>
@@ -283,9 +286,9 @@ export default function DashboardPage() {
               </div>
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <Link href="/form-management">
-                  <Button variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full text-sm">
                     View All Forms
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
                   </Button>
                 </Link>
               </div>
@@ -294,56 +297,56 @@ export default function DashboardPage() {
 
           {/* Activity Feed */}
           <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                 Recent Activity
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm">
                 Latest actions and updates
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">New form submission</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">New form submission</p>
                     <p className="text-xs text-gray-500">Employee Feedback Survey received a new response</p>
                     <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Plus className="w-4 h-4 text-blue-600" />
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">Form created</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">Form created</p>
                     <p className="text-xs text-gray-500">Customer Satisfaction Form was created</p>
                     <p className="text-xs text-gray-400 mt-1">1 day ago</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                    <AlertCircle className="w-4 h-4 text-orange-600" />
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4 text-orange-600" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">Form published</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">Form published</p>
                     <p className="text-xs text-gray-500">Event Registration form is now live</p>
                     <p className="text-xs text-gray-400 mt-1">3 days ago</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Users className="w-4 h-4 text-purple-600" />
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Users className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">Attendance updated</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">Attendance updated</p>
                     <p className="text-xs text-gray-500">Weekly attendance report generated</p>
                     <p className="text-xs text-gray-400 mt-1">1 week ago</p>
                   </div>
