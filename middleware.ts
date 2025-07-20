@@ -15,7 +15,9 @@ export default async function middleware(request: NextRequest) {
       'http://localhost:3000',
       'http://localhost:3001',
       'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001'
+      'http://127.0.0.1:3001',
+      'http://10.77.185.88:3000',
+      'https://10.77.185.88:3000'
     ];
 
     // For deployment, be more permissive with CORS

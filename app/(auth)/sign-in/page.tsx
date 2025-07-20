@@ -47,8 +47,8 @@ export default function LoginPage() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
-      // Here you would typically send the data to your API
-      console.log(values);
+      console.log("🔐 Sign-in attempt:", { email: values.email, hostname: window.location.hostname });
+      
       // Simulate API call
       await authClient.signIn.email(
         {
@@ -59,13 +59,18 @@ export default function LoginPage() {
         },
         {
           onSuccess: (ctx) => {
-            console.log(ctx);
+            console.log("✅ Sign-in successful:", ctx);
             router.push("/form-generator");
+          },
+          onError: (error) => {
+            console.error("❌ Sign-in error:", error);
+            alert(`Sign-in failed: ${error.message || 'Unknown error'}`);
           },
         }
       );
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("🚨 Login failed:", error);
+      alert(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
     }

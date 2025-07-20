@@ -16,6 +16,7 @@ import { Loader2, Sparkles, Send, CheckCircle, AlertCircle } from "lucide-react"
 import { useAddData } from "@/app/(admin)/form-management/_hooks/form_hooks"
 import { toast } from "sonner"
 import Link from "next/link"
+import QRGenerator from "@/components/qr-code/qr-generator"
 
 export default function PublicFormRenderer() {
   const params = useParams()
@@ -25,6 +26,8 @@ export default function PublicFormRenderer() {
   console.log("Public form data:", form)
 
   const [formValues, setFormValues] = useState<Record<string, any>>({})
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submittedData, setSubmittedData] = useState<any>(null)
 
   const handleInputChange = (fieldId: string, value: any) => {
     setFormValues((prev) => ({
@@ -53,13 +56,20 @@ export default function PublicFormRenderer() {
     try {
       console.log("Submitting with form values:", formValues)
 
-      await addData({
+      const result = await addData({
         datas: JSON.parse(JSON.stringify(formValues)),
         formId: form.id,
       })
 
-      toast.success("Form submitted successfully!")
-      setFormValues({})
+      // Store submitted data for QR code generation
+      setSubmittedData({
+        formValues,
+        formId: form.id,
+        submissionId: (result as any)?.id || Date.now().toString()
+      })
+      
+      setIsSubmitted(true)
+      toast.success("Form submitted successfully! Your QR code is ready.")
     } catch (error) {
       console.error("Failed to submit form", error)
       toast.error("Failed to submit form")
@@ -221,7 +231,39 @@ export default function PublicFormRenderer() {
 
         {/* Form Content */}
         <div className="bg-white p-6 rounded-b-xl border border-gray-200">
-          <form onSubmit={handleSubmit} className="space-y-8">
+          {isSubmitted && submittedData ? (
+            <div className="space-y-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-8 h-8 text-green-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Form Submitted Successfully!</h2>
+                <p className="text-gray-600 mb-6">Your attendance QR code has been generated.</p>
+              </div>
+              
+              <QRGenerator 
+                userId={submittedData.submissionId}
+                formId={submittedData.formId}
+                formData={submittedData.formValues}
+                className="max-w-md mx-auto"
+              />
+              
+              <div className="text-center">
+                <Button 
+                  onClick={() => {
+                    setIsSubmitted(false)
+                    setSubmittedData(null)
+                    setFormValues({})
+                  }}
+                  variant="outline"
+                  className="mt-4"
+                >
+                  Submit Another Response
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-8">
             {/* Group fields by category */}
             {(() => {
               // Group fields by category
@@ -297,6 +339,7 @@ export default function PublicFormRenderer() {
               </Button>
             </div>
           </form>
+          )}
         </div>
 
         {/* Footer */}

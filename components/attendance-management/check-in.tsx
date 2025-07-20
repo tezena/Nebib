@@ -23,11 +23,13 @@ import {
   Square,
   CalendarDays,
   Grid3X3,
-  List
+  List,
+  QrCode
 } from "lucide-react";
 import { toast } from "sonner";
 import AttendanceCalendar from "./attendance-calendar";
 import { format } from "date-fns";
+import QRScanner from "@/components/qr-code/qr-scanner";
 
 export interface StudentsDatasProps {
   data: Form & {
@@ -46,7 +48,7 @@ export default function CheckIn({ data }: StudentsDatasProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [attendanceStatus, setAttendanceStatus] = useState<Record<string, 'present' | 'absent' | 'late' | null>>({});
   const [filterStatus, setFilterStatus] = useState<'all' | 'present' | 'absent' | 'late' | 'unmarked'>('all');
-  const [viewMode, setViewMode] = useState<'cards' | 'calendar'>('cards');
+  const [viewMode, setViewMode] = useState<'cards' | 'calendar' | 'qr'>('cards');
   const [attendanceHistory, setAttendanceHistory] = useState<Record<string, AttendanceRecord[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -369,6 +371,40 @@ export default function CheckIn({ data }: StudentsDatasProps) {
           </Card>
         </div>
 
+        {/* View Mode Controls */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-700">View Mode:</span>
+            <Button 
+              variant={viewMode === 'cards' ? 'default' : 'outline'} 
+              size="sm"
+              onClick={() => setViewMode('cards')}
+              className="gap-2"
+            >
+              <Grid3X3 className="w-4 h-4" />
+              Cards
+            </Button>
+            <Button 
+              variant={viewMode === 'calendar' ? 'default' : 'outline'} 
+              size="sm"
+              onClick={() => setViewMode('calendar')}
+              className="gap-2"
+            >
+              <CalendarDays className="w-4 h-4" />
+              Calendar
+            </Button>
+            <Button 
+              variant={viewMode === 'qr' ? 'default' : 'outline'} 
+              size="sm"
+              onClick={() => setViewMode('qr')}
+              className="gap-2"
+            >
+              <QrCode className="w-4 h-4" />
+              QR Scanner
+            </Button>
+          </div>
+        </div>
+
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2">
           <Button 
@@ -412,7 +448,7 @@ export default function CheckIn({ data }: StudentsDatasProps) {
         </div>
 
         {/* Students List */}
-        {viewMode === 'cards' ? (
+        {viewMode === 'cards' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredDatas?.map((entry) => {
               const studentName = getStudentName(entry);
@@ -484,7 +520,9 @@ export default function CheckIn({ data }: StudentsDatasProps) {
               );
             })}
           </div>
-        ) : (
+        )}
+
+        {viewMode === 'calendar' && (
           <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
               <AttendanceCalendar 
@@ -498,6 +536,16 @@ export default function CheckIn({ data }: StudentsDatasProps) {
               />
             </CardContent>
           </Card>
+        )}
+
+        {viewMode === 'qr' && (
+          <div className="max-w-2xl mx-auto">
+            <QRScanner 
+              formId={data.id}
+              onAttendanceMarked={handleCheckIn}
+              className="w-full"
+            />
+          </div>
         )}
       </div>
     </div>
