@@ -22,11 +22,11 @@ export default function TabNavigation({
   const getTabIcon = (tab: string) => {
     switch (tab.toLowerCase()) {
       case 'students':
-        return <Users className="w-4 h-4" />;
+        return <Users className="w-4 h-4 sm:w-5 sm:h-5" />;
       case 'check-in':
-        return <CheckCircle className="w-4 h-4" />;
+        return <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />;
       case 'review':
-        return <FileText className="w-4 h-4" />;
+        return <FileText className="w-4 h-4 sm:w-5 sm:h-5" />;
       default:
         return null;
     }
@@ -61,17 +61,17 @@ export default function TabNavigation({
   return (
     <div className="w-full">
       {/* Section Header */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-lg font-semibold text-gray-900">Attendance Management</h2>
-          <span className="text-sm text-gray-500">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Attendance Management</h2>
+          <span className="text-xs sm:text-sm text-gray-500">
             {tabs.length} sections available
           </span>
         </div>
       </div>
 
       {/* Modern Tab Navigation */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-2">
         <div className="flex items-center space-x-2">
           {tabs.map((tab, index) => {
             const isActive = currentTab === index;
@@ -81,7 +81,7 @@ export default function TabNavigation({
                 key={tab}
                 variant="ghost"
                 className={cn(
-                  "flex-1 h-16 flex flex-col items-center justify-center gap-2 rounded-lg transition-all duration-300 ease-in-out relative group",
+                  "flex-1 h-12 sm:h-16 flex flex-col items-center justify-center gap-1 sm:gap-2 rounded-lg transition-all duration-300 ease-in-out relative group",
                   isActive && "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 shadow-md",
                   !isActive && "hover:bg-gray-50 border-2 border-transparent"
                 )}
@@ -89,7 +89,7 @@ export default function TabNavigation({
               >
                 {/* Tab Icon */}
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
+                  "w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-300",
                   isActive && "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg",
                   !isActive && "bg-gray-200 text-gray-600 group-hover:bg-gray-300"
                 )}>
@@ -116,8 +116,8 @@ export default function TabNavigation({
       </div>
 
       {/* Section Description */}
-      <div className="mt-4 text-center">
-        <p className="text-sm text-gray-600">
+      <div className="mt-3 sm:mt-4 text-center">
+        <p className="text-xs sm:text-sm text-gray-600">
           {getTabDescription(tabs[currentTab])}
         </p>
       </div>

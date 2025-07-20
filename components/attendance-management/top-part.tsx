@@ -68,96 +68,97 @@ export default function TopPart() {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-              <Users className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Attendance Management</h1>
-              <p className="text-gray-600">Track and manage student attendance across all your forms</p>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Attendance Management</h1>
+              <p className="text-sm sm:text-base text-gray-600">Track and manage student attendance across all your forms</p>
             </div>
           </div>
         </div>
         
-        <div className="flex flex-wrap gap-3">
-          <Button variant="outline" className="gap-2">
-            <Filter className="w-4 h-4" />
-            Filter
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm">
+            <Filter className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Filter</span>
           </Button>
-          <Button variant="outline" className="gap-2">
-            <Download className="w-4 h-4" />
-            Export
+          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm">
+            <Download className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Export</span>
           </Button>
           <Button 
-            className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+            size="sm"
+            className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs sm:text-sm"
             onClick={() => window.location.reload()}
           >
-            <RefreshCw className="w-4 h-4" />
-            Refresh
+            <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
-          <Button className="gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
-            <Plus className="w-4 h-4" />
-            New Session
+          <Button size="sm" className="gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-xs sm:text-sm">
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">New Session</span>
           </Button>
         </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-indigo-50">
-          <CardContent className="p-6">
+          <CardContent className="p-3 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Students</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.totalStudents || 0}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Total Students</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">{stats?.totalStudents || 0}</p>
                 <p className="text-xs text-blue-600 mt-1">Registered students</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-blue-600" />
+              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Users className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-r from-green-50 to-emerald-50">
-          <CardContent className="p-6">
+          <CardContent className="p-3 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Active Sessions</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.totalSessions || 0}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Active Sessions</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">{stats?.totalSessions || 0}</p>
                 <p className="text-xs text-green-600 mt-1">Total sessions</p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Clock className="w-6 h-6 text-green-600" />
+              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-green-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-r from-purple-50 to-pink-50">
-          <CardContent className="p-6">
+          <CardContent className="p-3 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Present Today</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.totalPresent || 0}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Present Today</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">{stats?.totalPresent || 0}</p>
                 <p className="text-xs text-purple-600 mt-1">Students present</p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-purple-600" />
+              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-r from-orange-50 to-red-50">
-          <CardContent className="p-6">
+          <CardContent className="p-3 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Avg. Attendance</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.averageAttendance.toFixed(1) || 0}%</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600">Avg. Attendance</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">{stats?.averageAttendance.toFixed(1) || 0}%</p>
                 <p className="text-xs text-orange-600 mt-1">Overall rate</p>
               </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-orange-600" />
+              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <Calendar className="w-4 h-4 sm:w-6 sm:h-6 text-orange-600" />
               </div>
             </div>
           </CardContent>
@@ -166,29 +167,29 @@ export default function TopPart() {
 
       {/* Recent Activity */}
       <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Recent Activity</h3>
             <Badge variant="secondary" className="text-xs">Last 7 days</Badge>
           </div>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm text-gray-600">
+              <span className="text-xs sm:text-sm text-gray-600">
                 {stats?.totalPresent || 0} students marked present today
               </span>
               <span className="text-xs text-gray-400 ml-auto">Today</span>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span className="text-sm text-gray-600">
+              <span className="text-xs sm:text-sm text-gray-600">
                 {stats?.totalSessions || 0} attendance sessions created
               </span>
               <span className="text-xs text-gray-400 ml-auto">This month</span>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
               <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-              <span className="text-sm text-gray-600">
+              <span className="text-xs sm:text-sm text-gray-600">
                 Average attendance rate: {stats?.averageAttendance.toFixed(1) || 0}%
               </span>
               <span className="text-xs text-gray-400 ml-auto">Overall</span>

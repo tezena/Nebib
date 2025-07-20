@@ -213,25 +213,16 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <Sparkles className="w-8 h-8 text-white" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Your Form</h2>
-        <p className="text-gray-600">Design a professional form with our intuitive builder</p>
-      </div>
-
+    <div className="space-y-6 sm:space-y-8">
       {/* Basic Information */}
       <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            Basic Information
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+            Form Details
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4 sm:space-y-6">
           <div className="space-y-2">
             <Label htmlFor="topic" className="text-sm font-medium">Form Title *</Label>
             <Textarea
@@ -240,7 +231,7 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
               value={formData.topic}
               onChange={handleChange}
               placeholder="Enter a descriptive title for your form..."
-              className="min-h-[80px] resize-none"
+              className="min-h-[60px] sm:min-h-[80px] resize-none text-sm sm:text-base"
             />
           </div>
 
@@ -252,6 +243,7 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
               value={formData.description}
               onChange={handleChange}
               placeholder="Briefly describe what this form is for..."
+              className="text-sm sm:text-base"
             />
           </div>
 
@@ -262,7 +254,7 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
                 <Badge
                   key={category}
                   variant="secondary"
-                  className="px-3 py-1 text-sm cursor-pointer hover:bg-red-100 hover:text-red-700 transition-colors"
+                  className="px-2 sm:px-3 py-1 text-xs sm:text-sm cursor-pointer hover:bg-red-100 hover:text-red-700 transition-colors"
                   onClick={() => removeCategory(category)}
                 >
                   {category}
@@ -276,14 +268,14 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addCategory()}
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base"
               />
               <Button
                 type="button"
                 size="sm"
                 onClick={addCategory}
                 disabled={!newCategory.trim()}
-                className="px-4"
+                className="px-3 sm:px-4 h-9 sm:h-10"
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -294,14 +286,14 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
 
       {/* Field Templates */}
       <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Copy className="w-5 h-5" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
             Quick Add Fields
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
             {fieldTemplates.map((template, index) => {
               const Icon = template.icon;
               return (
@@ -309,11 +301,11 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
                   key={`template_${template.label}_${index}`}
                   variant="outline"
                   onClick={() => addField(template)}
-                  className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition-all"
+                  className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 hover:bg-blue-50 hover:border-blue-200 transition-all text-xs sm:text-sm"
                 >
-                  <Icon className="w-5 h-5 text-blue-600" />
-                  <span className="text-sm font-medium">{template.label}</span>
-                  <span className="text-xs text-gray-500">{template.type}</span>
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                  <span className="font-medium">{template.label}</span>
+                  <span className="text-gray-500">{template.type}</span>
                 </Button>
               );
             })}
@@ -323,59 +315,59 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
 
       {/* Custom Fields */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="w-5 h-5" />
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
             Form Fields ({formData.fields.length})
           </CardTitle>
           <Button
             onClick={() => addField()}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-sm sm:text-base h-9 sm:h-10"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Custom Field
+            Add Field
           </Button>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 sm:space-y-4">
           {formData.fields.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-              <p>No fields added yet. Start by adding some fields above.</p>
+            <div className="text-center py-6 sm:py-8 text-gray-500">
+              <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
+              <p className="text-sm sm:text-base">No fields added yet. Start by adding some fields above.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
               {formData.fields.map((field, index) => {
                 const Icon = getFieldIcon(field.type);
                 return (
-                  <div key={field.id || `field_${index}`} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-blue-600" />
+                  <div key={field.id || `field_${index}`} className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <Input
                         placeholder="Field label..."
                         value={field.label}
                         onChange={(e) => updateField(field.id, { label: e.target.value })}
-                        className="font-medium"
+                        className="font-medium text-sm sm:text-base"
                       />
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => removeField(field.id)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 h-8 w-8 sm:h-9 sm:w-9 p-0"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                     <Select
                       value={field.type}
                       onValueChange={(value) => updateField(field.id, { type: value as Field['type'] })}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="text-xs sm:text-sm h-8 sm:h-10">
                         <SelectValue placeholder="Field type" />
                       </SelectTrigger>
                       <SelectContent>
@@ -393,7 +385,7 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
                       value={field.category}
                       onValueChange={(value) => updateField(field.id, { category: value })}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="text-xs sm:text-sm h-8 sm:h-10">
                         <SelectValue placeholder="Category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -411,20 +403,20 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
                         onCheckedChange={(checked) => updateField(field.id, { required: checked })}
                         className="data-[state=checked]:bg-blue-500"
                       />
-                      <Label className="text-sm">Required</Label>
+                      <Label className="text-xs sm:text-sm">Required</Label>
                     </div>
                   </div>
 
                   {field.type === 'select' && (
                     <div className="mt-3">
-                      <Label className="text-sm text-gray-600">Options (one per line)</Label>
+                      <Label className="text-xs sm:text-sm text-gray-600">Options (one per line)</Label>
                       <Textarea
                         placeholder="Option 1&#10;Option 2&#10;Option 3"
                         value={field.options?.join('\n') || ''}
                         onChange={(e) => updateField(field.id, { 
                           options: e.target.value.split('\n').filter(opt => opt.trim()) 
                         })}
-                        className="mt-1 min-h-[60px]"
+                        className="mt-1 min-h-[50px] sm:min-h-[60px] text-xs sm:text-sm"
                       />
                     </div>
                   )}
@@ -438,9 +430,9 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
 
       {/* Completion Status */}
       <div className="text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100">
+        <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gray-100">
           <div className={`w-2 h-2 rounded-full ${formData.fields.length > 0 ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-          <span className="text-sm text-gray-600">
+          <span className="text-xs sm:text-sm text-gray-600">
             {formData.fields.length} fields added • {formData.fields.filter(f => f.required).length} required
           </span>
         </div>

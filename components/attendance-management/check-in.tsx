@@ -24,12 +24,20 @@ import {
   CalendarDays,
   Grid3X3,
   List,
-  QrCode
+  QrCode,
+  ArrowLeft,
+  MoreHorizontal
 } from "lucide-react";
 import { toast } from "sonner";
 import AttendanceCalendar from "./attendance-calendar";
 import { format } from "date-fns";
 import QRScanner from "@/components/qr-code/qr-scanner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export interface StudentsDatasProps {
   data: Form & {
@@ -200,13 +208,13 @@ export default function CheckIn({ data }: StudentsDatasProps) {
   const getStatusIcon = (status: 'present' | 'absent' | 'late' | null) => {
     switch (status) {
       case 'present':
-        return <CheckCircle className="w-5 h-5 text-green-600" />;
+        return <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />;
       case 'absent':
-        return <XCircle className="w-5 h-5 text-red-600" />;
+        return <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />;
       case 'late':
-        return <Clock className="w-5 h-5 text-yellow-600" />;
+        return <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600" />;
       default:
-        return <Square className="w-5 h-5 text-gray-400" />;
+        return <Square className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />;
     }
   };
 
@@ -227,360 +235,405 @@ export default function CheckIn({ data }: StudentsDatasProps) {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-center h-64 text-red-500">
-          <AlertCircle className="w-6 h-6 mr-2" />
-          {error}
-        </div>
+      <div className="flex items-center justify-center h-64 text-red-500">
+        <AlertCircle className="w-6 h-6 mr-2" />
+        {error}
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="space-y-6">
-        {/* Header Section */}
-        <Card className="border-0 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                    <CheckCircle className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Attendance Check-In</h2>
-                    <p className="text-gray-600">Mark attendance for {data.topic}</p>
-                  </div>
-                </div>
+    <div className="space-y-4 sm:space-y-6">
+      {/* Desktop Header */}
+      <div className="hidden md:block bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+          <div className="space-y-1">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-white" />
               </div>
-              
-              <div className="flex flex-wrap gap-3">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <Input 
-                    placeholder="Search students..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-[300px] border-gray-200 focus:border-green-500" 
-                  />
-                </div>
-                
-                {/* View Mode Toggle */}
-                <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-                  <Button 
-                    variant={viewMode === 'cards' ? 'default' : 'ghost'} 
-                    size="sm"
-                    onClick={() => setViewMode('cards')}
-                  >
-                    <Grid3X3 className="w-4 h-4" />
-                  </Button>
-                  <Button 
-                    variant={viewMode === 'calendar' ? 'default' : 'ghost'} 
-                    size="sm"
-                    onClick={() => setViewMode('calendar')}
-                  >
-                    <CalendarDays className="w-4 h-4" />
-                  </Button>
-                </div>
-                
-                <Button variant="outline" className="gap-2">
-                  <Download className="w-4 h-4" />
-                  Export
-                </Button>
-                <Button 
-                  className="gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                  onClick={() => {
-                    toast.success("Attendance saved successfully!");
-                  }}
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  Save Attendance
-                </Button>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Attendance Check-In</h2>
+                <p className="text-gray-600">Mark attendance for {data.topic}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input 
+                placeholder="Search students..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-[300px] border-gray-200 focus:border-green-500" 
+              />
+            </div>
+            
+            <Button variant="outline" className="gap-2">
+              <Download className="w-4 h-4" />
+              Export
+            </Button>
+            <Button 
+              className="gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+              onClick={() => {
+                toast.success("Attendance saved successfully!");
+              }}
+            >
+              <CheckCircle className="w-4 h-4" />
+              Save Attendance
+            </Button>
+          </div>
+        </div>
+      </div>
 
-        {/* Attendance Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-green-50 to-emerald-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Present</p>
-                  <p className="text-2xl font-bold text-gray-900">{presentCount}</p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Mobile Header */}
+      <div className="md:hidden bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/20">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800">Check-In</h2>
+            <p className="text-sm text-gray-500">{filteredDatas?.length || 0} students</p>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="p-2 h-8 w-8">
+                <MoreHorizontal className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => toast.info("Export feature coming soon!")}>
+                <Download className="mr-2 h-4 w-4" />
+                Export
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.success("Attendance saved successfully!")}>
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Save Attendance
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input 
+            placeholder="Search students..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 border-gray-200 focus:border-green-500" 
+          />
+        </div>
+      </div>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-red-50 to-pink-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Absent</p>
-                  <p className="text-2xl font-bold text-gray-900">{absentCount}</p>
-                </div>
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                  <XCircle className="w-6 h-6 text-red-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-yellow-50 to-orange-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Late</p>
-                  <p className="text-2xl font-bold text-gray-900">{lateCount}</p>
-                </div>
-                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-yellow-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-gray-50 to-slate-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Unmarked</p>
-                  <p className="text-2xl font-bold text-gray-900">{unmarkedCount}</p>
-                </div>
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <AlertCircle className="w-6 h-6 text-gray-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Attendance Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg border border-white/20 bg-gradient-to-r from-green-50 to-emerald-50">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Present</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900">{presentCount}</p>
+            </div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 text-green-600" />
+            </div>
+          </div>
         </div>
 
-        {/* View Mode Controls */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">View Mode:</span>
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg border border-white/20 bg-gradient-to-r from-red-50 to-pink-50">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Absent</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900">{absentCount}</p>
+            </div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-red-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <XCircle className="w-4 h-4 sm:w-6 sm:h-6 text-red-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg border border-white/20 bg-gradient-to-r from-yellow-50 to-orange-50">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Late</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900">{lateCount}</p>
+            </div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-yellow-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg border border-white/20 bg-gradient-to-r from-gray-50 to-slate-50">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Unmarked</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900">{unmarkedCount}</p>
+            </div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gray-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <AlertCircle className="w-4 h-4 sm:w-6 sm:h-6 text-gray-600" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* View Mode Controls */}
+      <div className="hidden md:flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">View Mode:</span>
+          <Button 
+            variant={viewMode === 'cards' ? 'default' : 'outline'} 
+            size="sm"
+            onClick={() => setViewMode('cards')}
+            className="gap-2"
+          >
+            <Grid3X3 className="w-4 h-4" />
+            Cards
+          </Button>
+          <Button 
+            variant={viewMode === 'calendar' ? 'default' : 'outline'} 
+            size="sm"
+            onClick={() => setViewMode('calendar')}
+            className="gap-2"
+          >
+            <CalendarDays className="w-4 h-4" />
+            Calendar
+          </Button>
+          <Button 
+            variant={viewMode === 'qr' ? 'default' : 'outline'} 
+            size="sm"
+            onClick={() => setViewMode('qr')}
+            className="gap-2"
+          >
+            <QrCode className="w-4 h-4" />
+            QR Scanner
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile View Mode Toggle */}
+      <div className="md:hidden">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20">
+          <div className="flex gap-1">
             <Button 
-              variant={viewMode === 'cards' ? 'default' : 'outline'} 
+              variant={viewMode === 'cards' ? 'default' : 'ghost'} 
               size="sm"
               onClick={() => setViewMode('cards')}
-              className="gap-2"
+              className="flex-1"
             >
-              <Grid3X3 className="w-4 h-4" />
+              <Grid3X3 className="w-4 h-4 mr-1" />
               Cards
             </Button>
             <Button 
-              variant={viewMode === 'calendar' ? 'default' : 'outline'} 
+              variant={viewMode === 'calendar' ? 'default' : 'ghost'} 
               size="sm"
               onClick={() => setViewMode('calendar')}
-              className="gap-2"
+              className="flex-1"
             >
-              <CalendarDays className="w-4 h-4" />
+              <CalendarDays className="w-4 h-4 mr-1" />
               Calendar
             </Button>
             <Button 
-              variant={viewMode === 'qr' ? 'default' : 'outline'} 
+              variant={viewMode === 'qr' ? 'default' : 'ghost'} 
               size="sm"
               onClick={() => setViewMode('qr')}
-              className="gap-2"
+              className="flex-1"
             >
-              <QrCode className="w-4 h-4" />
-              QR Scanner
+              <QrCode className="w-4 h-4 mr-1" />
+              QR
             </Button>
           </div>
         </div>
+      </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-2">
-          <Button 
-            variant={filterStatus === 'all' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setFilterStatus('all')}
-          >
-            All ({(datas?.length || 0)})
-          </Button>
-          <Button 
-            variant={filterStatus === 'present' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setFilterStatus('present')}
-            className={filterStatus === 'present' ? 'bg-green-600 hover:bg-green-700' : ''}
-          >
-            Present ({presentCount})
-          </Button>
-          <Button 
-            variant={filterStatus === 'absent' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setFilterStatus('absent')}
-            className={filterStatus === 'absent' ? 'bg-red-600 hover:bg-red-700' : ''}
-          >
-            Absent ({absentCount})
-          </Button>
-          <Button 
-            variant={filterStatus === 'late' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setFilterStatus('late')}
-            className={filterStatus === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
-          >
-            Late ({lateCount})
-          </Button>
-          <Button 
-            variant={filterStatus === 'unmarked' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setFilterStatus('unmarked')}
-          >
-            Unmarked ({unmarkedCount})
-          </Button>
+      {/* Filter Tabs */}
+      <div className="flex flex-wrap gap-2">
+        <Button 
+          variant={filterStatus === 'all' ? 'default' : 'outline'} 
+          size="sm"
+          onClick={() => setFilterStatus('all')}
+          className="text-xs sm:text-sm"
+        >
+          All ({(datas?.length || 0)})
+        </Button>
+        <Button 
+          variant={filterStatus === 'present' ? 'default' : 'outline'} 
+          size="sm"
+          onClick={() => setFilterStatus('present')}
+          className={`text-xs sm:text-sm ${filterStatus === 'present' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+        >
+          Present ({presentCount})
+        </Button>
+        <Button 
+          variant={filterStatus === 'absent' ? 'default' : 'outline'} 
+          size="sm"
+          onClick={() => setFilterStatus('absent')}
+          className={`text-xs sm:text-sm ${filterStatus === 'absent' ? 'bg-red-600 hover:bg-red-700' : ''}`}
+        >
+          Absent ({absentCount})
+        </Button>
+        <Button 
+          variant={filterStatus === 'late' ? 'default' : 'outline'} 
+          size="sm"
+          onClick={() => setFilterStatus('late')}
+          className={`text-xs sm:text-sm ${filterStatus === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}`}
+        >
+          Late ({lateCount})
+        </Button>
+        <Button 
+          variant={filterStatus === 'unmarked' ? 'default' : 'outline'} 
+          size="sm"
+          onClick={() => setFilterStatus('unmarked')}
+          className="text-xs sm:text-sm"
+        >
+          Unmarked ({unmarkedCount})
+        </Button>
+      </div>
+
+      {/* Students List */}
+      {viewMode === 'cards' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+          {filteredDatas?.map((entry) => {
+            const studentName = getStudentName(entry);
+            const initials = getStudentInitials(studentName);
+            const status = attendanceStatus[entry.id];
+            const registrationDate = new Date(entry.createdAt);
+            const history = attendanceHistory[entry.id] || [];
+            
+            return (
+              <Card key={entry.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                <CardContent className="p-3 sm:p-6">
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <Avatar className="w-8 h-8 sm:w-12 sm:h-12">
+                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs sm:text-sm">
+                          {initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{studentName}</h3>
+                        <p className="text-xs sm:text-sm text-gray-500">ID: {entry.id.slice(-6)}</p>
+                      </div>
+                    </div>
+                    {getStatusIcon(status)}
+                  </div>
+
+                  <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-4">
+                    {fields.slice(0, 2).map((field) => (
+                      <div key={field.id} className="flex justify-between text-xs sm:text-sm">
+                        <span className="text-gray-600">{field.label}:</span>
+                        <span className="font-medium text-gray-900 truncate ml-2">
+                          {String((entry.data as JsonObject)?.[field.id] ?? "N/A")}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between mb-3">
+                    {getStatusBadge(status)}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1 sm:gap-2">
+                    <Button
+                      size="sm"
+                      variant={status === 'present' ? 'default' : 'outline'}
+                      onClick={() => handleCheckIn(entry.id, 'present')}
+                      className={`text-xs ${status === 'present' ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    >
+                      Present
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={status === 'absent' ? 'default' : 'outline'}
+                      onClick={() => handleCheckIn(entry.id, 'absent')}
+                      className={`text-xs ${status === 'absent' ? 'bg-red-600 hover:bg-red-700' : ''}`}
+                    >
+                      Absent
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={status === 'late' ? 'default' : 'outline'}
+                      onClick={() => handleCheckIn(entry.id, 'late')}
+                      className={`text-xs ${status === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}`}
+                    >
+                      Late
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
+      )}
 
-        {/* Students List */}
-        {viewMode === 'cards' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredDatas?.map((entry) => {
-              const studentName = getStudentName(entry);
-              const initials = getStudentInitials(studentName);
-              const status = attendanceStatus[entry.id];
-              const registrationDate = new Date(entry.createdAt);
-              const history = attendanceHistory[entry.id] || [];
-              
-              return (
-                <Card key={entry.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="w-12 h-12">
-                          <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                            {initials}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{studentName}</h3>
-                          <p className="text-sm text-gray-500">ID: {entry.id.slice(-6)}</p>
-                        </div>
-                      </div>
-                      {getStatusIcon(status)}
-                    </div>
-
-                    <div className="space-y-2 mb-4">
-                      {fields.slice(0, 3).map((field) => (
-                        <div key={field.id} className="flex justify-between text-sm">
-                          <span className="text-gray-600">{field.label}:</span>
-                          <span className="font-medium text-gray-900">
-                            {String((entry.data as JsonObject)?.[field.id] ?? "N/A")}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      {getStatusBadge(status)}
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant={status === 'present' ? 'default' : 'outline'}
-                          onClick={() => handleCheckIn(entry.id, 'present')}
-                          className={status === 'present' ? 'bg-green-600 hover:bg-green-700' : ''}
-                        >
-                          Present
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant={status === 'absent' ? 'default' : 'outline'}
-                          onClick={() => handleCheckIn(entry.id, 'absent')}
-                          className={status === 'absent' ? 'bg-red-600 hover:bg-red-700' : ''}
-                        >
-                          Absent
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant={status === 'late' ? 'default' : 'outline'}
-                          onClick={() => handleCheckIn(entry.id, 'late')}
-                          className={status === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
-                        >
-                          Late
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        )}
-
-        {viewMode === 'calendar' && (
-          <Card className="border-0 shadow-lg">
-            <CardContent className="p-6">
-              <AttendanceCalendar 
-                students={(filteredDatas || []).map(entry => ({
-                  id: entry.id,
-                  name: getStudentName(entry),
-                  history: attendanceHistory[entry.id] || [],
-                  registrationDate: new Date(entry.createdAt)
-                }))}
-                onDateClick={handleCalendarDateClick}
-              />
-            </CardContent>
-          </Card>
-        )}
-
-        {viewMode === 'qr' && (
-          <div className="max-w-2xl mx-auto">
-            <QRScanner 
-              onScan={async (qrData) => {
-                try {
-                  console.log('🔍 Processing QR scan:', qrData);
-                  
-                  // Send QR data to API for processing
-                  const response = await fetch('/api/qr-attendance', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({ qrData })
-                  });
-
-                  if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to process QR code');
-                  }
-
-                  const result = await response.json();
-                  
-                  // Call the existing handleCheckIn function
-                  await handleCheckIn(result.data.userId, result.data.status);
-                  
-                  toast.success(`${result.data.studentName} marked as ${result.data.status}`);
-                  
-                } catch (error: any) {
-                  console.error('❌ QR scan error:', error);
-                  toast.error(error.message || 'Failed to process QR code');
-                }
-              }}
-              onError={(error) => {
-                console.error('❌ QR scanner error:', error);
-                toast.error(error);
-              }}
-              className="w-full"
+      {viewMode === 'calendar' && (
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+          <div className="p-4 sm:p-6">
+            <AttendanceCalendar 
+              students={(filteredDatas || []).map(entry => ({
+                id: entry.id,
+                name: getStudentName(entry),
+                history: attendanceHistory[entry.id] || [],
+                registrationDate: new Date(entry.createdAt)
+              }))}
+              onDateClick={handleCalendarDateClick}
             />
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {viewMode === 'qr' && (
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+            <div className="p-4 sm:p-6">
+              <QRScanner 
+                onScan={async (qrData) => {
+                  try {
+                    console.log('🔍 Processing QR scan:', qrData);
+                    
+                    // Send QR data to API for processing
+                    const response = await fetch('/api/qr-attendance', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      credentials: 'include',
+                      body: JSON.stringify({ qrData })
+                    });
+
+                    if (!response.ok) {
+                      const errorData = await response.json();
+                      throw new Error(errorData.error || 'Failed to process QR code');
+                    }
+
+                    const result = await response.json();
+                    
+                    // Call the existing handleCheckIn function
+                    await handleCheckIn(result.data.userId, result.data.status);
+                    
+                    toast.success(`${result.data.studentName} marked as ${result.data.status}`);
+                    
+                  } catch (error: any) {
+                    console.error('❌ QR scan error:', error);
+                    toast.error(error.message || 'Failed to process QR code');
+                  }
+                }}
+                onError={(error) => {
+                  console.error('❌ QR scanner error:', error);
+                  toast.error(error);
+                }}
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

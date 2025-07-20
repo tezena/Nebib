@@ -29,7 +29,7 @@ export default function DashboardPage() {
   // Show loading skeleton if data is loading
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 pb-20 md:pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           {/* Header */}
           <div className="mb-6 sm:mb-8">
@@ -65,7 +65,7 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 pb-20 md:pb-8">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Dashboard</h2>
@@ -116,39 +116,8 @@ export default function DashboardPage() {
 
   const recentForms = dashboardData?.recentForms || [];
 
-  const quickActions = [
-    {
-      title: "Create New Form",
-      description: "Start building a new form from scratch",
-      icon: Plus,
-      href: "/form-generator",
-      color: "from-blue-500 to-purple-600"
-    },
-    // {
-    //   title: "View Analytics",
-    //   description: "Check form performance and insights",
-    //   icon: BarChart3,
-    //   href: "/analytics",
-    //   color: "from-green-500 to-teal-600"
-    // },
-    {
-      title: "Manage Forms",
-      description: "Edit, duplicate, or delete existing forms",
-      icon: Edit,
-      href: "/form-management",
-      color: "from-orange-500 to-red-600"
-    },
-    {
-      title: "Attendance Tracking",
-      description: "Monitor attendance and check-ins",
-      icon: Users,
-      href: "/attendance-management",
-      color: "from-purple-500 to-pink-600"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
@@ -158,68 +127,93 @@ export default function DashboardPage() {
               <p className="text-gray-600 mt-1">Welcome back! Here's what's happening with your forms.</p>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs sm:text-sm">
-                <Sparkles className="w-3 h-3 mr-1" />
-                Free Plan
-              </Badge>
+              <Link href="/form-generator">
+                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Form
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-3 sm:p-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <div className="flex-1">
-                      <p className="text-xs sm:text-sm font-medium text-gray-600">{stat.title}</p>
-                      <p className="text-lg sm:text-2xl font-bold text-gray-900">{stat.value}</p>
-                      <div className="flex flex-col sm:flex-row sm:items-center mt-1 sm:mt-2 gap-1">
-                        <span className={`text-xs sm:text-sm font-medium ${
-                          stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          {stat.change}
-                        </span>
-                        <span className="text-xs sm:text-sm text-gray-500">from last month</span>
-                      </div>
-                    </div>
-                    <div className={`w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center`}>
-                      <Icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+          {stats.map((stat, index) => (
+            <Card key={index} className="border-0 shadow-lg">
+              <CardContent className="p-3 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex-1">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
+                    <p className="text-lg sm:text-2xl font-bold text-gray-900">{stat.value}</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      <TrendingUp className={`w-3 h-3 sm:w-4 sm:h-4 ${stat.changeType === "positive" ? "text-green-500" : "text-red-500"}`} />
+                      <span className={`text-xs sm:text-sm ${stat.changeType === "positive" ? "text-green-600" : "text-red-600"}`}>
+                        {stat.change}
+                      </span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  <div className={`w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center`}>
+                    <stat.icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Quick Actions */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {quickActions.map((action, index) => {
-              const Icon = action.icon;
-              return (
-                <Link key={index} href={action.href}>
-                  <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-                    <CardContent className="p-4 sm:p-6">
-                      <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r ${action.color} rounded-lg flex items-center justify-center mb-3 sm:mb-4`}>
-                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{action.title}</h3>
-                      <p className="text-xs sm:text-sm text-gray-600">{action.description}</p>
-                    </CardContent>
-                  </Card>
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                Quick Actions
+              </CardTitle>
+              <CardDescription className="text-sm">
+                Get started quickly with these common tasks
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                <Link href="/form-generator">
+                  <Button variant="outline" className="w-full h-auto p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-medium">Create Form</span>
+                  </Button>
                 </Link>
-              );
-            })}
-          </div>
+                
+                <Link href="/form-management">
+                  <Button variant="outline" className="w-full h-auto p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-green-50 hover:border-green-200 transition-colors">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-medium">Manage Forms</span>
+                  </Button>
+                </Link>
+                
+                <Link href="/attendance-management">
+                  <Button variant="outline" className="w-full h-auto p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-purple-50 hover:border-purple-200 transition-colors">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Users className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-medium">Attendance</span>
+                  </Button>
+                </Link>
+                
+                <Button variant="outline" className="w-full h-auto p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-orange-50 hover:border-orange-200 transition-colors">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-medium">Analytics</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Recent Forms and Activity Feed */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Recent Forms */}
           <Card className="border-0 shadow-lg">
@@ -272,25 +266,17 @@ export default function DashboardPage() {
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-6 sm:py-8 text-gray-500">
-                    <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
-                    <p className="text-sm sm:text-base">No forms created yet</p>
+                  <div className="text-center py-8 sm:py-12">
+                    <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-gray-500 mb-4">No forms created yet</p>
                     <Link href="/form-generator">
-                      <Button className="mt-3 text-sm">
-                        <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                      <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+                        <Plus className="w-4 h-4 mr-2" />
                         Create Your First Form
                       </Button>
                     </Link>
                   </div>
                 )}
-              </div>
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <Link href="/form-management">
-                  <Button variant="outline" className="w-full text-sm">
-                    View All Forms
-                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
-                  </Button>
-                </Link>
               </div>
             </CardContent>
           </Card>
@@ -299,58 +285,41 @@ export default function DashboardPage() {
           <Card className="border-0 shadow-lg">
             <CardHeader className="pb-3 sm:pb-6">
               <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+                <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />
                 Recent Activity
               </CardTitle>
               <CardDescription className="text-sm">
-                Latest actions and updates
+                Latest submissions and form updates
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3 sm:space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
+                {recentForms.length > 0 ? (
+                  recentForms.slice(0, 3).map((form, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 sm:p-4 border border-gray-100 rounded-lg">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm sm:text-base font-medium text-gray-900">
+                          New submission to <span className="font-semibold">{form.title}</span>
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                          {form.lastSubmission} • {form.submissions} total submissions
+                        </p>
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        New
+                      </Badge>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 sm:py-12">
+                    <BarChart3 className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-gray-500">No recent activity</p>
+                    <p className="text-xs text-gray-400 mt-1">Create forms to see activity here</p>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-gray-900">New form submission</p>
-                    <p className="text-xs text-gray-500">Employee Feedback Survey received a new response</p>
-                    <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-gray-900">Form created</p>
-                    <p className="text-xs text-gray-500">Customer Satisfaction Form was created</p>
-                    <p className="text-xs text-gray-400 mt-1">1 day ago</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4 text-orange-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-gray-900">Form published</p>
-                    <p className="text-xs text-gray-500">Event Registration form is now live</p>
-                    <p className="text-xs text-gray-400 mt-1">3 days ago</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Users className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-gray-900">Attendance updated</p>
-                    <p className="text-xs text-gray-500">Weekly attendance report generated</p>
-                    <p className="text-xs text-gray-400 mt-1">1 week ago</p>
-                  </div>
-                </div>
+                )}
               </div>
             </CardContent>
           </Card>

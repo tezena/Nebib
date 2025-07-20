@@ -98,10 +98,10 @@ const Students = ({ data }: StudentsDatasProps) => {
 
   const editMutation = useMutation({
     mutationFn: async ({ studentId, payload }: any) => {
-      const res = await fetch(`/api/students-info/${data.id}`, {
+      const res = await fetch(`/api/students-info/${data.id}/${studentId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ studentId, data: payload }),
+        body: JSON.stringify({ data: payload }),
       });
       if (!res.ok) throw new Error("Failed to update student");
       return res.json();
@@ -118,10 +118,8 @@ const Students = ({ data }: StudentsDatasProps) => {
 
   const deleteMutation = useMutation({
     mutationFn: async (studentId: string) => {
-      const res = await fetch(`/api/students-info/${data.id}`, {
+      const res = await fetch(`/api/students-info/${data.id}/${studentId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ studentId }),
       });
       if (!res.ok) throw new Error("Failed to delete student");
       return res.json();
@@ -133,20 +131,7 @@ const Students = ({ data }: StudentsDatasProps) => {
     onError: () => toast.error("Failed to delete student"),
   });
 
-  // --- Table Columns ---
-  const dynamicColumns: ColumnDef<TableData>[] = data.fields.map((field) => ({
-    accessorKey: field.id,
-    header: field.label,
-    cell: (info) => {
-      const value = info.getValue();
-      return typeof value === "boolean" ? (
-        <Checkbox checked={value} disabled />
-      ) : (
-        <span className="text-sm text-gray-700">{String(value)}</span>
-      );
-    },
-  }));
-
+  // --- Columns ---
   const columns: ColumnDef<TableData>[] = [
     {
       id: "select",
@@ -155,7 +140,6 @@ const Students = ({ data }: StudentsDatasProps) => {
           checked={table.getIsAllPageRowsSelected()}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
-          className="border-[#4A90E2]"
         />
       ),
       cell: ({ row }) => (
@@ -163,85 +147,52 @@ const Students = ({ data }: StudentsDatasProps) => {
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
-          className="border-[#4A90E2]"
         />
       ),
       enableSorting: false,
       enableHiding: false,
     },
-    {
-      id: "student",
-      header: "Student",
+    ...fieldKeys.map((fieldId) => ({
+      accessorKey: fieldId,
+      header: fieldLabelMap[fieldId] || fieldId,
       cell: ({ row }) => {
-        const student = row.original;
-        const name = student[data.fields.find(f => f.label.toLowerCase().includes('name'))?.id || ''] || 'Unknown';
-        const initials = name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
-        
+        const value = row.getValue(fieldId);
         return (
-          <div className="flex items-center gap-3">
-            <Avatar className="w-10 h-10">
-              <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="font-semibold text-gray-900">{name}</div>
-              <div className="text-sm text-gray-500">ID: {student.studentId.slice(-6)}</div>
-            </div>
+          <div className="max-w-[200px] truncate" title={String(value)}>
+            {String(value || "")}
           </div>
         );
       },
-    },
-    ...dynamicColumns,
+    })),
     {
       accessorKey: "createdAt",
       header: "Registration Date",
-      cell: ({ row }) => {
-        const date = new Date(row.getValue("createdAt"));
-        return (
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-gray-400" />
-            <span className="text-sm text-gray-600">{date.toLocaleDateString()}</span>
-          </div>
-        );
-      },
-    },
-    {
-      id: "status",
-      header: "Status",
-      cell: ({ row }) => {
-        // Mock status based on registration date
-        const date = new Date(row.getValue("createdAt"));
-        const now = new Date();
-        const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-        
-        if (diffInDays <= 7) {
-          return <Badge className="bg-green-100 text-green-800">Active</Badge>;
-        } else if (diffInDays <= 30) {
-          return <Badge className="bg-yellow-100 text-yellow-800">Recent</Badge>;
-        } else {
-          return <Badge variant="secondary">Registered</Badge>;
-        }
-      },
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-gray-400" />
+          <span className="text-sm text-gray-600">{row.getValue("createdAt")}</span>
+        </div>
+      ),
     },
     {
       id: "actions",
       header: "Actions",
-      enableHiding: false,
       cell: ({ row }) => {
+        const student = row.original;
         return (
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => {
-                setEditStudent(row.original);
-                setFormState(row.original);
+                setEditStudent(student);
+                setFormState(student);
                 setModalOpen(true);
               }}
-              className="h-8 px-3"
+              className="flex items-center gap-1"
             >
-              <Edit className="h-4 w-4" />
+              <Edit className="w-3 h-3" />
+              <span className="hidden sm:inline">Edit</span>
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -250,28 +201,21 @@ const Students = ({ data }: StudentsDatasProps) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Eye className="mr-2 h-4 w-4" />
-                  View Details
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => {
-                  setEditStudent(row.original);
-                  setFormState(row.original);
+                  setEditStudent(student);
+                  setFormState(student);
                   setModalOpen(true);
                 }}>
                   <Edit className="mr-2 h-4 w-4" />
-                  Edit
+                  Edit Student
                 </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="text-red-600"
-                  onClick={() => {
-                    if (confirm("Are you sure you want to delete this student?")) {
-                      deleteMutation.mutate(row.original.studentId);
-                    }
-                  }}
-                >
+                <DropdownMenuItem className="text-red-600" onClick={() => {
+                  if (confirm("Are you sure you want to delete this student?")) {
+                    deleteMutation.mutate(student.studentId);
+                  }
+                }}>
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
+                  Delete Student
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -281,200 +225,242 @@ const Students = ({ data }: StudentsDatasProps) => {
     },
   ];
 
-  // --- Modal Form ---
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const payload = { ...formState };
+    delete payload.createdAt;
+    delete payload.studentId;
+
     if (editStudent) {
-      editMutation.mutate({ studentId: editStudent.studentId, payload: formState });
+      editMutation.mutate({ studentId: editStudent.studentId, payload });
     } else {
-      addMutation.mutate(formState);
+      addMutation.mutate(payload);
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{data.topic}</h2>
-                  <p className="text-gray-600">Manage student registrations and attendance</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex flex-wrap gap-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input 
-                  placeholder="Search students..." 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-[300px] border-gray-200 focus:border-blue-500" 
-                />
-              </div>
-              <Button variant="outline" className="gap-2">
-                <Filter className="w-4 h-4" />
-                Filter
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <Download className="w-4 h-4" />
-                Export
-              </Button>
-              <Button 
-                className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                onClick={() => {
-                  setEditStudent(null);
-                  setFormState({});
-                  setModalOpen(true);
-                }}
-              >
-                <Plus className="w-4 h-4" />
-                Add Student
-              </Button>
-            </div>
+      {/* Desktop Table */}
+      <div className="hidden md:block bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Student Registrations
+            </h2>
+            <p className="text-sm text-gray-500">
+              {filteredData.length} students registered
+            </p>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-indigo-50">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Students</p>
-                <p className="text-2xl font-bold text-gray-900">{tableData.length}</p>
-              </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-blue-600" />
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input 
+                placeholder="Search students..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-[300px] border-gray-200 focus:border-blue-500" 
+              />
             </div>
-          </CardContent>
-        </Card>
+            <Button variant="outline" className="flex items-center gap-2">
+              <Filter className="w-4 h-4" />
+              Filter
+            </Button>
+            <Button 
+              onClick={() => setModalOpen(true)}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Student
+            </Button>
+          </div>
+        </div>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-r from-green-50 to-emerald-50">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Active Students</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {tableData.filter(s => {
-                    const date = new Date(s.createdAt);
-                    const now = new Date();
-                    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-                    return diffInDays <= 7;
-                  }).length}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg bg-gradient-to-r from-yellow-50 to-orange-50">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Recent Registrations</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {tableData.filter(s => {
-                    const date = new Date(s.createdAt);
-                    const now = new Date();
-                    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-                    return diffInDays <= 30;
-                  }).length}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Clock className="w-6 h-6 text-yellow-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg bg-gradient-to-r from-red-50 to-pink-50">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Inactive Students</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {tableData.filter(s => {
-                    const date = new Date(s.createdAt);
-                    const now = new Date();
-                    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-                    return diffInDays > 30;
-                  }).length}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <XCircle className="w-6 h-6 text-red-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="p-6">
+          <DataTable columns={columns} data={filteredData} />
+        </div>
       </div>
 
-      {/* Enhanced Table */}
-      <Card className="border-0 shadow-lg">
-        <DataTable columns={columns} data={filteredData} />
-      </Card>
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-4">
+        {/* Mobile Header */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/20">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">Students</h2>
+              <p className="text-sm text-gray-500">{filteredData.length} registered</p>
+            </div>
+            <Button 
+              onClick={() => setModalOpen(true)}
+              size="sm"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add
+            </Button>
+          </div>
+          
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input 
+              placeholder="Search students..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 border-gray-200 focus:border-blue-500" 
+            />
+          </div>
+        </div>
 
-      {/* Modal for Add/Edit */}
+        {/* Student Cards */}
+        {filteredData.length > 0 ? (
+          <div className="space-y-3">
+            {filteredData.map((student, index) => (
+              <Card key={student.studentId || index} className="border-0 shadow-lg">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <Avatar className="w-10 h-10">
+                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-semibold">
+                        {student.name ? student.name.charAt(0).toUpperCase() : 'S'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-gray-900 text-sm mb-1">
+                        {student.name || `Student ${index + 1}`}
+                      </h3>
+                      <div className="space-y-1">
+                        {fieldKeys.slice(0, 3).map((fieldId) => {
+                          const value = student[fieldId];
+                          if (!value) return null;
+                          return (
+                            <div key={fieldId} className="text-xs text-gray-600">
+                              <span className="font-medium">{fieldLabelMap[fieldId]}:</span> {String(value)}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Calendar className="w-3 h-3" />
+                      {student.createdAt}
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      Registered
+                    </Badge>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setEditStudent(student);
+                        setFormState(student);
+                        setModalOpen(true);
+                      }}
+                      className="flex-1 bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                    >
+                      <Edit className="w-3 h-3 mr-1" />
+                      Edit
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => {
+                          setEditStudent(student);
+                          setFormState(student);
+                          setModalOpen(true);
+                        }}>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit Student
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600" onClick={() => {
+                          if (confirm("Are you sure you want to delete this student?")) {
+                            deleteMutation.mutate(student.studentId);
+                          }
+                        }}>
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete Student
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card className="border-0 shadow-lg">
+            <CardContent className="p-8 text-center">
+              <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Students</h3>
+              <p className="text-gray-600 mb-4">No students have registered for this form yet.</p>
+              <Button 
+                onClick={() => setModalOpen(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add First Student
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Add/Edit Student Modal */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="max-w-2xl w-full">
+        <DialogContent className="max-w-md sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
+            <DialogTitle className="text-lg sm:text-xl">
               {editStudent ? "Edit Student" : "Add New Student"}
             </DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {data.fields.map((field) => (
-                <div key={field.id} className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    {field.label}
-                    {field.required && <span className="text-red-500 ml-1">*</span>}
-                  </label>
-                  <Input
-                    type={field.type === "number" ? "number" : "text"}
-                    value={formState[field.id] ?? ""}
-                    onChange={(e) =>
-                      setFormState((prev) => ({ ...prev, [field.id]: e.target.value }))
-                    }
-                    required={field.required}
-                    className="w-full"
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setModalOpen(false)}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {data.fields?.map((field) => (
+              <div key={field.id} className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  {field.label}
+                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                </label>
+                <Input
+                  type={field.type === "email" ? "email" : "text"}
+                  value={formState[field.id] || ""}
+                  onChange={(e) =>
+                    setFormState({ ...formState, [field.id]: e.target.value })
+                  }
+                  required={field.required}
+                  className="border-gray-200 focus:border-blue-500"
+                />
+              </div>
+            ))}
+            <div className="flex gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setModalOpen(false);
+                  setEditStudent(null);
+                  setFormState({});
+                }}
+                className="flex-1"
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={addMutation.isPending || editMutation.isPending}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
               >
                 {addMutation.isPending || editMutation.isPending ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     {editStudent ? "Updating..." : "Adding..."}
-                  </>
+                  </div>
                 ) : (
                   editStudent ? "Update Student" : "Add Student"
                 )}

@@ -6,6 +6,8 @@ import {
   Users,
   Settings,
   LogOut,
+  Plus,
+  List,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +15,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NAV_SECTIONS = [
   {
@@ -79,6 +88,9 @@ export default function AppSidebar() {
 
   // Fallback user info
   const displayUser = user || { name: "User", email: "user@email.com", image: "/man.jpg" };
+
+  // Check if current path is forms-related
+  const isFormsActive = pathname === "/form-generator" || pathname === "/form-management" || pathname.startsWith("/form-management/");
 
   return (
     <>
@@ -159,11 +171,51 @@ export default function AppSidebar() {
       <nav className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden bg-white border-t border-gray-200 shadow-lg justify-around py-2 w-full">
         {[
           { url: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-          { url: "/form-generator", icon: FileText, label: "Forms" },
+          { 
+            url: "#", 
+            icon: FileText, 
+            label: "Forms",
+            isDropdown: true,
+            dropdownItems: [
+              { url: "/form-generator", icon: Plus, label: "Create Form" },
+              { url: "/form-management", icon: List, label: "Manage Forms" },
+            ]
+          },
           { url: "/attendance-management", icon: Users, label: "Attendance" },
           { url: "/settings", icon: Settings, label: "Settings" },
         ].map((item) => {
-          const isActive = pathname === item.url;
+          const isActive = pathname === item.url || (item.isDropdown && isFormsActive);
+          
+          if (item.isDropdown) {
+            return (
+              <DropdownMenu key={item.url}>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      "flex flex-col items-center justify-center flex-1 gap-1 px-1 py-1 rounded-lg transition-all duration-200",
+                      isActive ? "text-blue-600" : "text-gray-400 hover:text-blue-500"
+                    )}
+                  >
+                    <item.icon className="w-6 h-6 mb-0.5" />
+                    <span className="text-xs font-medium">{item.label}</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" side="top" className="w-48">
+                  {item.dropdownItems?.map((dropdownItem) => (
+                    <DropdownMenuItem
+                      key={dropdownItem.url}
+                      onClick={() => router.push(dropdownItem.url)}
+                      className="flex items-center gap-3"
+                    >
+                      <dropdownItem.icon className="w-4 h-4" />
+                      <span>{dropdownItem.label}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            );
+          }
+
           return (
             <button
               key={item.url}

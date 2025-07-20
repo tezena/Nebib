@@ -7,12 +7,13 @@ import StepNavigation from "@/components/form-generator/step-navigation";
 import { useState, useRef } from "react";
 import { 
   Sparkles,
-  Eye,
-  Upload,
   CheckCircle,
-  ArrowLeft
+  ArrowLeft,
+  Eye,
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Page() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -48,10 +49,37 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header Section */}
-        <div className="mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 pb-20 md:pb-8">
+      {/* Mobile App Header */}
+      <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Link href="/dashboard">
+                <Button variant="ghost" size="sm" className="p-2 h-8 w-8">
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">Create Form</h1>
+                <p className="text-xs text-gray-600">Step {currentStep + 1} of {steps.length}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="px-3 py-1 bg-green-100 rounded-full">
+                <div className="flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3 text-green-600" />
+                  <span className="text-xs font-medium text-green-700">Smart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        {/* Desktop Header Section */}
+        <div className="mb-6 sm:mb-8 hidden md:block">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
@@ -74,7 +102,7 @@ export default function Page() {
         </div>
 
         {/* Step Navigation */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <StepNavigation
             steps={steps}
             currentStep={currentStep}
@@ -86,8 +114,8 @@ export default function Page() {
         </div>
 
         {/* Content Area */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
-          <div className="p-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+          <div className="p-4 sm:p-8">
             {currentStep === 0 && (
               <FormGeneratorStep 
                 onComplete={() => setCanProceed(true)}
@@ -112,35 +140,54 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="mt-8 hidden md:flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Dashboard
-            </Button>
-          </div>
-          
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>Auto-save enabled</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-purple-500" />
-              <span>Smart assistance active</span>
+        {/* Mobile Bottom Navigation */}
+        <div className="md:hidden mt-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 text-xs text-gray-500">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>Auto-save</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-purple-500" />
+                  <span>Smart AI</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-gray-500">
-            © 2024 Form Generator. Built with modern technology and intelligent assistance.
-          </p>
+        {/* Desktop Quick Actions */}
+        <div className="hidden md:block mt-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-gray-700">Auto-save enabled</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-purple-500" />
+                  <span className="text-sm font-medium text-gray-700">Smart AI assistance</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-blue-500" />
+                  <span className="text-sm font-medium text-gray-700">Real-time validation</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button variant="outline" size="sm">
+                  <Eye className="w-4 h-4 mr-2" />
+                  Preview
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

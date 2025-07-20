@@ -144,26 +144,26 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
   const renderFieldPreview = (field: Field) => {
     switch (field.type) {
       case 'text':
-        return <Input placeholder={field.placeholder || `Enter ${field.label?.toLowerCase() || 'text'}`} disabled />;
+        return <Input placeholder={field.placeholder || `Enter ${field.label?.toLowerCase() || 'text'}`} disabled className="text-sm sm:text-base" />;
       case 'email':
-        return <Input type="email" placeholder="Enter email address" disabled />;
+        return <Input type="email" placeholder="Enter email address" disabled className="text-sm sm:text-base" />;
       case 'number':
-        return <Input type="number" placeholder="Enter number" disabled />;
+        return <Input type="number" placeholder="Enter number" disabled className="text-sm sm:text-base" />;
       case 'date':
-        return <Input type="date" disabled />;
+        return <Input type="date" disabled className="text-sm sm:text-base" />;
       case 'checkbox':
         return (
           <div className="flex items-center space-x-2">
             <input type="checkbox" disabled />
-            <Label className="text-sm">{field.label}</Label>
+            <Label className="text-sm sm:text-base">{field.label}</Label>
           </div>
         );
       case 'textarea':
-        return <Textarea placeholder={field.placeholder || `Enter ${field.label?.toLowerCase() || 'text'}`} disabled />;
+        return <Textarea placeholder={field.placeholder || `Enter ${field.label?.toLowerCase() || 'text'}`} disabled className="text-sm sm:text-base" />;
       case 'select':
         return (
           <Select disabled>
-            <SelectTrigger>
+            <SelectTrigger className="text-sm sm:text-base">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
@@ -176,46 +176,37 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
           </Select>
         );
       default:
-        return <Input placeholder="Field preview" disabled />;
+        return <Input placeholder="Field preview" disabled className="text-sm sm:text-base" />;
     }
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <Eye className="w-8 h-8 text-white" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Review Your Form</h2>
-        <p className="text-gray-600">Preview and make final adjustments before publishing</p>
-      </div>
-
+    <div className="space-y-6 sm:space-y-8">
       {/* Form Details */}
       <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
             Form Details
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardContent className="space-y-3 sm:space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <Label className="text-sm font-medium text-gray-600">Title</Label>
-              <p className="text-lg font-semibold text-gray-900">{formData.topic || 'Untitled Form'}</p>
+              <Label className="text-xs sm:text-sm font-medium text-gray-600">Title</Label>
+              <p className="text-base sm:text-lg font-semibold text-gray-900">{formData.topic || 'Untitled Form'}</p>
             </div>
             <div>
-              <Label className="text-sm font-medium text-gray-600">Description</Label>
-              <p className="text-gray-700">{formData.description || 'No description provided'}</p>
+              <Label className="text-xs sm:text-sm font-medium text-gray-600">Description</Label>
+              <p className="text-sm sm:text-base text-gray-700">{formData.description || 'No description provided'}</p>
             </div>
           </div>
           
           <div>
-            <Label className="text-sm font-medium text-gray-600">Categories</Label>
+            <Label className="text-xs sm:text-sm font-medium text-gray-600">Categories</Label>
             <div className="flex flex-wrap gap-2 mt-2">
               {formData.categories.map((category, index) => (
-                <Badge key={index} variant="secondary" className="px-3 py-1">
+                <Badge key={index} variant="secondary" className="px-2 sm:px-3 py-1 text-xs sm:text-sm">
                   {category}
                 </Badge>
               ))}
@@ -226,62 +217,62 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
 
       {/* Fields Review */}
       <Card className="border-0 shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" />
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
             Form Fields ({formData.fields.length})
           </CardTitle>
-          <div className="text-sm text-gray-500">
+          <div className="text-xs sm:text-sm text-gray-500">
             {formData.fields.filter(f => f.required).length} required
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 sm:space-y-4">
           {formData.fields.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-              <p>No fields to review. Go back to add some fields.</p>
+            <div className="text-center py-6 sm:py-8 text-gray-500">
+              <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
+              <p className="text-sm sm:text-base">No fields to review. Go back to add some fields.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
               {formData.fields.map((field, index) => {
               const Icon = getFieldIcon(field.type);
               const isEditing = editingField === field.id;
               
               return (
-                <div key={field.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-blue-600" />
+                <div key={field.id} className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       {isEditing ? (
                         <Input
                           value={field.label}
                           onChange={(e) => updateField(field.id, { label: e.target.value })}
                           onBlur={() => setEditingField(null)}
                           onKeyDown={(e) => e.key === 'Enter' && setEditingField(null)}
-                          className="font-medium"
+                          className="font-medium text-sm sm:text-base"
                           autoFocus
                         />
                       ) : (
                         <div className="flex items-center justify-between">
-                          <span className="font-medium text-gray-900">{field.label}</span>
-                          <div className="flex items-center gap-2">
+                          <span className="font-medium text-gray-900 text-sm sm:text-base truncate">{field.label}</span>
+                          <div className="flex items-center gap-1 sm:gap-2">
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => setEditingField(field.id)}
-                              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+                              className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 h-8 w-8 sm:h-9 sm:w-9 p-0"
                             >
-                              <Pencil className="w-4 h-4" />
+                              <Pencil className="w-3 h-3 sm:w-4 sm:h-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => deleteField(field.id)}
-                              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-50 h-8 w-8 sm:h-9 sm:w-9 p-0"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                             </Button>
                           </div>
                         </div>
@@ -289,16 +280,16 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-                    <div className="text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-3">
+                    <div className="text-xs sm:text-sm">
                       <span className="text-gray-500">Type:</span>
                       <span className="ml-1 font-medium capitalize">{field.type}</span>
                     </div>
-                    <div className="text-sm">
+                    <div className="text-xs sm:text-sm">
                       <span className="text-gray-500">Category:</span>
                       <span className="ml-1 font-medium">{field.category || 'None'}</span>
                     </div>
-                    <div className="text-sm">
+                    <div className="text-xs sm:text-sm">
                       <span className="text-gray-500">Required:</span>
                       <span className={`ml-1 font-medium ${field.required ? 'text-red-500' : 'text-gray-500'}`}>
                         {field.required ? 'Yes' : 'No'}
@@ -307,8 +298,8 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
                   </div>
 
                   {/* Field Preview */}
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <Label className="text-sm font-medium text-gray-600 mb-2 block">
+                  <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
+                    <Label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
                       Preview:
                     </Label>
                     {renderFieldPreview(field)}
@@ -321,9 +312,37 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
         </CardContent>
       </Card>
 
+      {/* Mobile Navigation */}
+      <div className="md:hidden">
+        <div className="flex flex-col gap-3">
+          <Button 
+            variant="outline"
+            onClick={() => setCurrentStep(0)}
+            className="w-full"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Generate
+          </Button>
 
+          <div className="text-center">
+            <p className="text-xs text-gray-600 mb-1">
+              {formData.fields.length} fields • {formData.fields.filter(f => f.required).length} required
+            </p>
+            <p className="text-xs text-green-600">✓ Form is ready for publishing</p>
+          </div>
 
-      {/* Navigation */}
+          <Button 
+            onClick={() => setCurrentStep(2)}
+            disabled={formData.fields.length === 0}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+          >
+            Continue to Publish
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Desktop Navigation */}
       <div className="hidden md:flex justify-between items-center">
         <Button 
           variant="outline"
