@@ -155,7 +155,7 @@ const Students = ({ data }: StudentsDatasProps) => {
     ...fieldKeys.map((fieldId) => ({
       accessorKey: fieldId,
       header: fieldLabelMap[fieldId] || fieldId,
-      cell: ({ row }) => {
+      cell: ({ row }: { row: any }) => {
         const value = row.getValue(fieldId);
         return (
           <div className="max-w-[200px] truncate" title={String(value)}>
