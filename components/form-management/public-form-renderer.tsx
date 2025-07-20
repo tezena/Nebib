@@ -15,7 +15,6 @@ import { Badge } from "@/components/ui/badge"
 import { Loader2, Sparkles, Send, CheckCircle, AlertCircle } from "lucide-react"
 import { useAddData } from "@/app/(admin)/form-management/_hooks/form_hooks"
 import { toast } from "sonner"
-import Link from "next/link"
 import QRGenerator from "@/components/qr-code/qr-generator"
 
 export default function PublicFormRenderer() {

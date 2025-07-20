@@ -64,7 +64,7 @@ export default function LoginPage() {
           },
           onError: (error) => {
             console.error("❌ Sign-in error:", error);
-            alert(`Sign-in failed: ${error.message || 'Unknown error'}`);
+            alert(`Sign-in failed: Unknown error`);
           },
         }
       );

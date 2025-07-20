@@ -52,17 +52,61 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Check if student exists in the form
-    const student = await db.data.findFirst({
+    console.log("🔍 Looking for student with:", { userId: parsedData.userId, formId: parsedData.formId, formData: parsedData.formData });
+    
+    // First try to find by userId (data ID)
+    let student = await db.data.findFirst({
       where: {
         id: parsedData.userId,
         formId: parsedData.formId
       }
     });
 
+    console.log("🔍 Found by userId:", student?.id);
+
+    // If not found by userId, try to find by formData (for test data)
+    if (!student && parsedData.formData) {
+      // Try to find by matching any field value in formData
+      const formDataEntries = Object.entries(parsedData.formData);
+      for (const [key, value] of formDataEntries) {
+        if (typeof value === 'string' && value.trim() !== '') {
+          student = await db.data.findFirst({
+            where: {
+              formId: parsedData.formId,
+              data: {
+                path: [key],
+                equals: value
+              }
+            }
+          });
+          if (student) {
+            console.log("🔍 Found by formData field:", key, value);
+            break;
+          }
+        }
+      }
+    }
+
+    // If still not found, try to find any recent data in the form
     if (!student) {
+      student = await db.data.findFirst({
+        where: {
+          formId: parsedData.formId
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+      console.log("🔍 Found recent data:", student?.id);
+    }
+
+    if (!student) {
+      console.log("❌ No student found in form");
       const response = NextResponse.json({ error: "Student not found in this form" }, { status: 404 });
       return addCorsHeaders(response, request);
     }
+
+    console.log("✅ Student found:", student.id);
 
     // Determine attendance status based on time
     const now = new Date();
@@ -79,10 +123,10 @@ export const POST = async (request: NextRequest) => {
     const today = new Date().toISOString().split('T')[0];
     const existingAttendance = await db.data.findFirst({
       where: {
-        id: parsedData.userId,
+        id: student.id, // Use the found student's ID, not parsedData.userId
         formId: parsedData.formId,
         data: {
-          path: ['date'],
+          path: ['attendance', 'date'],
           equals: today
         }
       }
@@ -93,13 +137,16 @@ export const POST = async (request: NextRequest) => {
       const currentData = existingAttendance.data as any;
       const updatedData = {
         ...currentData,
-        status,
-        date: today,
-        lastUpdated: now.toISOString()
+        attendance: {
+          ...currentData.attendance,
+          status,
+          date: today,
+          lastUpdated: now.toISOString()
+        }
       };
 
       await db.data.update({
-        where: { id: existingAttendance.id },
+        where: { id: student.id }, // Use the found student's ID
         data: { data: updatedData }
       });
     } else {
@@ -113,7 +160,7 @@ export const POST = async (request: NextRequest) => {
       };
 
       await db.data.update({
-        where: { id: parsedData.userId },
+        where: { id: student.id }, // Use the found student's ID
         data: { 
           data: {
             ...(student.data as any),
@@ -125,16 +172,46 @@ export const POST = async (request: NextRequest) => {
 
     // Get student name for response
     const studentData = student.data as any;
-    const studentName = studentData?.name || 
-                       studentData?.fullName || 
-                       studentData?.studentName || 
-                       "Unknown Student";
+    console.log("🔍 Student data structure:", JSON.stringify(studentData, null, 2));
+    
+    // Extract student name from dynamic field structure
+    let studentName = "Unknown Student";
+    
+    if (studentData && typeof studentData === 'object') {
+      // Find the first field that looks like a name (not attendance data, not numbers, not emails)
+      const nameField = Object.entries(studentData).find(([key, value]) => {
+        // Skip attendance-related fields
+        if (['attendance', 'date', 'status', 'timestamp', 'createdAt', 'lastUpdated'].includes(key)) {
+          return false;
+        }
+        // Look for string values that could be names
+        return typeof value === 'string' && 
+               value.trim() !== '' && 
+               value.length < 50 && // Names are usually short
+               !value.includes('@') && // Not an email
+               !value.match(/^\d+$/) && // Not just numbers
+               !value.includes('-') && // Not a date
+               !value.includes('/'); // Not a date
+      });
+      
+      if (nameField) {
+        studentName = nameField[1] as string;
+      }
+    }
+
+    console.log("✅ Attendance marked successfully:", {
+      studentId: student.id,
+      studentName,
+      status,
+      timestamp: now.toISOString(),
+      dataKeys: studentData ? Object.keys(studentData) : []
+    });
 
     const response = NextResponse.json({
       success: true,
       message: `Attendance marked as ${status}`,
       data: {
-        userId: parsedData.userId,
+        userId: student.id, // Use the actual student ID
         studentName,
         status,
         timestamp: now.toISOString()

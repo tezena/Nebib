@@ -541,8 +541,41 @@ export default function CheckIn({ data }: StudentsDatasProps) {
         {viewMode === 'qr' && (
           <div className="max-w-2xl mx-auto">
             <QRScanner 
-              formId={data.id}
-              onAttendanceMarked={handleCheckIn}
+              onScan={async (qrData) => {
+                try {
+                  console.log('🔍 Processing QR scan:', qrData);
+                  
+                  // Send QR data to API for processing
+                  const response = await fetch('/api/qr-attendance', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ qrData })
+                  });
+
+                  if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to process QR code');
+                  }
+
+                  const result = await response.json();
+                  
+                  // Call the existing handleCheckIn function
+                  await handleCheckIn(result.data.userId, result.data.status);
+                  
+                  toast.success(`${result.data.studentName} marked as ${result.data.status}`);
+                  
+                } catch (error: any) {
+                  console.error('❌ QR scan error:', error);
+                  toast.error(error.message || 'Failed to process QR code');
+                }
+              }}
+              onError={(error) => {
+                console.error('❌ QR scanner error:', error);
+                toast.error(error);
+              }}
               className="w-full"
             />
           </div>
