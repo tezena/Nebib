@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export NODE_ENV=production
+    - npm install
+    - npx prisma generate
+    - npm run build
+    - /bin/cp -rf dist/* $HOME/public_html/
