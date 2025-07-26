@@ -1,7 +1,7 @@
 # Nebib - Form & Attendance Management System
 
 A modern, responsive form and attendance management application built with Next.js, featuring inline form building, QR code attendance tracking, and comprehensive help system.
-
+ 
 ## Features
 
 - **Inline Form Builder**: Revolutionary "what you see is what you get" form creation
