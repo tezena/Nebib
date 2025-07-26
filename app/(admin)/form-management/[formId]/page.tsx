@@ -474,7 +474,7 @@ export default function FormDetailPage() {
           <h1 className="text-xl text-red-500">Error Loading Form</h1>
           <p className="text-gray-600 mb-4">{error instanceof Error ? error.message : "Failed to load form details"}</p>
           <Button onClick={() => window.location.reload()}>
-            Try Again
+                Try Again
           </Button>
         </Card>
       </div>
@@ -566,11 +566,11 @@ export default function FormDetailPage() {
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
-            <div>
+              <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{formData.topic}</h1>
               <p className="text-gray-600 mt-1">{formData.description}</p>
             </div>
-            <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
               <Button variant="outline" onClick={copyLink}>
                 <Copy className="w-4 h-4 mr-2" />
                 Copy Link
@@ -579,7 +579,7 @@ export default function FormDetailPage() {
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Open Form
               </Button>
-            </div>
+                </div>
           </div>
         </div>
 
@@ -615,60 +615,60 @@ export default function FormDetailPage() {
 
           <Card className="border-0 shadow-lg">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
+            <div className="flex items-center justify-between">
+              <div>
                   <p className="text-sm font-medium text-gray-600">Unique Emails</p>
                   <p className="text-2xl font-bold text-gray-900">{uniqueEmails}</p>
-                </div>
+              </div>
                 <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                   <Users className="w-5 h-5 text-purple-600" />
-                </div>
               </div>
+            </div>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
+            <div className="flex items-center justify-between">
+              <div>
                   <p className="text-sm font-medium text-gray-600">Present Today</p>
                   <p className="text-2xl font-bold text-gray-900">{presentCount}</p>
-                </div>
+              </div>
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                </div>
               </div>
+            </div>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
+            <div className="flex items-center justify-between">
+              <div>
                   <p className="text-sm font-medium text-gray-600">Absent Today</p>
                   <p className="text-2xl font-bold text-gray-900">{absentCount}</p>
-                </div>
+              </div>
                 <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                   <XCircle className="w-5 h-5 text-red-600" />
-                </div>
               </div>
+            </div>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
+            <div className="flex items-center justify-between">
+              <div>
                   <p className="text-sm font-medium text-gray-600">Late Today</p>
                   <p className="text-2xl font-bold text-gray-900">{lateCount}</p>
-                </div>
+              </div>
                 <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                   <Clock className="w-5 h-5 text-yellow-600" />
-                </div>
               </div>
+            </div>
             </CardContent>
           </Card>
-        </div>
+            </div>
 
         {/* Tabs */}
         <Tabs defaultValue="submissions" className="w-full">
@@ -686,7 +686,7 @@ export default function FormDetailPage() {
                     <Download className="w-4 h-4 mr-2" />
                     Export CSV
                   </Button>
-                </div>
+          </div>
               </CardHeader>
               <CardContent>
                 {submissions.length === 0 ? (
@@ -694,7 +694,7 @@ export default function FormDetailPage() {
                     <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">No submissions yet</h3>
                     <p className="text-gray-500">When users submit your form, their responses will appear here.</p>
-                  </div>
+        </div>
                 ) : (
                   <div className="space-y-4">
                     {submissions.map((submission) => {
@@ -717,7 +717,7 @@ export default function FormDetailPage() {
                                     toggleSubmissionSelection(submission.id)
                                   }}
                                 />
-                                <div>
+            <div>
                                   <div className="font-medium text-gray-900">
                                     {studentName}
                                   </div>
@@ -725,21 +725,21 @@ export default function FormDetailPage() {
                                     {submission.email || 'No email provided'}
                                   </div>
                                 </div>
-                              </div>
-                              <div className="flex items-center gap-2">
+            </div>
+            <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-1 text-sm text-gray-500">
                                   <QrCode className="w-4 h-4" />
                                   <span className="hidden sm:inline">Click to view QR</span>
                                 </div>
                                 <Badge variant="outline">
                                   {new Date(submission.submittedAt).toLocaleDateString()}
-                                </Badge>
+              </Badge>
                                 <span className="text-xs text-gray-500">
                                   {new Date(submission.submittedAt).toLocaleTimeString()}
                                 </span>
-                              </div>
-                            </div>
-                            
+            </div>
+          </div>
+          
                             {/* Show form fields and values */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                               {submission.fields.map((field, index) => (
@@ -750,12 +750,12 @@ export default function FormDetailPage() {
                                       ? (field.value ? 'Yes' : 'No')
                                       : field.value || 'Not provided'
                                     }
-                                  </span>
+              </span>
                                 </div>
                               ))}
                             </div>
-                          </div>
-                          
+            </div>
+
                           {/* Expanded QR Code Section */}
                           {isExpanded && (
                             <div className="border-t border-gray-200 bg-gray-50 p-4">
@@ -771,16 +771,16 @@ export default function FormDetailPage() {
                                         className="w-32 h-32 mx-auto"
                                       />
                                       <div className="flex items-center justify-center gap-2">
-                                        <Button
+              <Button
                                           onClick={() => downloadQRCode(qrCodeUrl, studentName)}
-                                          variant="outline"
+                variant="outline"
                                           size="sm"
                                           className="flex items-center gap-1"
-                                        >
+              >
                                           <DownloadIcon className="w-3 h-3" />
                                           Download
-                                        </Button>
-                                        <Button
+              </Button>
+              <Button
                                           onClick={() => {
                                             navigator.clipboard.writeText(qrCodeUrl)
                                             toast.success(`QR code URL for ${studentName} copied!`)
@@ -791,21 +791,21 @@ export default function FormDetailPage() {
                                         >
                                           <Copy className="w-3 h-3" />
                                           Copy URL
-                                        </Button>
+              </Button>
                                       </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                
+            </div>
+          </div>
+        </div>
+
                                 {/* QR Code Information */}
                                 <div className="flex-1 space-y-3">
-                                  <div>
+            <div>
                                     <h4 className="font-medium text-gray-900 mb-2">QR Code Information</h4>
                                     <div className="space-y-2 text-sm">
                                       <div className="flex justify-between">
                                         <span className="text-gray-600">Student Name:</span>
                                         <span className="font-medium">{studentName}</span>
-                                      </div>
+            </div>
                                       {submission.email && (
                                         <div className="flex justify-between">
                                           <span className="text-gray-600">Email:</span>
@@ -914,8 +914,8 @@ export default function FormDetailPage() {
                       <Button onClick={markAllAbsent} variant="outline" size="sm">
                         <span className="hidden sm:inline">Mark All Absent</span>
                         <span className="sm:hidden">All Absent</span>
-                      </Button>
-                    </div>
+            </Button>
+          </div>
                   </div>
                 </div>
               </CardHeader>
@@ -945,15 +945,15 @@ export default function FormDetailPage() {
                           <div className="flex items-center gap-3 min-w-0 flex-1">
                             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                               <Users className="w-4 h-4 text-blue-600" />
-                            </div>
+                    </div>
                             <div className="min-w-0 flex-1">
                               <div className="font-medium text-gray-900 truncate">
                                 {submission.name || `Student ${submission.id.slice(-6)}`}
-                              </div>
+                      </div>
                               <div className="text-sm text-gray-500 truncate">
                                 {submission.email || 'No email provided'}
-                              </div>
-                            </div>
+                    </div>
+                  </div>
                           </div>
                           
                           {/* Status Badge - Mobile */}
@@ -968,7 +968,7 @@ export default function FormDetailPage() {
                                 }
                               >
                                 {currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1)}
-                              </Badge>
+                    </Badge>
                             </div>
                           )}
                           
@@ -1012,7 +1012,7 @@ export default function FormDetailPage() {
                                 <span className="hidden sm:inline">Late</span>
                                 <span className="sm:hidden">L</span>
                               </Button>
-                            </div>
+                </div>
                             
                             {/* Desktop: Status Badge */}
                             {currentStatus && (
@@ -1027,19 +1027,19 @@ export default function FormDetailPage() {
                                 >
                                   {currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1)}
                                 </Badge>
-                              </div>
+            </div>
                             )}
                           </div>
                         </div>
                       )
                     })}
-                  </div>
-                )}
+            </div>
+          )}
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
+        </div>
 
       {/* QR Scanner Modal */}
       {showQRScanner && (
@@ -1073,9 +1073,9 @@ export default function FormDetailPage() {
                     <div className="flex items-center justify-center gap-2 mt-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                       <span className="text-xs text-green-600 font-medium">Continuous Scanning Active</span>
-                    </div>
-                  </div>
-                  
+              </div>
+            </div>
+            
                   <QRScanner
                     onScan={handleQRScan}
                     onError={(error) => {
@@ -1091,11 +1091,11 @@ export default function FormDetailPage() {
                       <div className="flex items-center gap-2 mb-2">
                         <CheckCircle className="w-4 h-4 text-blue-600" />
                         <span className="text-sm font-medium text-blue-800">Last Scan:</span>
-                      </div>
+                    </div>
                       <p className="text-xs font-mono text-blue-700 break-all">
                         {scannedData}
                       </p>
-                    </div>
+                      </div>
                   )}
                   
                   {/* Debug Panel - Show available students */}
@@ -1107,14 +1107,14 @@ export default function FormDetailPage() {
                       {submissions.slice(0, 5).map((sub, index) => (
                         <div key={sub.id} className="text-xs text-gray-600">
                           {index + 1}. {sub.name || 'No name'} ({sub.email || 'No email'}) - ID: {sub.id.slice(-8)}
-                        </div>
+                  </div>
                       ))}
                       {submissions.length > 5 && (
                         <div className="text-xs text-gray-500 italic">
                           ... and {submissions.length - 5} more
-                        </div>
+                  </div>
                       )}
-                    </div>
+                </div>
                   </div>
                   
                   {/* Instructions for continuous scanning */}
@@ -1186,15 +1186,15 @@ export default function FormDetailPage() {
                               className="w-full text-xs"
                             >
                               Test QR Format: {submissions[0].name || 'Student'}
-                            </Button>
+                  </Button>
                           </div>
                         )}
-                      </div>
-                    )}
-                  </div>
                 </div>
               )}
             </div>
+          </div>
+        )}
+      </div>
             
             {!isScanning && (
               <div className="flex gap-2 mt-6">
