@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nebib - Form & Attendance Management System
+
+A modern, responsive form and attendance management application built with Next.js, featuring inline form building, QR code attendance tracking, and comprehensive help system.
+
+## Features
+
+- **Inline Form Builder**: Revolutionary "what you see is what you get" form creation
+- **Advanced QR Attendance**: Admin-side QR scanning for student attendance tracking
+- **Mobile-First Design**: Touch-friendly interface with responsive design
+- **Built-in Help System**: Comprehensive guidelines and tutorials
+- **Real-time Data**: Live form submissions and attendance tracking
+- **Export Functionality**: Download form data and attendance reports
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- PostgreSQL database
+- Railway account (for deployment)
+
+### Local Development
+
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd nebib
+```
+
+2. **Install dependencies**
+```bash
+npm install
+# or
+pnpm install
+```
+
+3. **Set up environment variables**
+Create a `.env.local` file:
+```bash
+BETTER_AUTH_SECRET=your-development-secret-key
+DATABASE_URL=your-database-url
+NODE_ENV=development
+```
+
+4. **Set up the database**
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+5. **Run the development server**
 ```bash
 npm run dev
 # or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Railway Deployment
 
-## Learn More
+This application is optimized for Railway deployment. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-To learn more about Next.js, take a look at the following resources:
+**Quick Setup:**
+1. Connect your repository to Railway
+2. Add a PostgreSQL database
+3. Set environment variables (see DEPLOYMENT.md)
+4. Deploy!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Required Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `BETTER_AUTH_SECRET`: Strong secret key for authentication
+- `DATABASE_URL`: PostgreSQL connection string
+- `NODE_ENV`: Set to "production" for deployment
 
-## Deploy on Vercel
+## Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Deployment Guide](./DEPLOYMENT.md) - Complete Railway deployment instructions
+- [CORS Setup](./CORS_SETUP.md) - CORS configuration details
+- [QR Code Features](./QR_CODE_FEATURES.md) - QR code functionality documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS, Radix UI
+- **Authentication**: Better Auth
+- **Database**: PostgreSQL with Prisma ORM
+- **Deployment**: Railway
+- **QR Code**: @yudiel/react-qr-scanner
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
