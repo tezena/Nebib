@@ -1,6 +1,6 @@
 "use client";
 
-import { HelpCircle, Settings, User, LogOut, Bell, Shield, Moon, Sun } from "lucide-react";
+import { HelpCircle, Settings, User, LogOut, Bell, Shield, Moon, Sun, BarChart3 } from "lucide-react";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
 import {
@@ -152,6 +152,11 @@ export default function TopPart() {
             <DropdownMenuItem onClick={() => router.push('/settings')} className="dark:text-gray-200 dark:hover:bg-gray-700">
               <User className="mr-2 h-4 w-4" />
               <span>Profile Settings</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem onClick={() => router.push('/attendance-report')} className="dark:text-gray-200 dark:hover:bg-gray-700">
+              <BarChart3 className="mr-2 h-4 w-4" />
+              <span>Attendance Report</span>
             </DropdownMenuItem>
             
             <DropdownMenuItem onClick={() => router.push('/settings?tab=security')} className="dark:text-gray-200 dark:hover:bg-gray-700">

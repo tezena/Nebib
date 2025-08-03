@@ -87,7 +87,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
       <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
         {/* Logo and Header */}
         <div className="flex flex-col items-center text-center">
@@ -99,12 +99,12 @@ export default function LoginPage() {
               height={32}
               className="w-8 h-8"
             />
-            <h1 className="text-2xl font-semibold text-gray-800">NEBIB</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">NEBIB</h1>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
             Generate forms of your own
           </h2>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 hover:underline text-sm mt-2">
+          <Link href="/" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline text-sm mt-2">
             ← Back to Landing Page
           </Link>
         </div>
@@ -120,7 +120,7 @@ export default function LoginPage() {
                   <FormItem className="space-y-2">
                     <Label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       Email address
                     </Label>
@@ -129,11 +129,11 @@ export default function LoginPage() {
                         id="email"
                         type="email"
                         autoComplete="email"
-                        className="w-full bg-white border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white dark:placeholder-gray-400"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -146,13 +146,13 @@ export default function LoginPage() {
                     <div className="flex justify-between items-center">
                       <Label
                         htmlFor="password"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                       >
                         Password
                       </Label>
                       <Link
                         href="#"
-                        className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                        className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
                       >
                         Forgot password?
                       </Link>
@@ -163,13 +163,13 @@ export default function LoginPage() {
                           id="password"
                           type={showPassword ? "text" : "password"}
                           autoComplete="current-password"
-                          className="w-full bg-white border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                          className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 dark:text-white dark:placeholder-gray-400"
                           {...field}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
                         >
                           {showPassword ? (
                             <EyeOff className="h-4 w-4" />
@@ -179,7 +179,7 @@ export default function LoginPage() {
                         </button>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -194,10 +194,10 @@ export default function LoginPage() {
                         id="remember"
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="border-gray-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                        className="border-gray-300 dark:border-gray-600 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
                       />
                     </FormControl>
-                    <Label htmlFor="remember" className="text-sm text-gray-700">
+                    <Label htmlFor="remember" className="text-sm text-gray-700 dark:text-gray-300">
                       Remember me
                     </Label>
                   </FormItem>
@@ -206,8 +206,8 @@ export default function LoginPage() {
 
               {/* Authentication Error Display */}
               {authError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                  <p className="text-sm text-red-600">{authError}</p>
+                <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                  <p className="text-sm text-red-600 dark:text-red-400">{authError}</p>
                 </div>
               )}
 
@@ -222,9 +222,9 @@ export default function LoginPage() {
           </Form>
 
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Not a member?{" "}
-              <Link href="/register" className="text-blue-600 hover:text-blue-700 hover:underline">
+              <Link href="/register" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline">
                 Register your organization
               </Link>
             </p>

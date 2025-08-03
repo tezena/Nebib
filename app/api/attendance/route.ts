@@ -20,122 +20,135 @@ export const GET = async (request: NextRequest) => {
       return addCorsHeaders(response, request);
     }
 
-    console.log("Attendance API: Fetching forms for user", session.user.id);
+    // Get formId from query params if provided
+    const { searchParams } = new URL(request.url);
+    const formId = searchParams.get('formId');
     
-    // Get all forms for the user (for now, we'll use all forms since we don't have ATTENDANCE type)
-    const attendanceForms = await db.form.findMany({
-      where: { 
+    console.log("Attendance API: Fetching attendance data", { userId: session.user.id, formId });
+    
+    // Build the where clause for attendance records
+    const whereClause: any = {
+      form: {
         userId: session.user.id
-      },
+      }
+    };
+    
+    if (formId) {
+      whereClause.formId = formId;
+    }
+
+    // Fetch attendance records with related data
+    const attendanceRecords = await db.attendance.findMany({
+      where: whereClause,
       include: {
-        datas: true,
-        fields: true,
+        form: {
+          select: {
+            id: true,
+            topic: true,
+            description: true
+          }
+        },
+        data: {
+          select: {
+            id: true,
+            data: true,
+            createdAt: true
+          }
+        }
       },
+      orderBy: {
+        date: 'desc'
+      }
     });
 
-    console.log("Attendance API: Found forms", { count: attendanceForms.length });
+    console.log("Attendance API: Found attendance records", { count: attendanceRecords.length });
 
-    // Process attendance data from all forms
-    const attendanceRecords: any[] = [];
+    // Process attendance records
+    const processedRecords: any[] = [];
     const sessionStats: any[] = [];
 
-    attendanceForms.forEach(form => {
-      console.log("Attendance API: Processing form", { formId: form.id, dataCount: form.datas?.length });
-      
-      // Group submissions by date to create sessions
-      const submissionsByDate = new Map<string, any[]>();
-      
-      form.datas?.forEach(submission => {
-        try {
-          const date = new Date(submission.createdAt).toISOString().split('T')[0];
-          if (!submissionsByDate.has(date)) {
-            submissionsByDate.set(date, []);
-          }
-          submissionsByDate.get(date)!.push(submission);
-        } catch (error) {
-          console.error("Attendance API: Error processing submission", { submissionId: submission.id, error });
-        }
-      });
-
-      // Convert to attendance records
-      submissionsByDate.forEach((submissions, date) => {
-        const sessionName = `Session ${new Date(date).toLocaleDateString()}`;
+    attendanceRecords.forEach(record => {
+      try {
+        // Extract student information from form data
+        const formData = record.data.data as any;
+        let studentName = 'Unknown Student';
+        let studentEmail = '';
         
-        submissions.forEach(submission => {
-          try {
-            const data = submission.data as any;
-            const studentName = data.name || data.fullName || data.studentName || 'Unknown';
-            const status = data.status || data.attendanceStatus || 'present';
-            
-            attendanceRecords.push({
-              id: `${submission.id}`,
-              studentId: submission.id,
-              studentName,
-              date,
-              status,
-              session: sessionName,
-              formId: form.id,
-              formTitle: form.topic
-            });
-          } catch (error) {
-            console.error("Attendance API: Error processing attendance record", { submissionId: submission.id, error });
-          }
+        // Try to find name and email in the form data
+        if (formData.name) studentName = formData.name;
+        else if (formData.fullName) studentName = formData.fullName;
+        else if (formData.studentName) studentName = formData.studentName;
+        else if (formData.firstName && formData.lastName) studentName = `${formData.firstName} ${formData.lastName}`;
+        
+        if (formData.email) studentEmail = formData.email;
+        else if (formData.studentEmail) studentEmail = formData.studentEmail;
+        
+        const dateStr = record.date.toISOString().split('T')[0];
+        const sessionName = `Session ${record.date.toLocaleDateString()}`;
+        
+        processedRecords.push({
+          id: record.id,
+          studentId: record.dataId,
+          studentName,
+          studentEmail,
+          date: dateStr,
+          status: record.status,
+          session: record.session || sessionName,
+          formId: record.formId,
+          formTitle: record.form.topic,
+          markedAt: record.markedAt.toISOString(),
+          markedBy: record.markedBy,
+          notes: record.notes
         });
+        
+      } catch (error) {
+        console.error("Attendance API: Error processing attendance record", { recordId: record.id, error });
+      }
+    });
 
-        // Calculate session stats
-        const total = submissions.length;
-        const present = submissions.filter(s => {
-          try {
-            return (s.data as any).status === 'present';
-          } catch (error) {
-            console.error("Attendance API: Error checking status", { submissionId: s.id, error });
-            return false;
-          }
-        }).length;
-        const absent = submissions.filter(s => {
-          try {
-            return (s.data as any).status === 'absent';
-          } catch (error) {
-            console.error("Attendance API: Error checking status", { submissionId: s.id, error });
-            return false;
-          }
-        }).length;
-        const late = submissions.filter(s => {
-          try {
-            return (s.data as any).status === 'late';
-          } catch (error) {
-            console.error("Attendance API: Error checking status", { submissionId: s.id, error });
-            return false;
-          }
-        }).length;
+    // Group by date to create session stats
+    const recordsByDate = new Map<string, any[]>();
+    processedRecords.forEach(record => {
+      if (!recordsByDate.has(record.date)) {
+        recordsByDate.set(record.date, []);
+      }
+      recordsByDate.get(record.date)!.push(record);
+    });
 
-        sessionStats.push({
-          session: sessionName,
-          total,
-          present,
-          absent,
-          late,
-          attendanceRate: total > 0 ? (present / total) * 100 : 0,
-          date
-        });
+    // Calculate session stats
+    recordsByDate.forEach((records, date) => {
+      const sessionName = `Session ${new Date(date).toLocaleDateString()}`;
+      const total = records.length;
+      const present = records.filter(r => r.status === 'present').length;
+      const absent = records.filter(r => r.status === 'absent').length;
+      const late = records.filter(r => r.status === 'late').length;
+
+      sessionStats.push({
+        session: sessionName,
+        total,
+        present,
+        absent,
+        late,
+        attendanceRate: total > 0 ? (present / total) * 100 : 0,
+        date
       });
     });
 
     console.log("Attendance API: Processed records", { 
-      attendanceRecordsCount: attendanceRecords.length,
+      attendanceRecordsCount: processedRecords.length,
       sessionStatsCount: sessionStats.length 
     });
 
     // Calculate overall statistics
-    const totalStudents = new Set(attendanceRecords.map(r => r.studentId)).size;
-    const totalPresent = attendanceRecords.filter(r => r.status === 'present').length;
-    const totalAbsent = attendanceRecords.filter(r => r.status === 'absent').length;
-    const totalLate = attendanceRecords.filter(r => r.status === 'late').length;
-    const totalRecords = attendanceRecords.length;
+    const totalStudents = new Set(processedRecords.map(r => r.studentId)).size;
+    const totalPresent = processedRecords.filter(r => r.status === 'present').length;
+    const totalAbsent = processedRecords.filter(r => r.status === 'absent').length;
+    const totalLate = processedRecords.filter(r => r.status === 'late').length;
+    const totalRecords = processedRecords.length;
     const averageAttendance = totalRecords > 0 ? ((totalPresent / totalRecords) * 100) : 0;
 
     const responseData = {
-      attendanceRecords,
+      attendanceRecords: processedRecords,
       sessionStats: sessionStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
       statistics: {
         totalStudents,

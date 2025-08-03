@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server"
 import { addCorsHeaders } from "@/lib/cors";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 
 export async function OPTIONS(request: NextRequest) {
@@ -8,158 +9,158 @@ export async function OPTIONS(request: NextRequest) {
 
 export const GET = async (request: NextRequest) => {
   try {
-    console.log("Attendance Test API: Starting request");
+    console.log("Attendance Test API: Starting test");
     
-    // Get all forms for testing (using the first user)
-    const users = await db.user.findMany({ take: 1 });
-    if (users.length === 0) {
-      const response = NextResponse.json({ error: "No users found" }, { status: 404 });
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session?.user?.id) {
+      const response = NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       return addCorsHeaders(response, request);
     }
-    
-    const userId = users[0].id;
-    console.log("Attendance Test API: Using user", userId);
-    
-    const attendanceForms = await db.form.findMany({
-      where: { 
-        userId: userId
-      },
-      include: {
-        datas: true,
-        fields: true,
-      },
+
+    // Test 1: Check if user has any forms
+    const userForms = await db.form.findMany({
+      where: { userId: session.user.id },
+      include: { datas: true }
     });
 
-    console.log("Attendance Test API: Found forms", { count: attendanceForms.length });
+    console.log("Attendance Test API: User forms", { count: userForms.length });
 
-    // Process attendance data from all forms
-    const attendanceRecords: any[] = [];
-    const sessionStats: any[] = [];
+    // Test 2: Check if there are any attendance records
+    const attendanceRecords = await db.attendance.findMany({
+      where: {
+        form: {
+          userId: session.user.id
+        }
+      },
+      include: {
+        form: true,
+        data: true
+      }
+    });
 
-    attendanceForms.forEach(form => {
-      console.log("Attendance Test API: Processing form", { formId: form.id, dataCount: form.datas?.length });
-      
-      // Group submissions by date to create sessions
-      const submissionsByDate = new Map<string, any[]>();
-      
-      form.datas?.forEach(submission => {
-        try {
-          const date = new Date(submission.createdAt).toISOString().split('T')[0];
-          if (!submissionsByDate.has(date)) {
-            submissionsByDate.set(date, []);
-          }
-          submissionsByDate.get(date)!.push(submission);
-        } catch (error) {
-          console.error("Attendance Test API: Error processing submission", { submissionId: submission.id, error });
+    console.log("Attendance Test API: Attendance records", { count: attendanceRecords.length });
+
+    // Test 3: Check database schema
+    const dataRecords = await db.data.findMany({
+      where: {
+        form: {
+          userId: session.user.id
+        }
+      },
+      take: 5
+    });
+
+    console.log("Attendance Test API: Data records sample", { count: dataRecords.length });
+
+    // Test 4: Create a test attendance record if we have data
+    let testResult = null;
+    if (dataRecords.length > 0 && userForms.length > 0) {
+      const testData = dataRecords[0];
+      const testForm = userForms[0];
+      const testDate = new Date();
+
+      // Check if test attendance already exists
+      const existingTest = await db.attendance.findFirst({
+        where: {
+          formId: testForm.id,
+          dataId: testData.id,
+          date: testDate
         }
       });
 
-      // Convert to attendance records
-      submissionsByDate.forEach((submissions, date) => {
-        const sessionName = `Session ${new Date(date).toLocaleDateString()}`;
-        
-        submissions.forEach(submission => {
-          try {
-            const data = submission.data as any;
-            const studentName = data.name || data.fullName || data.studentName || 'Unknown';
-            const status = data.status || data.attendanceStatus || 'present';
-            
-            attendanceRecords.push({
-              id: `${submission.id}`,
-              studentId: submission.id,
-              studentName,
-              date,
-              status,
-              session: sessionName,
-              formId: form.id,
-              formTitle: form.topic
-            });
-          } catch (error) {
-            console.error("Attendance Test API: Error processing attendance record", { submissionId: submission.id, error });
+      if (!existingTest) {
+        testResult = await db.attendance.create({
+          data: {
+            formId: testForm.id,
+            dataId: testData.id,
+            userId: session.user.id,
+            date: testDate,
+            status: 'present',
+            session: 'Test Session',
+            markedAt: new Date(),
+            markedBy: session.user.id,
+            notes: 'Test attendance record'
           }
         });
+        console.log("Attendance Test API: Created test attendance record", { id: testResult.id });
+      } else {
+        testResult = existingTest;
+        console.log("Attendance Test API: Test attendance record already exists", { id: existingTest.id });
+      }
+    }
 
-        // Calculate session stats
-        const total = submissions.length;
-        const present = submissions.filter(s => {
-          try {
-            return (s.data as any).status === 'present';
-          } catch (error) {
-            console.error("Attendance Test API: Error checking status", { submissionId: s.id, error });
-            return false;
-          }
-        }).length;
-        const absent = submissions.filter(s => {
-          try {
-            return (s.data as any).status === 'absent';
-          } catch (error) {
-            console.error("Attendance Test API: Error checking status", { submissionId: s.id, error });
-            return false;
-          }
-        }).length;
-        const late = submissions.filter(s => {
-          try {
-            return (s.data as any).status === 'late';
-          } catch (error) {
-            console.error("Attendance Test API: Error checking status", { submissionId: s.id, error });
-            return false;
-          }
-        }).length;
-
-        sessionStats.push({
-          session: sessionName,
-          total,
-          present,
-          absent,
-          late,
-          attendanceRate: total > 0 ? (present / total) * 100 : 0,
-          date
-        });
+    // Test 5: Verify the test record
+    let verificationResult = null;
+    if (testResult) {
+      verificationResult = await db.attendance.findUnique({
+        where: { id: testResult.id },
+        include: {
+          form: true,
+          data: true
+        }
       });
-    });
+    }
 
-    console.log("Attendance Test API: Processed records", { 
-      attendanceRecordsCount: attendanceRecords.length,
-      sessionStatsCount: sessionStats.length 
-    });
-
-    // Calculate overall statistics
-    const totalStudents = new Set(attendanceRecords.map(r => r.studentId)).size;
-    const totalPresent = attendanceRecords.filter(r => r.status === 'present').length;
-    const totalAbsent = attendanceRecords.filter(r => r.status === 'absent').length;
-    const totalLate = attendanceRecords.filter(r => r.status === 'late').length;
-    const totalRecords = attendanceRecords.length;
-    const averageAttendance = totalRecords > 0 ? ((totalPresent / totalRecords) * 100) : 0;
-
-    const responseData = {
-      attendanceRecords,
-      sessionStats: sessionStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
-      statistics: {
-        totalStudents,
-        totalPresent,
-        totalAbsent,
-        totalLate,
-        totalRecords,
-        averageAttendance,
-        totalSessions: sessionStats.length
+    const testReport = {
+      user: {
+        id: session.user.id,
+        email: session.user.email
+      },
+      forms: {
+        count: userForms.length,
+        sample: userForms.slice(0, 2).map(f => ({ id: f.id, topic: f.topic, dataCount: f.datas.length }))
+      },
+      attendanceRecords: {
+        count: attendanceRecords.length,
+        sample: attendanceRecords.slice(0, 2).map(r => ({ 
+          id: r.id, 
+          status: r.status, 
+          date: r.date,
+          formTitle: r.form.topic 
+        }))
+      },
+      dataRecords: {
+        count: dataRecords.length,
+        sample: dataRecords.slice(0, 2).map(d => ({ id: d.id, formId: d.formId }))
+      },
+      testResult: testResult ? {
+        id: testResult.id,
+        status: testResult.status,
+        date: testResult.date
+      } : null,
+      verificationResult: verificationResult ? {
+        id: verificationResult.id,
+        status: verificationResult.status,
+        formTitle: verificationResult.form.topic,
+        dataId: verificationResult.dataId
+      } : null,
+      systemStatus: {
+        database: 'Connected',
+        attendanceModel: 'Available',
+        formsModel: 'Available',
+        dataModel: 'Available'
       }
     };
 
-    console.log("Attendance Test API: Returning response", { 
-      statistics: responseData.statistics,
-      recordsCount: responseData.attendanceRecords.length 
-    });
+    console.log("Attendance Test API: Test completed successfully", testReport);
 
-    const response = NextResponse.json(responseData);
+    const response = NextResponse.json({
+      success: true,
+      message: "Attendance system test completed",
+      report: testReport
+    });
     return addCorsHeaders(response, request);
 
   } catch (error) {
     console.error("Attendance Test API error:", error);
     console.error("Attendance Test API error stack:", error instanceof Error ? error.stack : 'No stack trace');
-    const response = NextResponse.json(
-      { error: "Internal server error", details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    );
+    
+    const response = NextResponse.json({
+      success: false,
+      error: "Test failed",
+      details: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    }, { status: 500 });
     return addCorsHeaders(response, request);
   }
 }; 

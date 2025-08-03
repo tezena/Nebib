@@ -59,9 +59,9 @@ export function DataTable({ columns, data, filterColumn }: propTypes) {
   });
 
   return (
-    <div className="w-full bg-white px-8 pb-4 pt-12 rounded-lg">
+    <div className="w-full bg-white dark:bg-gray-800 px-8 pb-4 pt-12 rounded-lg">
       <ScrollArea className="w-full whitespace-nowrap rounded-md">
-        <div className="rounded-md border">
+        <div className="rounded-md border dark:border-gray-700">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

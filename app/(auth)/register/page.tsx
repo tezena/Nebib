@@ -95,7 +95,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2 mb-2">
@@ -106,12 +106,12 @@ const RegisterPage = () => {
               height={32}
               className="w-8 h-8"
             />
-            <h1 className="text-2xl font-semibold text-gray-800">NEBIB</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">NEBIB</h1>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
             Generate forms of your own
           </h2>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 hover:underline text-sm mt-2">
+          <Link href="/" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline text-sm mt-2">
             ← Back to Landing Page
           </Link>
         </div>
@@ -127,17 +127,17 @@ const RegisterPage = () => {
                 name="organizationName"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Organization Name
                     </Label>
                     <FormControl>
                       <Input
                         placeholder="Example Org"
-                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                        className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -147,17 +147,17 @@ const RegisterPage = () => {
                 name="adminName"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Admin Name
                     </Label>
                     <FormControl>
                       <Input
                         placeholder="John Doe"
-                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                        className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -167,17 +167,17 @@ const RegisterPage = () => {
                 name="adminEmail"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Admin Email
                     </Label>
                     <FormControl>
                       <Input
                         placeholder="example@gmail.com"
-                        className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                        className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -187,7 +187,7 @@ const RegisterPage = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Password
                     </Label>
                     <FormControl>
@@ -195,13 +195,13 @@ const RegisterPage = () => {
                         <Input
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
-                          className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white pr-10"
+                          className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 pr-10"
                           {...field}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
                         >
                           {showPassword ? (
                             <EyeOff className="h-4 w-4" />
@@ -211,7 +211,7 @@ const RegisterPage = () => {
                         </button>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -221,7 +221,7 @@ const RegisterPage = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Confirm Password
                     </Label>
                     <FormControl>
@@ -229,13 +229,13 @@ const RegisterPage = () => {
                         <Input
                           type={showConfirmPassword ? "text" : "password"}
                           placeholder="••••••••"
-                          className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white pr-10"
+                          className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 pr-10"
                           {...field}
                         />
                         <button
                           type="button"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
                         >
                           {showConfirmPassword ? (
                             <EyeOff className="h-4 w-4" />
@@ -245,7 +245,7 @@ const RegisterPage = () => {
                         </button>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-xs text-red-500" />
+                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
                   </FormItem>
                 )}
               />
@@ -260,9 +260,9 @@ const RegisterPage = () => {
             </form>
           </Form>
 
-          <p className="text-gray-600 text-sm text-center mt-3">
+          <p className="text-gray-600 dark:text-gray-400 text-sm text-center mt-3">
             Already have an account?{" "}
-            <Link className="text-blue-600 hover:text-blue-700 hover:underline" href="/sign-in">
+            <Link className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline" href="/sign-in">
               Sign In
             </Link>
           </p>

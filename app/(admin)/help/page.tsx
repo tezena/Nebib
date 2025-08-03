@@ -32,9 +32,9 @@ export default function HelpPage() {
   const [activeTab, setActiveTab] = useState("getting-started");
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <div className="flex items-center gap-3 sm:gap-4">
@@ -48,8 +48,8 @@ export default function HelpPage() {
                 <span className="hidden sm:inline">Back</span>
               </Button>
               <div className="min-w-0 flex-1">
-                <h1 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">Help & Guidelines</h1>
-                <p className="text-xs hidden sm:block sm:text-sm text-gray-500 truncate">Learn how to use the form and attendance management system</p>
+                <h1 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white truncate">Help & Guidelines</h1>
+                <p className="text-xs hidden sm:block sm:text-sm text-gray-500 dark:text-gray-400 truncate">Learn how to use the form and attendance management system</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -88,8 +88,8 @@ export default function HelpPage() {
                         onClick={() => setActiveTab(section.id)}
                         className={`w-full text-left px-3 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3 transition-colors ${
                           activeTab === section.id
-                            ? "bg-blue-50 text-blue-700 border-r-2 border-blue-500"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                            ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-r-2 border-blue-500"
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white"
                         }`}
                       >
                         <Icon className="w-4 h-4" />

@@ -55,16 +55,16 @@ export default function MobileNavigation({
   return (
     <div className="md:hidden space-y-4">
       {/* Quick Actions */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
         <CardContent className="p-4">
           <div className="grid grid-cols-4 gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.push('/dashboard')}
-              className="flex flex-col items-center gap-1 h-auto py-3"
+              className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <Home className="w-5 h-5 text-blue-600" />
+              <Home className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <span className="text-xs">Home</span>
             </Button>
             
@@ -72,9 +72,9 @@ export default function MobileNavigation({
               variant="ghost"
               size="sm"
               onClick={handleCreateForm}
-              className="flex flex-col items-center gap-1 h-auto py-3"
+              className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <Plus className="w-5 h-5 text-green-600" />
+              <Plus className="w-5 h-5 text-green-600 dark:text-green-400" />
               <span className="text-xs">Create</span>
             </Button>
             
@@ -82,9 +82,9 @@ export default function MobileNavigation({
               variant="ghost"
               size="sm"
               onClick={onViewStats}
-              className="flex flex-col items-center gap-1 h-auto py-3"
+              className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <BarChart3 className="w-5 h-5 text-purple-600" />
+              <BarChart3 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               <span className="text-xs">Stats</span>
             </Button>
             
@@ -92,9 +92,9 @@ export default function MobileNavigation({
               variant="ghost"
               size="sm"
               onClick={onViewSettings}
-              className="flex flex-col items-center gap-1 h-auto py-3"
+              className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <Settings className="w-5 h-5 text-gray-600" />
+              <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               <span className="text-xs">Settings</span>
             </Button>
           </div>
@@ -102,24 +102,24 @@ export default function MobileNavigation({
       </Card>
 
       {/* Search and Filter */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
         <CardContent className="p-4">
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <Button
               variant="outline"
               size="sm"
               onClick={onSearch}
-              className="flex-1 flex items-center gap-2"
+              className="flex items-center gap-2 justify-center border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               <Search className="w-4 h-4" />
-              <span className="text-sm">Search forms</span>
+              <span className="text-sm">Search</span>
             </Button>
             
             <Button
               variant="outline"
               size="sm"
               onClick={onFilter}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 justify-center border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               <Filter className="w-4 h-4" />
               <span className="text-sm">Filter</span>
@@ -128,52 +128,22 @@ export default function MobileNavigation({
         </CardContent>
       </Card>
 
-      {/* Back Navigation */}
+      {/* Back Button (if needed) */}
       {showBackButton && (
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-4">
             <Button
-              variant="ghost"
+              variant="outline"
+              size="sm"
               onClick={handleBack}
-              className="w-full flex items-center gap-2 text-gray-600"
+              className="w-full flex items-center gap-2 justify-center border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back</span>
+              <span className="text-sm">Back</span>
             </Button>
           </CardContent>
         </Card>
       )}
-
-      {/* Quick Stats */}
-      <Card className="border-0 shadow-lg">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <FileText className="w-4 h-4 text-blue-600" />
-              </div>
-              <div className="text-lg font-bold text-gray-900">-</div>
-              <div className="text-xs text-gray-500">Forms</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <Users className="w-4 h-4 text-green-600" />
-              </div>
-              <div className="text-lg font-bold text-gray-900">-</div>
-              <div className="text-xs text-gray-500">Responses</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <BarChart3 className="w-4 h-4 text-purple-600" />
-              </div>
-              <div className="text-lg font-bold text-gray-900">-</div>
-              <div className="text-xs text-gray-500">Active</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 } 

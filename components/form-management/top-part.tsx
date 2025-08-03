@@ -24,15 +24,15 @@ export default function TopPart() {
               <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Forms Management</h1>
-              <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your published forms and view submissions</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Forms Management</h1>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">Manage your published forms and view submissions</p>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="px-3 sm:px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+            <div className="px-3 sm:px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-2">
                 <BarChart3 className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-gray-700">Loading...</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Loading...</span>
               </div>
             </div>
           </div>
@@ -41,17 +41,17 @@ export default function TopPart() {
         {/* Stats Overview - Loading Skeleton */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20 animate-pulse">
+            <div key={i} className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20 dark:border-gray-700/20 animate-pulse">
               <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-20"></div>
-                  <div className="h-6 bg-gray-200 rounded w-12"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+                  <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 rounded-lg sm:rounded-xl"></div>
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 dark:bg-gray-700 rounded-lg sm:rounded-xl"></div>
               </div>
               <div className="mt-3 sm:mt-4 flex items-center gap-2">
-                <div className="w-4 h-4 bg-gray-200 rounded"></div>
-                <div className="h-3 bg-gray-200 rounded w-16"></div>
+                <div className="w-4 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
               </div>
             </div>
           ))}
@@ -94,17 +94,15 @@ export default function TopPart() {
             <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Forms Management</h1>
-            <p className="text-sm sm:text-base text-gray-600 mt-1">Manage your published forms and view submissions</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Forms Management</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">Manage your published forms and view submissions</p>
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="px-3 sm:px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+          <div className="px-3 sm:px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-blue-500" />
-              <span className="text-sm font-medium text-gray-700">
-                {totalForms} form{totalForms !== 1 ? 's' : ''}
-              </span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Live Analytics</span>
             </div>
           </div>
         </div>
@@ -112,81 +110,77 @@ export default function TopPart() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20">
+        {/* Total Forms */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20 dark:border-gray-700/20">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-600">Total Forms</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                {isLoading ? "..." : totalForms}
-              </p>
+            <div className="space-y-1">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Forms</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{totalForms}</p>
             </div>
-            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center">
-              <FileText className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
-          <div className="mt-2 sm:mt-4 flex items-center gap-1 sm:gap-2">
-            <TrendingUp className={`w-3 h-3 sm:w-4 sm:h-4 ${getTrendIcon(trends.formTrend)}`} />
-            <span className={`text-xs sm:text-sm ${getTrendColor(trends.formTrend)}`}>
+          <div className="mt-3 sm:mt-4 flex items-center gap-2">
+            <TrendingUp className={`w-4 h-4 ${getTrendIcon(trends.formTrend)}`} />
+            <span className={`text-xs ${getTrendColor(trends.formTrend)} dark:text-gray-400`}>
               {getTrendText(trends.formTrend, 'forms')}
             </span>
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20">
+        {/* Active Forms */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20 dark:border-gray-700/20">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-600">Active Forms</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                {isLoading ? "..." : activeForms}
-              </p>
+            <div className="space-y-1">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Active</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{activeForms}</p>
             </div>
-            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-lg sm:rounded-xl flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-green-600" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900/20 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded"></div>
             </div>
           </div>
-          <div className="mt-2 sm:mt-4 flex items-center gap-1 sm:gap-2">
-            <TrendingUp className={`w-3 h-3 sm:w-4 sm:h-4 ${getTrendIcon(trends.formTrend)}`} />
-            <span className={`text-xs sm:text-sm ${getTrendColor(trends.formTrend)}`}>
-              {getTrendText(trends.formTrend, 'forms')}
+          <div className="mt-3 sm:mt-4 flex items-center gap-2">
+            <TrendingUp className={`w-4 h-4 ${getTrendIcon(trends.formTrend)}`} />
+            <span className={`text-xs ${getTrendColor(trends.formTrend)} dark:text-gray-400`}>
+              {getTrendText(trends.formTrend, 'active forms')}
             </span>
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20">
+        {/* Total Submissions */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20 dark:border-gray-700/20">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-600">Total Submissions</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                {isLoading ? "..." : totalSubmissions}
-              </p>
+            <div className="space-y-1">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Submissions</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{totalSubmissions}</p>
             </div>
-            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-purple-100 rounded-lg sm:rounded-xl flex items-center justify-center">
-              <Users className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
-          <div className="mt-2 sm:mt-4 flex items-center gap-1 sm:gap-2">
-            <TrendingUp className={`w-3 h-3 sm:w-4 sm:h-4 ${getTrendIcon(trends.submissionTrend)}`} />
-            <span className={`text-xs sm:text-sm ${getTrendColor(trends.submissionTrend)}`}>
+          <div className="mt-3 sm:mt-4 flex items-center gap-2">
+            <TrendingUp className={`w-4 h-4 ${getTrendIcon(trends.submissionTrend)}`} />
+            <span className={`text-xs ${getTrendColor(trends.submissionTrend)} dark:text-gray-400`}>
               {getTrendText(trends.submissionTrend, 'submissions')}
             </span>
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20">
+        {/* Response Rate */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/20 dark:border-gray-700/20">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-600">Avg Response Rate</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                {isLoading ? "..." : `${avgResponseRate}%`}
-              </p>
+            <div className="space-y-1">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Response Rate</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{avgResponseRate}%</p>
             </div>
-            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-orange-100 rounded-lg sm:rounded-xl flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 text-orange-600" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg sm:rounded-xl flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-400" />
             </div>
           </div>
-          <div className="mt-2 sm:mt-4 flex items-center gap-1 sm:gap-2">
-            <TrendingUp className={`w-3 h-3 sm:w-4 sm:h-4 ${getTrendIcon(trends.responseRateTrend)}`} />
-            <span className={`text-xs sm:text-sm ${getTrendColor(trends.responseRateTrend)}`}>
+          <div className="mt-3 sm:mt-4 flex items-center gap-2">
+            <TrendingUp className={`w-4 h-4 ${getTrendIcon(trends.responseRateTrend)}`} />
+            <span className={`text-xs ${getTrendColor(trends.responseRateTrend)} dark:text-gray-400`}>
               {getTrendText(trends.responseRateTrend, 'response rate')}
             </span>
           </div>

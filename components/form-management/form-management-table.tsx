@@ -82,11 +82,11 @@ const FormManagementTable = () => {
             <div>
               <div
                 onClick={() => router.push(`/form-management/${formId}`)}
-                className="cursor-pointer font-medium text-gray-900 hover:text-blue-600 transition-colors"
+                className="cursor-pointer font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 {row.getValue("topic")}
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 {row.original.description || "No description"}
               </div>
             </div>
@@ -116,10 +116,10 @@ const FormManagementTable = () => {
         const submissions = row.original.submissions || 0;
         return (
           <div className="text-center">
-            <div className="text-lg font-semibold text-gray-900">{submissions}</div>
-            <div className="text-xs text-gray-500">
-              {submissions === 1 ? 'response' : 'responses'}
-            </div>
+                            <div className="text-lg font-semibold text-gray-900 dark:text-white">{submissions}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                {submissions === 1 ? 'response' : 'responses'}
+              </div>
           </div>
         );
       },
@@ -131,8 +131,8 @@ const FormManagementTable = () => {
         const date = new Date(row.getValue("createdAt"));
         return (
           <div className="text-sm">
-            <div className="font-medium text-gray-900">{date.toLocaleDateString()}</div>
-            <div className="text-gray-500">{date.toLocaleTimeString()}</div>
+            <div className="font-medium text-gray-900 dark:text-white">{date.toLocaleDateString()}</div>
+            <div className="text-gray-500 dark:text-gray-400">{date.toLocaleTimeString()}</div>
           </div>
         );
       },
@@ -144,8 +144,8 @@ const FormManagementTable = () => {
         const date = new Date(row.getValue("updatedAt"));
         return (
           <div className="text-sm">
-            <div className="font-medium text-gray-900">{date.toLocaleDateString()}</div>
-            <div className="text-gray-500">{date.toLocaleTimeString()}</div>
+            <div className="font-medium text-gray-900 dark:text-white">{date.toLocaleDateString()}</div>
+            <div className="text-gray-500 dark:text-gray-400">{date.toLocaleTimeString()}</div>
           </div>
         );
       },
@@ -197,20 +197,20 @@ const FormManagementTable = () => {
   return (
     <div className="space-y-6">
       {/* Desktop Table */}
-      <div className="hidden md:block bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
-        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+      <div className="hidden md:block bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/20 overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="space-y-1">
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
               Published Forms
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               A list of all your registration forms and their status
             </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input placeholder="Search forms..." className="pl-10 w-[300px] border-gray-200 focus:border-blue-500" />
+              <Input placeholder="Search forms..." className="pl-10 w-[300px] border-gray-200 dark:border-gray-600 focus:border-blue-500 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400" />
             </div>
             <Button variant="outline" className="flex items-center gap-2">
               <Filter className="w-4 h-4" />

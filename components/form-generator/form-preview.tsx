@@ -91,248 +91,172 @@ export default function FormPreview() {
 
   if (!formData) {
     return (
-      <div className="flex items-center justify-center h-[300px] sm:h-[400px] text-gray-500">
+      <div className="flex items-center justify-center h-[300px] sm:h-[400px] text-gray-500 dark:text-gray-400">
         <div className="text-center">
-          <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
+          <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
           <p className="text-sm sm:text-base">No form data available</p>
         </div>
       </div>
     );
   }
 
-  const renderField = (field: Field) => {
-    const fieldId = field.id;
-    
-    switch (field.type) {
-      case 'text':
-        return (
-          <Input
-            id={fieldId}
-            type="text"
-            value={formValues[fieldId] || ""}
-            onChange={(e) => handleInputChange(fieldId, e.target.value)}
-            required={field.required}
-            placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base"
-          />
-        );
-      
-      case 'email':
-        return (
-          <Input
-            id={fieldId}
-            type="email"
-            value={formValues[fieldId] || ""}
-            onChange={(e) => handleInputChange(fieldId, e.target.value)}
-            required={field.required}
-            placeholder="Enter your email address"
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base"
-          />
-        );
-      
-      case 'number':
-        return (
-          <Input
-            id={fieldId}
-            type="number"
-            value={formValues[fieldId] || ""}
-            onChange={(e) => handleInputChange(fieldId, e.target.value)}
-            required={field.required}
-            placeholder="Enter a number"
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base"
-          />
-        );
-      
-      case 'date':
-        return (
-          <Input
-            id={fieldId}
-            type="date"
-            value={formValues[fieldId] || ""}
-            onChange={(e) => handleInputChange(fieldId, e.target.value)}
-            required={field.required}
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base"
-          />
-        );
-      
-      case 'checkbox':
-        return (
-          <div className="flex items-center space-x-3">
-            <Checkbox
-              id={fieldId}
-              checked={formValues[fieldId] || false}
-              onCheckedChange={(checked) => handleInputChange(fieldId, checked)}
-              required={field.required}
-              className="border-gray-300 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
-            />
-            <Label htmlFor={fieldId} className="text-sm font-medium leading-none cursor-pointer">
-              {field.label}
-            </Label>
-          </div>
-        );
-      
-      case 'textarea':
-        return (
-          <Textarea
-            id={fieldId}
-            value={formValues[fieldId] || ""}
-            onChange={(e) => handleInputChange(fieldId, e.target.value)}
-            required={field.required}
-            placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 min-h-[80px] sm:min-h-[100px] text-sm sm:text-base"
-          />
-        );
-      
-      case 'select':
-        return (
-          <Select value={formValues[fieldId] || ""} onValueChange={(value) => handleInputChange(fieldId, value)}>
-            <SelectTrigger className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm sm:text-base">
-              <SelectValue placeholder="Select an option" />
-            </SelectTrigger>
-            <SelectContent>
-              {field.options?.map((option, idx) => (
-                <SelectItem key={idx} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        );
-      
-      default:
-        return <Input placeholder="Field not supported" disabled className="text-sm sm:text-base" />;
-    }
-  };
-
   if (isSubmitted) {
     return (
-      <div className="text-center py-8 sm:py-12">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
+      <div className="flex items-center justify-center h-[300px] sm:h-[400px]">
+        <div className="text-center">
+          <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-green-500" />
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            Form Submitted Successfully!
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+            Thank you for your submission.
+          </p>
         </div>
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Form Submitted Successfully!</h3>
-        <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Thank you for your submission.</p>
-        <Button 
-          onClick={() => {
-            setIsSubmitted(false);
-            setFormValues({});
-          }}
-          className="bg-blue-500 hover:bg-blue-600 text-sm sm:text-base"
-        >
-          Submit Another Response
-        </Button>
       </div>
     );
   }
 
-  return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Nebib Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 sm:p-6 rounded-t-xl sm:rounded-t-xl">
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <div>
-              <h1 className="text-base sm:text-lg font-bold">Nebib Forms</h1>
-              <p className="text-xs sm:text-sm text-blue-100">Professional form builder</p>
-            </div>
+  const renderField = (field: Field) => {
+    const value = formValues[field.id] || "";
+
+    switch (field.type) {
+      case "text":
+      case "email":
+      case "number":
+      case "date":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              id={field.id}
+              type={field.type}
+              value={value}
+              onChange={(e) => handleInputChange(field.id, e.target.value)}
+              placeholder={field.placeholder}
+              required={field.required}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            />
           </div>
-          <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs">
-            Powered by Nebib
-          </Badge>
+        );
+
+      case "textarea":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Textarea
+              id={field.id}
+              value={value}
+              onChange={(e) => handleInputChange(field.id, e.target.value)}
+              placeholder={field.placeholder}
+              required={field.required}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            />
+          </div>
+        );
+
+      case "checkbox":
+        return (
+          <div key={field.id} className="flex items-center space-x-2">
+            <Checkbox
+              id={field.id}
+              checked={value}
+              onCheckedChange={(checked) => handleInputChange(field.id, checked)}
+              required={field.required}
+              className="border-gray-300 dark:border-gray-600"
+            />
+            <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+          </div>
+        );
+
+      case "select":
+        return (
+          <div key={field.id} className="space-y-2">
+            <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Select value={value} onValueChange={(val) => handleInputChange(field.id, val)}>
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                <SelectValue placeholder={field.placeholder || "Select an option"} />
+              </SelectTrigger>
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                {field.options?.map((option) => (
+                  <SelectItem key={option} value={option} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+        {/* Form Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {formData.topic}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+            {formData.description}
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 mt-4">
+            {formData.categories.map((category) => (
+              <Badge key={category} variant="secondary" className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">
+                {category}
+              </Badge>
+            ))}
+          </div>
         </div>
-        
-        <div className="text-center">
-          <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">{formData.topic}</h2>
-          <p className="text-sm sm:text-base text-blue-100">{formData.description}</p>
-        </div>
-      </div>
 
-      {/* Form Content */}
-      <div className="bg-white p-4 sm:p-6 rounded-b-xl border border-gray-200">
-        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-          {/* Group fields by category */}
-          {(() => {
-            // Group fields by category
-            const groupedFields = formData.fields.reduce((acc, field) => {
-              const category = field.category || 'General';
-              if (!acc[category]) {
-                acc[category] = [];
-              }
-              acc[category].push(field);
-              return acc;
-            }, {} as Record<string, Field[]>);
-
-            // Get unique categories in order
-            const categories = Object.keys(groupedFields);
-            
-            return categories.map((category) => (
-              <div key={category} className="space-y-3 sm:space-y-4">
-                {/* Category Header */}
-                <div className="border-b border-gray-200 pb-2">
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    {category}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                    {groupedFields[category].length} field{groupedFields[category].length !== 1 ? 's' : ''}
-                  </p>
-                </div>
-
-                {/* Fields in 1-column grid for mobile, 2-column for desktop */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                  {groupedFields[category].map((field) => (
-                    <div key={field.id} className="space-y-2 sm:space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor={field.id} className="text-sm font-medium text-gray-700 flex items-center">
-                          {field.label}
-                          {field.required && <span className="text-red-500 ml-1">*</span>}
-                        </Label>
-                      </div>
-                      
-                      {renderField(field)}
-                      
-                      {field.required && (
-                        <p className="text-xs text-gray-500 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          This field is required
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ));
-          })()}
+        {/* Form Fields */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {formData.fields.map((field) => renderField(field))}
 
           {/* Submit Button */}
-          <div className="pt-4 sm:pt-6 border-t border-gray-200">
+          <div className="pt-6">
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-2 sm:py-3 text-base sm:text-lg font-medium shadow-lg"
               disabled={isLoading}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-sm sm:text-base">Submitting...</span>
+                  Submitting...
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="text-sm sm:text-base">Submit Form</span>
+                  <Send className="w-4 h-4" />
+                  Submit Form
                 </div>
               )}
             </Button>
           </div>
         </form>
-      </div>
 
-      {/* Footer */}
-      <div className="text-center py-3 sm:py-4 text-xs text-gray-500">
-        <p>This form was created with Nebib Forms</p>
+        {/* Form Footer */}
+        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <AlertCircle className="w-4 h-4" />
+            <span>This is a preview of your form</span>
+          </div>
+        </div>
       </div>
     </div>
   );

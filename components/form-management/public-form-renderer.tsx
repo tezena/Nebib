@@ -82,269 +82,278 @@ export default function PublicFormRenderer() {
     switch (type) {
       case "text":
         return (
-          <Input
-            id={id}
-            type="text"
-            value={formValues[id] || ""}
-            onChange={(e) => handleInputChange(id, e.target.value)}
-            required={required}
-            placeholder={`Enter ${label.toLowerCase()}`}
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-          />
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              id={id}
+              type="text"
+              value={formValues[id] || ""}
+              onChange={(e) => handleInputChange(id, e.target.value)}
+              required={required}
+              placeholder={`Enter ${label.toLowerCase()}`}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
+            />
+          </div>
         )
 
       case "number":
         return (
-          <Input
-            id={id}
-            type="number"
-            value={formValues[id] || ""}
-            onChange={(e) => handleInputChange(id, e.target.value)}
-            required={required}
-            placeholder="Enter a number"
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-          />
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              id={id}
+              type="number"
+              value={formValues[id] || ""}
+              onChange={(e) => handleInputChange(id, e.target.value)}
+              required={required}
+              placeholder={`Enter ${label.toLowerCase()}`}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
+            />
+          </div>
         )
 
       case "email":
         return (
-          <Input
-            id={id}
-            type="email"
-            value={formValues[id] || ""}
-            onChange={(e) => handleInputChange(id, e.target.value)}
-            required={required}
-            placeholder="Enter your email address"
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-          />
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              id={id}
+              type="email"
+              value={formValues[id] || ""}
+              onChange={(e) => handleInputChange(id, e.target.value)}
+              required={required}
+              placeholder={`Enter ${label.toLowerCase()}`}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
+            />
+          </div>
         )
 
       case "date":
         return (
-          <Input
-            id={id}
-            type="date"
-            value={formValues[id] || ""}
-            onChange={(e) => handleInputChange(id, e.target.value)}
-            required={required}
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-          />
-        )
-
-      case "checkbox":
-        return (
-          <div className="flex items-center space-x-3">
-            <Checkbox
-              id={id}
-              checked={formValues[id] || false}
-              onCheckedChange={(checked) => handleInputChange(id, checked)}
-              required={required}
-              className="border-gray-300 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
-            />
-            <Label htmlFor={id} className="text-sm font-medium leading-none cursor-pointer">
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
               {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
             </Label>
+            <Input
+              id={id}
+              type="date"
+              value={formValues[id] || ""}
+              onChange={(e) => handleInputChange(id, e.target.value)}
+              required={required}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
+            />
           </div>
         )
 
       case "textarea":
         return (
-          <Textarea
-            id={id}
-            value={formValues[id] || ""}
-            onChange={(e) => handleInputChange(id, e.target.value)}
-            required={required}
-            placeholder={`Enter ${label.toLowerCase()}`}
-            className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 min-h-[100px]"
-          />
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Textarea
+              id={id}
+              value={formValues[id] || ""}
+              onChange={(e) => handleInputChange(id, e.target.value)}
+              required={required}
+              placeholder={`Enter ${label.toLowerCase()}`}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
+            />
+          </div>
         )
 
       case "select":
         return (
-          <Select value={formValues[id] || ""} onValueChange={(value) => handleInputChange(id, value)}>
-            <SelectTrigger className="border-gray-300 focus:border-blue-500 focus:ring-blue-500">
-              <SelectValue placeholder="Select an option" />
-            </SelectTrigger>
-            <SelectContent>
-              {field.options?.map((option: string, idx: number) => (
-                <SelectItem key={idx} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Select value={formValues[id] || ""} onValueChange={(value) => handleInputChange(id, value)}>
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400">
+                <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
+              </SelectTrigger>
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                {field.options?.map((option: string) => (
+                  <SelectItem key={option} value={option} className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )
+
+      case "checkbox":
+        return (
+          <div className="flex items-center space-x-2" key={id}>
+            <Checkbox
+              id={id}
+              checked={formValues[id] || false}
+              onCheckedChange={(checked) => handleInputChange(id, checked)}
+              required={required}
+              className="border-gray-300 dark:border-gray-600 data-[state=checked]:bg-blue-500 dark:data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500 dark:data-[state=checked]:border-blue-500"
+            />
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+          </div>
         )
 
       default:
-        return <Input placeholder="Field not supported" disabled />
+        return (
+          <div className="space-y-2" key={id}>
+            <Label htmlFor={id} className="text-gray-700 dark:text-gray-300">
+              {label}
+              {required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            <Input
+              id={id}
+              type="text"
+              value={formValues[id] || ""}
+              onChange={(e) => handleInputChange(id, e.target.value)}
+              required={required}
+              placeholder={`Enter ${label.toLowerCase()}`}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
+            />
+          </div>
+        )
     }
   }
 
   if (isPending) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-        <span className="ml-2">Loading form...</span>
-      </div>
-    )
-  }
-
-  if (error || !form) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Card className="w-full max-w-2xl border rounded-md p-8">
-          <h1 className="text-xl text-red-500">Form Not Found</h1>
-          <p>The form you're looking for doesn't exist or has been removed.</p>
-        </Card>
-      </div>
-    )
-  }
-
-
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Nebib Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-t-xl">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold">Nebib Forms</h1>
-                <p className="text-sm text-blue-100">Professional form builder</p>
-              </div>
-            </div>
-            <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-              Powered by Nebib
-            </Badge>
-          </div>
-          
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">{form.topic}</h2>
-            <p className="text-blue-100">{form.description}</p>
-          </div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">Loading form...</p>
         </div>
+      </div>
+    )
+  }
 
-        {/* Form Content */}
-        <div className="bg-white p-6 rounded-b-xl border border-gray-200">
-          {isSubmitted && submittedData ? (
-            <div className="space-y-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Form Submitted Successfully!</h2>
-                <p className="text-gray-600 mb-6">Your attendance QR code has been generated.</p>
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-red-500 dark:text-red-400 mx-auto mb-4" />
+          <p className="text-red-600 dark:text-red-400 mb-2">Error loading form</p>
+          <p className="text-gray-600 dark:text-gray-400">{error.message}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!form) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 dark:text-gray-400">Form not found</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (isSubmitted && submittedData) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+        <div className="max-w-2xl mx-auto px-4">
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg">
+            <div className="p-6 sm:p-8 text-center">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Form Submitted Successfully!
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Your QR code has been generated. You can download it below.
+              </p>
+              
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+                <QRGenerator
+                  userId={submittedData.submissionId}
+                  formId={submittedData.formId}
+                  formData={submittedData.formValues}
+                  className="border-0 shadow-none"
+                />
               </div>
               
-              <QRGenerator 
-                userId={submittedData.submissionId}
-                formId={submittedData.formId}
-                formData={submittedData.formValues}
-                className="max-w-md mx-auto"
-              />
-              
-              <div className="text-center">
-                <Button 
-                  onClick={() => {
-                    setIsSubmitted(false)
-                    setSubmittedData(null)
-                    setFormValues({})
-                  }}
-                  variant="outline"
-                  className="mt-4"
-                >
-                  Submit Another Response
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Group fields by category */}
-            {(() => {
-              // Group fields by category
-              const groupedFields = form.fields.reduce((acc: any, field: any) => {
-                const category = field.category || 'General';
-                if (!acc[category]) {
-                  acc[category] = [];
-                }
-                acc[category].push(field);
-                return acc;
-              }, {} as Record<string, any[]>);
-
-              // Get unique categories in order
-              const categories = Object.keys(groupedFields);
-              
-              return categories.map((category) => (
-                <div key={category} className="space-y-4">
-                  {/* Category Header */}
-                  <div className="border-b border-gray-200 pb-2">
-                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      {category}
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {groupedFields[category].length} field{groupedFields[category].length !== 1 ? 's' : ''}
-                    </p>
-                  </div>
-
-                  {/* Fields in 2-column grid for this category */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {groupedFields[category].map((field: any) => (
-                      <div key={field.id} className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <Label htmlFor={field.id} className="text-sm font-medium text-gray-700 flex items-center">
-                            {field.label}
-                            {field.required && <span className="text-red-500 ml-1">*</span>}
-                          </Label>
-                        </div>
-                        
-                        {renderField(field)}
-                        
-                        {field.required && (
-                          <p className="text-xs text-gray-500 flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" />
-                            This field is required
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ));
-            })()}
-
-            {/* Submit Button */}
-            <div className="pt-6 border-t border-gray-200">
               <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 text-lg font-medium shadow-lg"
-                disabled={isSubmitting}
+                onClick={() => {
+                  setIsSubmitted(false)
+                  setSubmittedData(null)
+                  setFormValues({})
+                }}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
               >
-                {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Submitting...
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Send className="w-5 h-5" />
-                    Submit Form
-                  </div>
-                )}
+                Submit Another Response
               </Button>
             </div>
-          </form>
-          )}
+          </Card>
         </div>
+      </div>
+    )
+  }
 
-        {/* Footer */}
-        <div className="text-center py-4 text-xs text-gray-500">
-          <p>This form was created with Nebib Forms</p>
-        </div>
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+      <div className="max-w-2xl mx-auto px-4">
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg">
+          <div className="p-6 sm:p-8">
+            {/* Form Header */}
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Sparkles className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+                <Badge className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">
+                  Powered by NEBIB
+                </Badge>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                {form.topic}
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+                {form.description}
+              </p>
+            </div>
+
+            {/* Form Fields */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {form.fields.map((field: any) => renderField(field))}
+
+              {/* Submit Button */}
+              <div className="pt-6">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Submitting...
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Send className="w-4 h-4" />
+                      Submit Form
+                    </div>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </Card>
       </div>
     </div>
   )

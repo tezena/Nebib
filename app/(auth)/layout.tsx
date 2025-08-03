@@ -6,8 +6,8 @@ export default function layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className=" bg-black h-screen flex items-center justify-center overflow-hidden">
-      <div className="w-full ">{children}</div>
+    <div className="bg-black dark:bg-gray-900 h-screen flex items-center justify-center overflow-hidden">
+      <div className="w-full">{children}</div>
     </div>
   );
 }

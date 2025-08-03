@@ -828,7 +828,7 @@ function FormGeneratorContent() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             {isEditMode ? "Loading form..." : "Loading..."}
           </p>
         </div>
@@ -837,9 +837,9 @@ function FormGeneratorContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 md:pb-8">
       {/* Mobile Header */}
-      <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+      <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -849,10 +849,10 @@ function FormGeneratorContent() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-lg font-bold text-gray-900">
+                <h1 className="text-lg font-bold text-gray-900 dark:text-white">
                   {isEditMode ? "Edit Form" : "Create Form"}
                 </h1>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   {isEditMode ? "Modify your form" : "Build your form"}
                 </p>
               </div>
@@ -914,19 +914,19 @@ function FormGeneratorContent() {
                         }
                         className="space-y-3"
                       >
-                        <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                           <RadioGroupItem value="public" id="public" />
                           <div className="flex-1 min-w-0">
-                            <Label htmlFor="public" className="text-sm font-medium cursor-pointer">Public Access</Label>
-                            <p className="text-xs text-gray-600">Anyone with the link can access and submit the form</p>
+                            <Label htmlFor="public" className="text-sm font-medium cursor-pointer dark:text-gray-200">Public Access</Label>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Anyone with the link can access and submit the form</p>
                           </div>
                           <Globe className="w-4 h-4 text-green-600 flex-shrink-0" />
                         </div>
-                        <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                           <RadioGroupItem value="private" id="private" />
                           <div className="flex-1 min-w-0">
-                            <Label htmlFor="private" className="text-sm font-medium cursor-pointer">Private Access</Label>
-                            <p className="text-xs text-gray-600">Requires an access code to view and submit the form</p>
+                            <Label htmlFor="private" className="text-sm font-medium cursor-pointer dark:text-gray-200">Private Access</Label>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Requires an access code to view and submit the form</p>
                           </div>
                           <Lock className="w-4 h-4 text-orange-600 flex-shrink-0" />
                         </div>
@@ -1317,12 +1317,12 @@ function FormGeneratorContent() {
 export default function FormGeneratorPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-400">Loading...</p>
       </div>
+    </div>
     }>
       <FormGeneratorContent />
     </Suspense>

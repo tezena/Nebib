@@ -61,7 +61,7 @@ export default function FormActions({
           <Button
             variant="outline"
             onClick={onCopyLink}
-            className="border-blue-200 text-blue-700 hover:bg-blue-50"
+            className="border-blue-200 dark:border-blue-600 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
           >
             <Copy className="w-4 h-4 mr-2" />
             Copy Link
@@ -74,9 +74,9 @@ export default function FormActions({
             variant="ghost"
             size="sm"
             onClick={onPreview}
-            className="flex flex-col items-center gap-1 h-auto py-3"
+            className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <Eye className="w-4 h-4 text-blue-600" />
+            <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span className="text-xs">Preview</span>
           </Button>
           
@@ -84,9 +84,9 @@ export default function FormActions({
             variant="ghost"
             size="sm"
             onClick={onViewStats}
-            className="flex flex-col items-center gap-1 h-auto py-3"
+            className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <BarChart3 className="w-4 h-4 text-green-600" />
+            <BarChart3 className="w-4 h-4 text-green-600 dark:text-green-400" />
             <span className="text-xs">Stats</span>
           </Button>
           
@@ -94,95 +94,131 @@ export default function FormActions({
             variant="ghost"
             size="sm"
             onClick={onEdit}
-            className="flex flex-col items-center gap-1 h-auto py-3"
+            className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <Edit className="w-4 h-4 text-purple-600" />
+            <Edit className="w-4 h-4 text-purple-600 dark:text-purple-400" />
             <span className="text-xs">Edit</span>
           </Button>
         </div>
 
-        {/* Utility Actions */}
-        <div className="grid grid-cols-2 gap-2">
+        {/* Tertiary Actions */}
+        <div className="grid grid-cols-3 gap-2">
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={onShare}
-            className="flex items-center gap-2"
+            className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <Share2 className="w-4 h-4" />
-            <span className="text-sm">Share</span>
+            <Share2 className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+            <span className="text-xs">Share</span>
           </Button>
           
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={onExport}
-            className="flex items-center gap-2"
+            className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <Download className="w-4 h-4" />
-            <span className="text-sm">Export</span>
+            <Download className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+            <span className="text-xs">Export</span>
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onDelete}
+            className="flex flex-col items-center gap-1 h-auto py-3 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+          >
+            <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
+            <span className="text-xs">Delete</span>
           </Button>
         </div>
-
-        {/* Danger Zone */}
-        <Card className="border-red-200 bg-red-50">
-          <CardContent className="p-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onDelete}
-              className="w-full text-red-600 hover:text-red-700 hover:bg-red-100"
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              <span className="text-sm">Delete Form</span>
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     );
   }
 
-  // Desktop version
   return (
-    <div className="flex items-center gap-3">
-      <Button variant="outline" onClick={onShare} className="flex items-center gap-2">
-        <Share2 className="w-4 h-4" />
-        Share
-      </Button>
-      <Button variant="outline" onClick={onExport} className="flex items-center gap-2">
-        <Download className="w-4 h-4" />
-        Export
-      </Button>
-      <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
-        <Edit className="w-4 h-4 mr-2" />
-        Edit Form
+    <div className="flex items-center gap-2">
+      {/* Primary Actions */}
+      <Button
+        onClick={onOpenForm}
+        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+      >
+        <ExternalLink className="w-4 h-4 mr-2" />
+        Open Form
       </Button>
       
+      <Button
+        variant="outline"
+        onClick={onCopyLink}
+        className="border-blue-200 dark:border-blue-600 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+      >
+        <Copy className="w-4 h-4 mr-2" />
+        Copy Link
+      </Button>
+
+      {/* Secondary Actions */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={onPreview}
+        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        <Eye className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
+        Preview
+      </Button>
+      
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={onViewStats}
+        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        <BarChart3 className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
+        Stats
+      </Button>
+
+      {/* Dropdown Menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
             <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={onPreview}>
-            <Eye className="mr-2 h-4 w-4" />
-            Preview Form
+        <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <DropdownMenuItem 
+            onClick={onEdit}
+            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          >
+            <Edit className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" />
+            Edit Form
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onOpenForm}>
-            <ExternalLink className="mr-2 h-4 w-4" />
-            Open Form
+          
+          <DropdownMenuItem 
+            onClick={onShare}
+            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          >
+            <Share2 className="w-4 h-4 mr-2 text-orange-600 dark:text-orange-400" />
+            Share Form
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onCopyLink}>
-            <Copy className="mr-2 h-4 w-4" />
-            Copy Link
+          
+          <DropdownMenuItem 
+            onClick={onExport}
+            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          >
+            <Download className="w-4 h-4 mr-2 text-teal-600 dark:text-teal-400" />
+            Export Data
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onViewStats}>
-            <BarChart3 className="mr-2 h-4 w-4" />
-            View Stats
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-red-600" onClick={onDelete}>
-            <Trash2 className="mr-2 h-4 w-4" />
+          
+          <DropdownMenuItem 
+            onClick={onDelete}
+            className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer"
+          >
+            <Trash2 className="w-4 h-4 mr-2 text-red-600 dark:text-red-400" />
             Delete Form
           </DropdownMenuItem>
         </DropdownMenuContent>
