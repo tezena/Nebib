@@ -25,6 +25,14 @@ export const GET = async (request: NextRequest) => {
     if (process.env.BETTER_AUTH_SECRET) {
       authSecret = "SET";
     }
+    
+    // Check all possible auth-related environment variables
+    const allEnvVars = Object.keys(process.env).filter(key => 
+      key.includes('AUTH') || key.includes('SECRET')
+    ).reduce((acc, key) => {
+      acc[key] = process.env[key] ? "SET" : "NOT SET";
+      return acc;
+    }, {} as Record<string, string>);
 
     const debugInfo = {
       timestamp: new Date().toISOString(),
@@ -40,6 +48,7 @@ export const GET = async (request: NextRequest) => {
       auth: {
         secret: authSecret,
         database: dbStatus,
+        allAuthVars: allEnvVars,
       },
       server: {
         nodeVersion: process.version,
