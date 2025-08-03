@@ -32,11 +32,30 @@ else
     exit 1
 fi
 
+# Check project structure
+echo ""
+echo "📁 Checking project structure..."
+
+if [ -f "package.json" ] && [ -d "app" ]; then
+    echo "✅ Detected standard Next.js app structure"
+    echo "📍 App directory: . (root level)"
+elif [ -d "apps/web" ]; then
+    echo "✅ Detected monorepo with apps/web structure"
+    echo "📍 App directory: apps/web"
+elif [ -d "packages/web" ]; then
+    echo "✅ Detected monorepo with packages/web structure"
+    echo "📍 App directory: packages/web"
+else
+    echo "❌ Could not detect project structure"
+    echo "Please check MONOREPO_CONFIG.md for configuration options"
+    exit 1
+fi
+
 # Check required files
 echo ""
 echo "📋 Checking required files..."
 
-REQUIRED_FILES=("amplify.yml" "next.config.js" "package.json" "Dockerfile")
+REQUIRED_FILES=("amplify.yml" "Dockerfile")
 MISSING_FILES=()
 
 for file in "${REQUIRED_FILES[@]}"; do
@@ -47,6 +66,21 @@ for file in "${REQUIRED_FILES[@]}"; do
         MISSING_FILES+=("$file")
     fi
 done
+
+# Check app-specific files
+if [ -f "package.json" ]; then
+    echo "✅ package.json"
+else
+    echo "❌ package.json (missing)"
+    MISSING_FILES+=("package.json")
+fi
+
+if [ -f "next.config.js" ]; then
+    echo "✅ next.config.js"
+else
+    echo "❌ next.config.js (missing)"
+    MISSING_FILES+=("next.config.js")
+fi
 
 if [ ${#MISSING_FILES[@]} -ne 0 ]; then
     echo ""

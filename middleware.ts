@@ -12,6 +12,7 @@ export default async function middleware(request: NextRequest) {
       'https://nebib-production.up.railway.app',
       'https://www.nebibs.com',
       'https://nebibs.com',
+      'https://master.d1xft618vpjqol.amplifyapp.com',
       'http://localhost:3000',
       'http://localhost:3001',
       'http://127.0.0.1:3000',
@@ -25,6 +26,7 @@ export default async function middleware(request: NextRequest) {
       allowedOrigins.includes(origin) || 
       origin.includes('railway.app') ||
       origin.includes('nebibs.com') ||
+      origin.includes('amplifyapp.com') ||
       origin.includes('localhost') ||
       origin.includes('127.0.0.1')
     );

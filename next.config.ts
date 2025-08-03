@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
           {
             key: "Access-Control-Allow-Origin",
             value: process.env.NODE_ENV === 'production' 
-              ? "https://nebib-production.up.railway.app" // Your actual domain
+              ? "https://master.d1xft618vpjqol.amplifyapp.com" // Your AWS Amplify domain
               : "*",
           },
           {
