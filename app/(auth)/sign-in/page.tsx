@@ -19,6 +19,7 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -33,6 +34,7 @@ const formSchema = z.object({
 export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState<string>("");
   const router = useRouter();
 
   // Initialize the form
@@ -48,31 +50,37 @@ export default function LoginPage() {
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
+    setAuthError(""); // Clear previous errors
+    
     try {
       console.log("🔐 Sign-in attempt:", { email: values.email, hostname: window.location.hostname });
       
-      // Simulate API call
       await authClient.signIn.email(
         {
           email: values.email,
           password: values.password,
           callbackURL: "/dashboard",
-          rememberMe: false,
+          rememberMe: values.rememberMe,
         },
         {
           onSuccess: (ctx) => {
             console.log("✅ Sign-in successful:", ctx);
+            toast.success("Signed in successfully!");
             router.push("/dashboard");
           },
           onError: (error) => {
             console.error("❌ Sign-in error:", error);
-            alert(`Sign-in failed: Unknown error`);
+            const errorMessage = error?.error?.message || "Invalid email or password. Please try again.";
+            setAuthError(errorMessage);
+            toast.error(errorMessage);
           },
         }
       );
     } catch (error) {
       console.error("🚨 Login failed:", error);
-      alert(`Login failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
+      setAuthError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -195,6 +203,13 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
+
+              {/* Authentication Error Display */}
+              {authError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                  <p className="text-sm text-red-600">{authError}</p>
+                </div>
+              )}
 
               <Button
                 type="submit"

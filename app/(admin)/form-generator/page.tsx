@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,7 +71,11 @@ interface FormSection {
   fields: FormField[];
 }
 
-export default function FormGeneratorPage() {
+function FormGeneratorContent() {
+  const searchParams = useSearchParams();
+  const isEditMode = searchParams.get('edit') === '1';
+  const formId = searchParams.get('id');
+  
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [sections, setSections] = useState<FormSection[]>([
@@ -81,7 +86,63 @@ export default function FormGeneratorPage() {
     }
   ]);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [currentDraftId, setCurrentDraftId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(isEditMode);
   const [editingField, setEditingField] = useState<string | null>(null);
+
+  // Load existing form data when in edit mode
+  useEffect(() => {
+    const loadFormData = async () => {
+      if (!isEditMode || !formId) return;
+      
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/forms/${formId}`);
+        const data = await response.json();
+        
+        if (response.ok && data) {
+          setFormTitle(data.topic || "");
+          setFormDescription(data.description || "");
+          
+          // Convert fields back to sections structure
+          const fieldGroups = data.fields.reduce((acc: any, field: any) => {
+            const category = field.category || "General Information";
+            if (!acc[category]) {
+              acc[category] = [];
+            }
+            acc[category].push({
+              id: field.id,
+              label: field.label,
+              type: field.type,
+              required: field.required,
+              placeholder: field.placeholder,
+              options: field.options ? JSON.parse(field.options) : undefined
+            });
+            return acc;
+          }, {});
+
+          const newSections = Object.entries(fieldGroups).map(([title, fields]: [string, any]) => ({
+            id: `section-${Date.now()}-${Math.random()}`,
+            title,
+            fields
+          }));
+
+          if (newSections.length > 0) {
+            setSections(newSections);
+          }
+        } else {
+          toast.error("Failed to load form data");
+        }
+      } catch (error) {
+        console.error("Load form error:", error);
+        toast.error("Failed to load form data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadFormData();
+  }, [isEditMode, formId]);
   const [editingFieldLabel, setEditingFieldLabel] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDescription, setEditingDescription] = useState(false);
@@ -186,8 +247,14 @@ export default function FormGeneratorPage() {
   };
 
   const handlePublish = async () => {
+    // Validate form title and description before publishing
     if (!formTitle.trim()) {
       toast.error("Please enter a form title");
+      return;
+    }
+
+    if (!formDescription.trim()) {
+      toast.error("Please enter a form description");
       return;
     }
 
@@ -208,8 +275,8 @@ export default function FormGeneratorPage() {
     try {
       // Prepare the data in the format expected by the API
       const requestBody = {
-        topic: formTitle,
-        description: formDescription,
+        topic: formTitle.trim(),
+        description: formDescription.trim(),
         categories: sections.map(section => section.title),
         fields: sections.flatMap(section => 
           section.fields.map(field => ({
@@ -225,8 +292,12 @@ export default function FormGeneratorPage() {
       
       console.log("Sending form data:", requestBody);
       
-      const response = await fetch("/api/forms", {
-        method: "POST",
+      // Use PUT for editing, POST for creating new
+      const method = isEditMode ? "PUT" : "POST";
+      const url = isEditMode ? `/api/forms/${formId}` : "/api/forms";
+      
+      const response = await fetch(url, {
+        method,
         body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
@@ -235,32 +306,134 @@ export default function FormGeneratorPage() {
       
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || "Failed to publish form");
+        throw new Error(data.error || `Failed to ${isEditMode ? 'update' : 'publish'} form`);
       }
 
-      toast.success("Form published successfully!");
+      toast.success(`Form ${isEditMode ? 'updated' : 'published'} successfully!`);
       setShowPublishDialog(false);
       // Redirect to dashboard
       window.location.href = "/dashboard";
     } catch (error) {
       console.error("Publish error:", error);
-      toast.error("Failed to publish form. Please try again.");
+      toast.error(`Failed to ${isEditMode ? 'update' : 'publish'} form. Please try again.`);
     } finally {
       setIsPublishing(false);
     }
   };
 
   const handleSaveDraft = async () => {
+    // Validate basic form data before saving draft
+    if (!formTitle.trim()) {
+      toast.error("Please enter a form title to save draft");
+      return;
+    }
+
     setIsPublishing(true);
     
     try {
-      // Save as draft
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Save draft to API
+      const draftData = {
+        title: formTitle.trim(),
+        description: formDescription.trim() || "No description provided",
+        sections: sections,
+        formId: currentDraftId // Will be set if updating existing draft
+      };
+      
+      console.log("Saving draft data:", draftData);
+      
+      const response = await fetch("/api/forms/draft", {
+        method: "POST",
+        body: JSON.stringify(draftData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to save draft");
+      }
+
       toast.success("Draft saved successfully!");
     } catch (error) {
+      console.error("Save draft error:", error);
       toast.error("Failed to save draft. Please try again.");
     } finally {
       setIsPublishing(false);
+    }
+  };
+
+  // Function to validate form before opening publish dialog
+  const validateFormBeforePublish = () => {
+    if (!formTitle.trim()) {
+      toast.error("Please enter a form title");
+      return false;
+    }
+
+    if (!formDescription.trim()) {
+      toast.error("Please enter a form description");
+      return false;
+    }
+
+    const totalFields = sections.reduce((sum, section) => sum + section.fields.length, 0);
+    if (totalFields === 0) {
+      toast.error("Please add at least one field to your form");
+      return false;
+    }
+
+    return true;
+  };
+
+  // Function to handle publish button click
+  const handlePublishClick = () => {
+    if (validateFormBeforePublish()) {
+      setShowPublishDialog(true);
+    }
+  };
+
+  // Function to load draft from API
+  const loadDraft = async (draftId: string) => {
+    try {
+      const response = await fetch(`/api/forms/draft/${draftId}`);
+      const data = await response.json();
+      
+      if (response.ok && data) {
+        setFormTitle(data.topic || "");
+        setFormDescription(data.description || "");
+        
+        // Convert fields back to sections structure
+        const fieldGroups = data.fields.reduce((acc: any, field: any) => {
+          const category = field.category || "General Information";
+          if (!acc[category]) {
+            acc[category] = [];
+          }
+          acc[category].push({
+            id: field.id,
+            label: field.label,
+            type: field.type,
+            required: field.required,
+            placeholder: field.placeholder,
+            options: field.options ? JSON.parse(field.options) : undefined
+          });
+          return acc;
+        }, {});
+
+        const newSections = Object.entries(fieldGroups).map(([title, fields]: [string, any]) => ({
+          id: `section-${Date.now()}-${Math.random()}`,
+          title,
+          fields
+        }));
+
+        if (newSections.length > 0) {
+          setSections(newSections);
+        }
+        
+        setCurrentDraftId(draftId);
+        toast.success("Draft loaded successfully!");
+      }
+    } catch (error) {
+      console.error("Load draft error:", error);
+      toast.error("Failed to load draft");
     }
   };
 
@@ -649,6 +822,20 @@ export default function FormGeneratorPage() {
     );
   };
 
+  // Show loading state when in edit mode and loading form data
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">
+            {isEditMode ? "Loading form..." : "Loading..."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-8">
       {/* Mobile Header */}
@@ -662,8 +849,12 @@ export default function FormGeneratorPage() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-lg font-bold text-gray-900">Create Form</h1>
-                <p className="text-xs text-gray-600">Build your form</p>
+                <h1 className="text-lg font-bold text-gray-900">
+                  {isEditMode ? "Edit Form" : "Create Form"}
+                </h1>
+                <p className="text-xs text-gray-600">
+                  {isEditMode ? "Modify your form" : "Build your form"}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -690,17 +881,18 @@ export default function FormGeneratorPage() {
                   <Button 
                     size="sm" 
                     disabled={isPublishing}
+                    onClick={handlePublishClick}
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
                   >
-                    Publish
+                    {isEditMode ? "Update" : "Publish"}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                      <Settings className="w-4 h-4" />
-                      Publish Settings
-                    </DialogTitle>
+                                      <DialogTitle className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" />
+                    {isEditMode ? "Update Settings" : "Publish Settings"}
+                  </DialogTitle>
                   </DialogHeader>
                   
                   <div className="space-y-6">
@@ -796,7 +988,7 @@ export default function FormGeneratorPage() {
                             Publishing...
                           </div>
                         ) : (
-                          "Publish Form"
+                          isEditMode ? "Update Form" : "Publish Form"
                         )}
                       </Button>
                     </div>
@@ -820,8 +1012,12 @@ export default function FormGeneratorPage() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Create Form</h1>
-                <p className="text-gray-600 mt-1">Build your form with our intuitive builder</p>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  {isEditMode ? "Edit Form" : "Create Form"}
+                </h1>
+                <p className="text-gray-600 mt-1">
+                  {isEditMode ? "Modify your existing form" : "Build your form with our intuitive builder"}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -837,9 +1033,10 @@ export default function FormGeneratorPage() {
                 <DialogTrigger asChild>
                   <Button 
                     disabled={isPublishing}
+                    onClick={handlePublishClick}
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
                   >
-                    Publish Form
+                    {isEditMode ? "Update Form" : "Publish Form"}
                   </Button>
                 </DialogTrigger>
               </Dialog>
@@ -1114,5 +1311,20 @@ export default function FormGeneratorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FormGeneratorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <FormGeneratorContent />
+    </Suspense>
   );
 }

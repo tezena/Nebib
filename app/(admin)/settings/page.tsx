@@ -1,150 +1,162 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   User, 
-  Mail, 
-  Calendar, 
   Shield, 
   Bell, 
   Settings, 
   LogOut, 
   Edit, 
   Camera,
-  Globe,
   Key,
-  Activity,
-  FileText,
-  Users,
-  CheckCircle,
-  Clock,
-  Trash2
+  Trash2,
+  Moon,
+  Sun,
+  Palette,
+  Save,
+  X,
+  ArrowLeft,
+  CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
-export default function SettingsPage() {
-  const [user, setUser] = useState<any>(null);
+interface UserData {
+  id?: string;
+  name?: string;
+  email?: string;
+  emailVerified?: boolean;
+  image?: string;
+  organizationName?: string;
+  createdAt?: string;
+}
+
+function SettingsPageContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [stats, setStats] = useState({
-    totalForms: 0,
-    totalSubmissions: 0,
-    activeForms: 0,
-    lastLogin: new Date().toLocaleDateString()
+  const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    organizationName: ""
   });
 
+  // Load theme from localStorage
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    
-    console.log("🔄 Settings: Starting session fetch...");
-    
-    authClient.getSession().then((res) => {
-      console.log("📡 Settings: Auth response:", res);
-      
-      // Handle different response structures
-      let userData = null;
-      
-      if (res && typeof res === 'object') {
-        // Check if user is directly on the response
-        if ('user' in res && res.user) {
-          userData = res.user;
-          console.log("✅ Settings: User found directly on response:", userData);
-        }
-        // Check if user is in data property
-        else if ('data' in res && res.data && typeof res.data === 'object') {
-          if ('user' in res.data && res.data.user) {
-            userData = res.data.user;
-            console.log("✅ Settings: User found in data property:", userData);
-          }
-          // Check if data itself is the user object
-          else if (res.data && ('id' in res.data || 'email' in res.data)) {
-            userData = res.data;
-            console.log("✅ Settings: Data is user object:", userData);
-          }
-        }
-        // Check if response itself is the user object
-        else if (res && ('id' in res || 'email' in res)) {
-          userData = res;
-          console.log("✅ Settings: Response is user object:", userData);
-        }
-      }
-      
-      if (userData) {
-        setUser(userData);
-      } else {
-        console.log("❌ Settings: No user found in response structure");
-        setUser(null);
-      }
-      setLoading(false);
-    }).catch((err) => {
-      console.error("🚨 Settings: Auth error:", err);
-      setUser(null);
-      setError(err.message || 'Failed to load user data');
-      setLoading(false);
-    });
-
-    // Fetch user stats (mock data for now)
-    setStats({
-      totalForms: 12,
-      totalSubmissions: 156,
-      activeForms: 8,
-      lastLogin: new Date().toLocaleDateString()
-    });
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
   }, []);
 
-  const getUserInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  // Set active tab from URL params
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['profile', 'security', 'notifications', 'appearance', 'account'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        setLoading(true);
+        const session = await authClient.getSession();
+        
+        let userData = null;
+        if (session && typeof session === 'object') {
+          if ('user' in session && session.user) {
+            userData = session.user;
+          } else if ('data' in session && session.data) {
+            if ('user' in session.data && session.data.user) {
+              userData = session.data.user;
+            } else if (session.data && ('id' in session.data || 'email' in session.data)) {
+              userData = session.data;
+            }
+          } else if (session && ('id' in session || 'email' in session)) {
+            userData = session;
+          }
+        }
+        
+        if (userData) {
+          setUser(userData as UserData);
+          setFormData({
+            name: (userData as any).name || "",
+            email: (userData as any).email || "",
+            organizationName: (userData as any).organizationName || ""
+          });
+        }
+      } catch (error) {
+        console.error("Error loading user:", error);
+        toast.error("Failed to load user data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  const handleSaveProfile = async () => {
+    try {
+      setSaving(true);
+      // Here you would typically make an API call to update the user profile
+      // For now, we'll just simulate the update
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setUser(prev => prev ? { ...prev, ...formData } : null);
+      setEditingProfile(false);
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSignOut = async () => {
-    console.log("🚪 Settings: Signing out...");
-    await authClient.signOut();
-    toast.success("Signed out successfully");
-    window.location.href = "/sign-in";
+    try {
+      await authClient.signOut();
+      toast.success("Signed out successfully");
+      router.push('/sign-in');
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast.error("Failed to sign out");
+    }
   };
 
-  console.log("🎯 Settings: Current state - user:", user, "loading:", loading, "error:", error);
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    toast.success(`Switched to ${newTheme} mode`);
+  };
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto py-10 px-4">
-        <div className="animate-pulse space-y-8">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="h-64 bg-gray-200 rounded-lg"></div>
-              <div className="h-48 bg-gray-200 rounded-lg"></div>
-            </div>
-            <div className="space-y-6">
-              <div className="h-48 bg-gray-200 rounded-lg"></div>
-              <div className="h-32 bg-gray-200 rounded-lg"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="max-w-4xl mx-auto py-10 px-4">
-        <div className="text-center space-y-6">
-          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-            <User className="w-8 h-8 text-red-600" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Authentication Error</h2>
-            <p className="text-gray-600 mb-4">{error}</p>
-            <Button onClick={() => window.location.href = "/sign-in"}>
-              Sign In Again
-            </Button>
-          </div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading settings...</p>
         </div>
       </div>
     );
@@ -152,252 +164,313 @@ export default function SettingsPage() {
 
   if (!user) {
     return (
-      <div className="max-w-4xl mx-auto py-10 px-4">
-        <div className="text-center space-y-6">
-          <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-            <User className="w-8 h-8 text-gray-400" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Not Signed In</h2>
-            <p className="text-gray-600 mb-4">Please sign in to access your settings</p>
-            <Button onClick={() => window.location.href = "/sign-in"}>
-              Sign In
-            </Button>
-          </div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Not Signed In</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Please sign in to access your settings</p>
+          <Button onClick={() => router.push('/sign-in')}>Sign In</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4 pb-20 md:pb-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-        <p className="text-gray-600">Manage your account settings and preferences</p>
-      </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-4xl mx-auto py-8 px-4">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" className="p-2">
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
+              <p className="text-gray-600 dark:text-gray-400">Manage your account and preferences</p>
+            </div>
+          </div>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Profile Card */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-blue-600" />
-                    Profile Information
-                  </CardTitle>
-                  <CardDescription>Update your personal information and profile picture</CardDescription>
-                </div>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Edit className="w-4 h-4" />
-                  Edit
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-start gap-6 mb-6">
-                <div className="relative">
-                  <Avatar className="h-20 w-20 ring-4 ring-white shadow-lg">
-                    <AvatarImage src={user?.image} alt={user?.name} />
-                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg font-semibold">
-                      {getUserInitials(user?.name || 'User')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <Button size="sm" variant="outline" className="absolute -bottom-1 -right-1 h-8 w-8 p-0 rounded-full">
-                    <Camera className="w-4 h-4" />
-                  </Button>
-                </div>
-                <div className="flex-1">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                      <Input 
-                        type="text" 
-                        defaultValue={user?.name || "User"} 
-                        className="bg-gray-50 border-gray-200"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                      <Input 
-                        type="email" 
-                        defaultValue={user?.email || "user@email.com"} 
-                        className="bg-gray-50 border-gray-200"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                      <Input 
-                        type="text" 
-                        defaultValue={user?.email?.split('@')[0] || "user"} 
-                        className="bg-gray-50 border-gray-200"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Account Status</label>
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-green-100 text-green-800">
-                          <CheckCircle className="w-3 h-3 mr-1" />
-                          Active
-                        </Badge>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5 bg-white dark:bg-gray-800">
+            <TabsTrigger value="profile" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">
+              <User className="w-4 h-4 mr-2" />
+              Profile
+            </TabsTrigger>
+            <TabsTrigger value="security" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">
+              <Shield className="w-4 h-4 mr-2" />
+              Security
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">
+              <Bell className="w-4 h-4 mr-2" />
+              Notifications
+            </TabsTrigger>
+            <TabsTrigger value="appearance" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">
+              <Palette className="w-4 h-4 mr-2" />
+              Appearance
+            </TabsTrigger>
+            <TabsTrigger value="account" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">
+              <Settings className="w-4 h-4 mr-2" />
+              Account
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Profile Tab */}
+          <TabsContent value="profile" className="space-y-6">
+            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                  <User className="w-5 h-5 text-blue-600" />
+                  Profile Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Avatar Section */}
+                <div className="flex items-center gap-6">
+                  <div className="relative">
+                    <Avatar className="h-20 w-20 ring-4 ring-white dark:ring-gray-800 shadow-lg">
+                      <AvatarImage src={user.image} alt={user.name} />
+                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg font-semibold">
+                        {user.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button size="sm" variant="outline" className="absolute -bottom-1 -right-1 h-8 w-8 p-0 rounded-full">
+                      <Camera className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</Label>
+                        <Input 
+                          id="name"
+                          value={formData.name}
+                          onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                          disabled={!editingProfile}
+                          className="mt-1 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</Label>
+                        <Input 
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                          disabled={!editingProfile}
+                          className="mt-1 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="organization" className="text-sm font-medium text-gray-700 dark:text-gray-300">Organization</Label>
+                        <Input 
+                          id="organization"
+                          value={formData.organizationName}
+                          onChange={(e) => setFormData(prev => ({ ...prev, organizationName: e.target.value }))}
+                          disabled={!editingProfile}
+                          className="mt-1 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Account Status</Label>
+                        <div className="mt-1">
+                          <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Active
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-                  Save Changes
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  {editingProfile ? (
+                    <>
+                      <Button 
+                        onClick={handleSaveProfile} 
+                        disabled={saving}
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                      >
+                        <Save className="w-4 h-4 mr-2" />
+                        {saving ? "Saving..." : "Save Changes"}
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setEditingProfile(false);
+                          setFormData({
+                            name: user.name || "",
+                            email: user.email || "",
+                            organizationName: user.organizationName || ""
+                          });
+                        }}
+                      >
+                        <X className="w-4 h-4 mr-2" />
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setEditingProfile(true)}
+                    >
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit Profile
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Security Tab */}
+          <TabsContent value="security" className="space-y-6">
+            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                  <Shield className="w-5 h-5 text-red-600" />
+                  Security Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Key className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Password</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Last changed 30 days ago</div>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">Change</Button>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Two-Factor Authentication</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Add an extra layer of security</div>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">Enable</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Notifications Tab */}
+          <TabsContent value="notifications" className="space-y-6">
+            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                  <Bell className="w-5 h-5 text-yellow-600" />
+                  Notification Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Email Notifications</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Receive notifications via email</div>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Form Submissions</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Notify when someone submits a form</div>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">System Updates</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Receive updates about new features</div>
+                  </div>
+                  <Switch />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Appearance Tab */}
+          <TabsContent value="appearance" className="space-y-6">
+            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                  <Palette className="w-5 h-5 text-purple-600" />
+                  Appearance Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    {theme === 'light' ? (
+                      <Sun className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    ) : (
+                      <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    )}
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">Theme</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Choose your preferred theme</div>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={toggleTheme}>
+                    {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Account Tab */}
+          <TabsContent value="account" className="space-y-6">
+            {/* Danger Zone */}
+            <Card className="border-0 shadow-lg border-red-100 dark:border-red-900/20 dark:bg-gray-800">
+              <CardHeader>
+                <CardTitle className="text-lg text-red-600 dark:text-red-400">Danger Zone</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start gap-3 text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 dark:text-red-400"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
                 </Button>
-                <Button variant="outline">Cancel</Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Account Statistics */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Activity className="w-5 h-5 text-green-600" />
-                Account Statistics
-              </CardTitle>
-              <CardDescription>Overview of your form building activity</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <FileText className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{stats.totalForms}</div>
-                  <div className="text-sm text-gray-600">Total Forms</div>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <Users className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{stats.totalSubmissions}</div>
-                  <div className="text-sm text-gray-600">Submissions</div>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <CheckCircle className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{stats.activeForms}</div>
-                  <div className="text-sm text-gray-600">Active Forms</div>
-                </div>
-                <div className="text-center p-4 bg-orange-50 rounded-lg">
-                  <Clock className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{stats.lastLogin}</div>
-                  <div className="text-sm text-gray-600">Last Login</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Security Settings */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-red-600" />
-                Security Settings
-              </CardTitle>
-              <CardDescription>Manage your password and account security</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Key className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <div className="font-medium text-gray-900">Password</div>
-                    <div className="text-sm text-gray-600">Last changed 30 days ago</div>
-                  </div>
-                </div>
-                <Button variant="outline" size="sm">Change</Button>
-              </div>
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Globe className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <div className="font-medium text-gray-900">Two-Factor Authentication</div>
-                    <div className="text-sm text-gray-600">Add an extra layer of security</div>
-                  </div>
-                </div>
-                <Button variant="outline" size="sm">Enable</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Quick Actions */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-lg">Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start gap-3">
-                <Bell className="w-4 h-4" />
-                Notification Settings
-              </Button>
-              <Button variant="outline" className="w-full justify-start gap-3">
-                <Globe className="w-4 h-4" />
-                Language & Region
-              </Button>
-              <Button variant="outline" className="w-full justify-start gap-3">
-                <Activity className="w-4 h-4" />
-                Activity Log
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Account Info */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-lg">Account Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-3 text-sm">
-                <Mail className="w-4 h-4 text-gray-400" />
-                <span className="text-gray-600">Member since</span>
-                <span className="font-medium">{new Date().getFullYear()}</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Calendar className="w-4 h-4 text-gray-400" />
-                <span className="text-gray-600">Last login</span>
-                <span className="font-medium">{stats.lastLogin}</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <CheckCircle className="w-4 h-4 text-gray-400" />
-                <span className="text-gray-600">Status</span>
-                <Badge className="bg-green-100 text-green-800 text-xs">Active</Badge>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Danger Zone */}
-          <Card className="border-0 shadow-lg border-red-100">
-            <CardHeader>
-              <CardTitle className="text-lg text-red-600">Danger Zone</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button 
-                variant="outline" 
-                className="w-full justify-start gap-3 text-red-600 border-red-200 hover:bg-red-50"
-                onClick={handleSignOut}
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start gap-3 text-red-600 border-red-200 hover:bg-red-50"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete Account
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start gap-3 text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 dark:text-red-400"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Account
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading settings...</p>
+        </div>
+      </div>
+    }>
+      <SettingsPageContent />
+    </Suspense>
   );
 } 

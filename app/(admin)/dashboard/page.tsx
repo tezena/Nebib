@@ -178,9 +178,11 @@ export default function DashboardPage() {
                   </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit Form
+                          <DropdownMenuItem asChild>
+                            <Link href={`/form-generator?edit=1&id=${form.id}`}>
+                              <Edit className="w-4 h-4 mr-2" />
+                              Edit Form
+                            </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Download className="w-4 h-4 mr-2" />
