@@ -51,7 +51,14 @@ export const POST = async (request: NextRequest) => {
       headers: Object.fromEntries(response.headers.entries())
     });
     
-    return addCorsHeaders(response, request);
+    // Convert Response to NextResponse for CORS
+    const nextResponse = new NextResponse(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+    });
+    
+    return addCorsHeaders(nextResponse, request);
     
   } catch (error) {
     console.error("🚨 Custom Sign-in API error:", error);
