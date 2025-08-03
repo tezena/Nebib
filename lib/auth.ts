@@ -28,6 +28,7 @@ export const auth = betterAuth({
     "https://nebib-production.up.railway.app",
     "https://www.nebibs.com",
     "https://nebibs.com",
+    "https://master.d1xft618vpjqol.amplifyapp.com",
     "http://localhost:3000",
     "http://localhost:3001",
   ],
