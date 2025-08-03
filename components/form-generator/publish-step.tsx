@@ -85,6 +85,7 @@ const PublishStep = forwardRef<{ saveToDatabase: () => Promise<void> }, PublishS
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Include cookies for authentication
       })
       const data = await response.json()
       if (!response.ok) {

@@ -104,13 +104,22 @@ export default function FormPreview() {
     return (
       <div className="flex items-center justify-center h-[300px] sm:h-[400px]">
         <div className="text-center">
-          <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-green-500" />
+          <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-green-500 dark:text-green-400" />
           <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">
             Form Submitted Successfully!
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-            Thank you for your submission.
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            Thank you for your submission. We'll get back to you soon.
           </p>
+          <Button
+            onClick={() => {
+              setIsSubmitted(false);
+              setFormValues({});
+            }}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+          >
+            Submit Another Response
+          </Button>
         </div>
       </div>
     );
@@ -205,58 +214,66 @@ export default function FormPreview() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
-        {/* Form Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {formData.topic}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-            {formData.description}
-          </p>
-          <div className="flex flex-wrap justify-center gap-2 mt-4">
-            {formData.categories.map((category) => (
-              <Badge key={category} variant="secondary" className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">
-                {category}
-              </Badge>
-            ))}
+    <div className="w-full max-w-2xl mx-auto">
+      {/* Form Header */}
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-t-xl">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold">Nebib Forms</h1>
+              <p className="text-sm text-blue-100">Professional form builder</p>
+            </div>
           </div>
+          <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+            Preview
+          </Badge>
         </div>
+        
+        <div className="text-center">
+          <h2 className="text-xl font-bold mb-2">{formData.topic}</h2>
+          <p className="text-blue-100">{formData.description}</p>
+        </div>
+      </div>
 
-        {/* Form Fields */}
+      {/* Form Content */}
+      <div className="bg-white dark:bg-gray-700 p-6 rounded-b-xl border border-gray-200 dark:border-gray-600">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {formData.fields.map((field) => renderField(field))}
-
-          {/* Submit Button */}
-          <div className="pt-6">
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3"
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Submitting...
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Send className="w-4 h-4" />
-                  Submit Form
-                </div>
-              )}
-            </Button>
-          </div>
+          {formData.fields.map((field) => (
+            <div key={field.id} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {field.label}
+                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                </Label>
+                <Badge variant="outline" className="text-xs bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-500">
+                  {field.type}
+                </Badge>
+              </div>
+              {renderField(field)}
+            </div>
+          ))}
+          
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+          >
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Submitting...
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Send className="w-4 h-4" />
+                Submit Form
+              </div>
+            )}
+          </Button>
         </form>
-
-        {/* Form Footer */}
-        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-            <AlertCircle className="w-4 h-4" />
-            <span>This is a preview of your form</span>
-          </div>
-        </div>
       </div>
     </div>
   );

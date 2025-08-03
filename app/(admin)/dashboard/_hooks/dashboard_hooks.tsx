@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { betterFetch } from "@better-fetch/fetch";
 
 interface Form {
   id: string;
@@ -16,7 +15,7 @@ interface Form {
     type: string;
     required: boolean;
   }>;
-  datas: Array<{
+  datas?: Array<{
     id: string;
     data: any;
     createdAt: string;
@@ -24,13 +23,38 @@ interface Form {
 }
 
 const getForms = async (): Promise<Form[]> => {
-  const res = await betterFetch<Form[]>("/api/forms");
-  return res.data || [];
+  try {
+    console.log("🔍 Dashboard: Fetching forms...");
+    const response = await fetch("/api/forms", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Include cookies for authentication
+    });
+    
+    console.log("📊 Dashboard: Response status:", response.status);
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("❌ Dashboard: API error:", errorData);
+      throw new Error(errorData.error || "Failed to fetch forms");
+    }
+    
+    const data = await response.json();
+    console.log("✅ Dashboard: Forms fetched successfully:", data.length);
+    return data || [];
+  } catch (error) {
+    console.error("🚨 Dashboard: Fetch error:", error);
+    throw error;
+  }
 };
 
 export const useDashboardData = () => {
   return useQuery({
     queryKey: ["forms"],
     queryFn: getForms,
+    retry: 3,
+    retryDelay: 1000,
   });
 }; 

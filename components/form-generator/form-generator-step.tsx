@@ -213,230 +213,274 @@ export default function FormGeneratorStep({ onComplete, onIncomplete }: FormGene
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8">
-      {/* Basic Information */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader className="pb-3 sm:pb-6">
-          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-            <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+    <div className="space-y-6">
+      {/* Form Header */}
+      <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+            <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             Form Details
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 sm:space-y-6">
+        <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="topic" className="text-sm font-medium">Form Title *</Label>
-            <Textarea
+            <Label htmlFor="topic" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Form Title *
+            </Label>
+            <Input
               id="topic"
-              name="topic"
               value={formData.topic}
               onChange={handleChange}
-              placeholder="Enter a descriptive title for your form..."
-              className="min-h-[60px] sm:min-h-[80px] resize-none text-sm sm:text-base"
+              placeholder="Enter your form title..."
+              className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
           </div>
-
+          
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-medium">Description *</Label>
-            <Input
+            <Label htmlFor="description" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Description *
+            </Label>
+            <Textarea
               id="description"
-              name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Briefly describe what this form is for..."
-              className="text-sm sm:text-base"
+              placeholder="Describe what this form is for..."
+              rows={3}
+              className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
           </div>
+        </CardContent>
+      </Card>
 
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Categories</Label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {formData.categories.map((category) => (
-                <Badge
-                  key={category}
-                  variant="secondary"
-                  className="px-2 sm:px-3 py-1 text-xs sm:text-sm cursor-pointer hover:bg-red-100 hover:text-red-700 transition-colors"
-                  onClick={() => removeCategory(category)}
-                >
-                  {category}
-                  <span className="ml-1 text-red-500">×</span>
-                </Badge>
-              ))}
-            </div>
-            <div className="flex items-center gap-2">
-              <Input
-                placeholder="Add new category..."
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && addCategory()}
-                className="flex-1 text-sm sm:text-base"
-              />
-              <Button
-                type="button"
-                size="sm"
-                onClick={addCategory}
-                disabled={!newCategory.trim()}
-                className="px-3 sm:px-4 h-9 sm:h-10"
+      {/* Categories */}
+      <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+            <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            Form Categories
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {formData.categories.map((category) => (
+              <Badge
+                key={category}
+                variant="secondary"
+                className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800"
               >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Field Templates */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader className="pb-3 sm:pb-6">
-          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-            <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
-            Quick Add Fields
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-            {fieldTemplates.map((template, index) => {
-              const Icon = template.icon;
-              return (
+                {category}
                 <Button
-                  key={`template_${template.label}_${index}`}
-                  variant="outline"
-                  onClick={() => addField(template)}
-                  className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 hover:bg-blue-50 hover:border-blue-200 transition-all text-xs sm:text-sm"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeCategory(category)}
+                  className="h-4 w-4 p-0 ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800/30"
                 >
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-                  <span className="font-medium">{template.label}</span>
-                  <span className="text-gray-500">{template.type}</span>
+                  <Trash2 className="w-3 h-3" />
                 </Button>
-              );
-            })}
+              </Badge>
+            ))}
+          </div>
+          
+          <div className="flex gap-2">
+            <Input
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              placeholder="Add new category..."
+              className="flex-1 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <Button
+              onClick={addCategory}
+              disabled={!newCategory.trim()}
+              className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white"
+            >
+              <Plus className="w-4 h-4" />
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Custom Fields */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 pb-3 sm:pb-6">
-          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-            <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
-            Form Fields ({formData.fields.length})
+      {/* Fields */}
+      <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+            <Sparkles className="w-5 h-5 text-green-600 dark:text-green-400" />
+            Form Fields
           </CardTitle>
-          <Button
-            onClick={() => addField()}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-sm sm:text-base h-9 sm:h-10"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Field
-          </Button>
         </CardHeader>
-        <CardContent className="space-y-3 sm:space-y-4">
-          {formData.fields.length === 0 ? (
-            <div className="text-center py-6 sm:py-8 text-gray-500">
-              <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-300" />
-              <p className="text-sm sm:text-base">No fields added yet. Start by adding some fields above.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-              {formData.fields.map((field, index) => {
-                const Icon = getFieldIcon(field.type);
-                return (
-                  <div key={field.id || `field_${index}`} className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+        <CardContent className="space-y-4">
+          {/* Field Templates */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {fieldTemplates.map((template, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                onClick={() => addField(template)}
+                className="h-auto p-3 flex flex-col items-center gap-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-400 dark:hover:border-blue-500"
+              >
+                <template.icon className="w-5 h-5" />
+                <span className="text-xs font-medium">{template.label}</span>
+              </Button>
+            ))}
+          </div>
+
+          {/* Custom Fields */}
+          <div className="space-y-4">
+            {formData.fields.map((field) => (
+              <div
+                key={field.id}
+                className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/50"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                      {getFieldIcon(field.type)}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <Input
-                        placeholder="Field label..."
-                        value={field.label}
-                        onChange={(e) => updateField(field.id, { label: e.target.value })}
-                        className="font-medium text-sm sm:text-base"
-                      />
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white">{field.label}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400 capitalize">{field.type} • {field.category}</div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeField(field.id)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50 h-8 w-8 sm:h-9 sm:w-9 p-0"
-                    >
-                      <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </Button>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeField(field.id)}
+                    className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Label</Label>
+                    <Input
+                      value={field.label}
+                      onChange={(e) => updateField(field.id, { label: e.target.value })}
+                      className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                    />
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Type</Label>
                     <Select
                       value={field.type}
-                      onValueChange={(value) => updateField(field.id, { type: value as Field['type'] })}
+                      onValueChange={(value: Field['type']) => updateField(field.id, { type: value })}
                     >
-                      <SelectTrigger className="text-xs sm:text-sm h-8 sm:h-10">
-                        <SelectValue placeholder="Field type" />
+                      <SelectTrigger className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                        <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="text">Text</SelectItem>
-                        <SelectItem value="email">Email</SelectItem>
-                        <SelectItem value="number">Number</SelectItem>
-                        <SelectItem value="date">Date</SelectItem>
-                        <SelectItem value="checkbox">Checkbox</SelectItem>
-                        <SelectItem value="textarea">Text Area</SelectItem>
-                        <SelectItem value="select">Dropdown</SelectItem>
+                      <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                        <SelectItem value="text" className="text-gray-900 dark:text-white">Text</SelectItem>
+                        <SelectItem value="number" className="text-gray-900 dark:text-white">Number</SelectItem>
+                        <SelectItem value="email" className="text-gray-900 dark:text-white">Email</SelectItem>
+                        <SelectItem value="date" className="text-gray-900 dark:text-white">Date</SelectItem>
+                        <SelectItem value="checkbox" className="text-gray-900 dark:text-white">Checkbox</SelectItem>
+                        <SelectItem value="textarea" className="text-gray-900 dark:text-white">Textarea</SelectItem>
+                        <SelectItem value="select" className="text-gray-900 dark:text-white">Select</SelectItem>
                       </SelectContent>
                     </Select>
-
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Category</Label>
                     <Select
                       value={field.category}
                       onValueChange={(value) => updateField(field.id, { category: value })}
                     >
-                      <SelectTrigger className="text-xs sm:text-sm h-8 sm:h-10">
-                        <SelectValue placeholder="Category" />
+                      <SelectTrigger className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                        <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                         {formData.categories.map((category) => (
-                          <SelectItem key={category} value={category}>
+                          <SelectItem key={category} value={category} className="text-gray-900 dark:text-white">
                             {category}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-
-                    <div className="flex items-center gap-2">
-                      <Switch
-                        checked={field.required}
-                        onCheckedChange={(checked) => updateField(field.id, { required: checked })}
-                        className="data-[state=checked]:bg-blue-500"
-                      />
-                      <Label className="text-xs sm:text-sm">Required</Label>
-                    </div>
                   </div>
-
-                  {field.type === 'select' && (
-                    <div className="mt-3">
-                      <Label className="text-xs sm:text-sm text-gray-600">Options (one per line)</Label>
-                      <Textarea
-                        placeholder="Option 1&#10;Option 2&#10;Option 3"
-                        value={field.options?.join('\n') || ''}
-                        onChange={(e) => updateField(field.id, { 
-                          options: e.target.value.split('\n').filter(opt => opt.trim()) 
-                        })}
-                        className="mt-1 min-h-[50px] sm:min-h-[60px] text-xs sm:text-sm"
-                      />
+                  
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Placeholder</Label>
+                    <Input
+                      value={field.placeholder || ""}
+                      onChange={(e) => updateField(field.id, { placeholder: e.target.value })}
+                      placeholder="Optional placeholder text..."
+                      className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                    />
+                  </div>
+                  
+                  {field.type === "select" && (
+                    <div className="sm:col-span-2 space-y-2">
+                      <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Options</Label>
+                      <div className="space-y-2">
+                        {(field.options || []).map((option, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              value={option}
+                              onChange={(e) => {
+                                const newOptions = [...(field.options || [])];
+                                newOptions[index] = e.target.value;
+                                updateField(field.id, { options: newOptions });
+                              }}
+                              placeholder={`Option ${index + 1}`}
+                              className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                            />
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                const newOptions = (field.options || []).filter((_, i) => i !== index);
+                                updateField(field.id, { options: newOptions });
+                              }}
+                              className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newOptions = [...(field.options || []), ""];
+                            updateField(field.id, { options: newOptions });
+                          }}
+                          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        >
+                          <Plus className="w-4 h-4 mr-1" />
+                          Add Option
+                        </Button>
+                      </div>
                     </div>
                   )}
+                  
+                  <div className="sm:col-span-2 flex items-center space-x-2">
+                    <Switch
+                      id={`required-${field.id}`}
+                      checked={field.required}
+                      onCheckedChange={(checked) => updateField(field.id, { required: checked })}
+                    />
+                    <Label htmlFor={`required-${field.id}`} className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Required field
+                    </Label>
+                  </div>
                 </div>
-              );
-            })}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
+
+          {/* Add Custom Field */}
+          <Button
+            variant="outline"
+            onClick={() => addField()}
+            className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Custom Field
+          </Button>
         </CardContent>
       </Card>
-
-      {/* Completion Status */}
-      <div className="text-center">
-        <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gray-100">
-          <div className={`w-2 h-2 rounded-full ${formData.fields.length > 0 ? 'bg-green-500' : 'bg-gray-400'}`}></div>
-          <span className="text-xs sm:text-sm text-gray-600">
-            {formData.fields.length} fields added • {formData.fields.filter(f => f.required).length} required
-          </span>
-        </div>
-      </div>
     </div>
   );
 }

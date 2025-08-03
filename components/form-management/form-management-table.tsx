@@ -6,7 +6,7 @@ import { DataTable } from "../table";
 import { Input } from "../ui/input";
 import { Search, Plus, Filter, Download, MoreHorizontal, Eye, Edit, Trash2, Copy, ExternalLink, FileText, Users, Calendar, ArrowRight } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
-import { useGetForms } from "@/app/(admin)/form-management/_hooks/form_hooks";
+import { useGetForms, useDeleteForm } from "@/app/(admin)/form-management/_hooks/form_hooks";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
 import { toast } from "sonner";
@@ -17,10 +17,14 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "../ui/dropdown-menu";
+import { ConfirmDialog } from "../ui/confirm-dialog";
+import { useState } from "react";
 
 const FormManagementTable = () => {
   const { data } = useGetForms();
+  const deleteFormMutation = useDeleteForm();
   const router = useRouter();
+  const [deleteFormId, setDeleteFormId] = useState<string | null>(null);
 
   const numericFilter: FilterFn<any> = (row, columnId, value) => {
     const cellValue = row.getValue(columnId);
@@ -40,6 +44,23 @@ const FormManagementTable = () => {
   const openFormLink = (formId: string) => {
     const publicLink = `${window.location.origin}/form/${formId}`;
     window.open(publicLink, "_blank");
+  };
+
+  const handleEditForm = (formId: string) => {
+    router.push(`/form-generator?edit=1&id=${formId}`);
+  };
+
+  const handleDeleteForm = async () => {
+    if (!deleteFormId) return;
+    
+    try {
+      await deleteFormMutation.mutateAsync(deleteFormId);
+      toast.success("Form deleted successfully!");
+      setDeleteFormId(null);
+    } catch (error) {
+      console.error("Delete form error:", error);
+      toast.error("Failed to delete form. Please try again.");
+    }
   };
 
   const columns: ColumnDef<NonNullable<typeof data>[number]>[] = [
@@ -179,11 +200,14 @@ const FormManagementTable = () => {
                 <Copy className="mr-2 h-4 w-4" />
                 Copy Link
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleEditForm(formId)}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit Form
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem 
+                onClick={() => setDeleteFormId(formId)}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+              >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete Form
               </DropdownMenuItem>
@@ -323,6 +347,24 @@ const FormManagementTable = () => {
                       >
                         <Copy className="w-3 h-3" />
                       </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEditForm(form.id)}
+                        className="h-7 w-7 p-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                        title="Edit Form"
+                      >
+                        <Edit className="w-3 h-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setDeleteFormId(form.id)}
+                        className="h-7 w-7 p-0 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        title="Delete Form"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -346,6 +388,19 @@ const FormManagementTable = () => {
           </Card>
         )}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={!!deleteFormId}
+        onClose={() => setDeleteFormId(null)}
+        onConfirm={handleDeleteForm}
+        title="Delete Form"
+        description="Are you sure you want to delete this form? This action cannot be undone and will permanently remove the form and all its data including submissions and attendance records."
+        confirmText="Delete Form"
+        cancelText="Cancel"
+        variant="destructive"
+        loading={deleteFormMutation.isPending}
+      />
     </div>
   );
 };

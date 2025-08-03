@@ -2,6 +2,7 @@ import { db } from "@/lib/db"
 import { NextResponse, NextRequest } from "next/server"
 import { auth } from "@/lib/auth"
 import { addCorsHeaders } from "@/lib/cors"
+import { Type } from "@prisma/client"
 
 export async function OPTIONS(request: NextRequest) {
   return addCorsHeaders(new NextResponse(null, { status: 200 }), request);
@@ -43,6 +44,17 @@ export const POST = async (request: NextRequest) => {
     // Generate a unique link for the form
     const link = `form-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
+    console.log("💾 Forms API: Creating form with data:", {
+      topic,
+      description,
+      categories: categories ? categories.join(',') : '',
+      status: 'active',
+      link,
+      type: Type.Private,
+      userId: session.user.id,
+      fieldsCount: fields.length
+    });
+    
     // Create the form
     const form = await db.form.create({
       data: {
@@ -52,7 +64,7 @@ export const POST = async (request: NextRequest) => {
         status: 'active',
         link,
         submissions: 0,
-        type: 'Private',
+        type: Type.Private,
         userId: session.user.id,
         fields: {
           create: fields.map((field: any) => ({
@@ -67,6 +79,14 @@ export const POST = async (request: NextRequest) => {
         fields: true,
       }
     })
+    
+    console.log("✅ Forms API: Form created successfully:", {
+      id: form.id,
+      topic: form.topic,
+      status: form.status,
+      type: form.type,
+      fieldsCount: form.fields.length
+    });
 
     const response = NextResponse.json(form, { status: 201 })
     return addCorsHeaders(response, request);
@@ -85,15 +105,26 @@ export const POST = async (request: NextRequest) => {
 
 export const GET = async (request: NextRequest) => {
   try {
+    console.log("🔍 Forms API: Starting GET request");
+    
     // Create a proper headers object for better-auth
     const headers = new Headers(request.headers)
     const session = await auth.api.getSession({ headers })
     
+    console.log("📋 Forms API: Session result:", session ? "Found" : "Not found");
+    if (session) {
+      console.log("👤 Forms API: User ID:", session.user.id);
+      console.log("📧 Forms API: User email:", session.user.email);
+    }
+    
     if (!session) {
+      console.log("❌ Forms API: No session found - returning unauthorized");
       const response = NextResponse.json({ error: "Unauthorized" }, { status: 401 })
       return addCorsHeaders(response, request);
     }
 
+    console.log("🔍 Forms API: Fetching forms for user:", session.user.id);
+    
     // Get all forms for the current user
     const forms = await db.form.findMany({
       where: {
@@ -107,6 +138,18 @@ export const GET = async (request: NextRequest) => {
         createdAt: 'desc',
       },
     })
+
+    console.log("✅ Forms API: Found forms:", forms.length);
+    forms.forEach((form, index) => {
+      console.log(`📋 Form ${index + 1}:`, {
+        id: form.id,
+        topic: form.topic,
+        status: form.status,
+        type: form.type,
+        fieldsCount: form.fields.length,
+        submissionsCount: form.datas.length
+      });
+    });
 
     const response = NextResponse.json(forms, { status: 200 })
     return addCorsHeaders(response, request);

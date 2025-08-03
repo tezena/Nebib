@@ -29,7 +29,9 @@ import {
   Camera,
   Scan,
   Download as DownloadIcon,
-  X
+  X,
+  Edit,
+  Trash2
 } from "lucide-react"
 import { toast } from "sonner"
 import QRScanner from "@/components/qr-code/qr-scanner"
@@ -41,6 +43,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 interface FormSubmission {
   id: string;
@@ -84,6 +87,8 @@ export default function FormDetailPage() {
   const [scannedData, setScannedData] = useState('')
   const [isScanning, setIsScanning] = useState(false)
   const [expandedSubmission, setExpandedSubmission] = useState<string | null>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // Handle params properly to avoid hydration issues
   useEffect(() => {
@@ -410,6 +415,38 @@ export default function FormDetailPage() {
     }
   }
 
+  const handleEditForm = () => {
+    router.push(`/form-generator?edit=1&id=${formId}`)
+  }
+
+  const handleDeleteForm = async () => {
+    setIsDeleting(true)
+    try {
+      const response = await fetch(`/api/forms/${formId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to delete form")
+      }
+
+      toast.success("Form deleted successfully!")
+      setShowDeleteDialog(false)
+      router.push("/form-management") // Redirect to forms list
+    } catch (error) {
+      console.error("Delete form error:", error)
+      toast.error("Failed to delete form. Please try again.")
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
   const exportSubmissions = () => {
     if (!formData?.fields || submissions.length === 0) {
       toast.error('No submissions to export')
@@ -549,6 +586,17 @@ export default function FormDetailPage() {
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Open Form
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleEditForm} className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Form
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setShowDeleteDialog(true)}
+                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete Form
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -579,6 +627,18 @@ export default function FormDetailPage() {
               <Button variant="outline" onClick={copyLink} className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <Copy className="w-4 h-4 mr-2" />
                 Copy Link
+              </Button>
+              <Button variant="outline" onClick={handleEditForm} className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Form
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowDeleteDialog(true)}
+                className="border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-400 dark:hover:border-red-500"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Form
               </Button>
               <Button onClick={openFormLink} className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
                 <ExternalLink className="w-4 h-4 mr-2" />
@@ -1070,6 +1130,19 @@ export default function FormDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDeleteForm}
+        title="Delete Form"
+        description="Are you sure you want to delete this form? This action cannot be undone and will permanently remove the form and all its data including submissions and attendance records."
+        confirmText="Delete Form"
+        cancelText="Cancel"
+        variant="destructive"
+        loading={isDeleting}
+      />
     </div>
   )
 }

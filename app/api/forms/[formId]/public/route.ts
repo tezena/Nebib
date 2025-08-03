@@ -2,26 +2,20 @@ import { db } from "@/lib/db"
 import { NextResponse, NextRequest } from "next/server"
 import { addCorsHeaders } from "@/lib/cors"
 
-type RouteParams = {
-  id: string
-}
-
-
 export async function OPTIONS(request: NextRequest) {
   return addCorsHeaders(new NextResponse(null, { status: 200 }), request);
 }
 
-export const GET = async (request: Request, context: { params: Promise<RouteParams> }) => {
+export const GET = async (request: Request, context: { params: { formId: string } }) => {
   try {
-    // Await the params promise
-    const { id: formId } = await context.params
+    const { formId } = context.params
 
     console.log("🔍 Public API - Looking for form with ID:", formId)
     console.log("📋 Public API - Request URL:", request.url)
 
     if (!formId) {
       const response = NextResponse.json({ error: "Form ID is required" }, { status: 400 });
-    return addCorsHeaders(response, request as NextRequest);
+      return addCorsHeaders(response, request as NextRequest);
     }
 
     // Find the form by ID and include fields (no authentication required)
@@ -36,7 +30,7 @@ export const GET = async (request: Request, context: { params: Promise<RoutePara
 
     if (!form) {
       const response = NextResponse.json({ error: "Form not found" }, { status: 404 });
-    return addCorsHeaders(response, request as NextRequest);
+      return addCorsHeaders(response, request as NextRequest);
     }
 
     console.log("✅ Public form fetched successfully")

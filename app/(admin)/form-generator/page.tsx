@@ -97,7 +97,13 @@ function FormGeneratorContent() {
       
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/forms/${formId}`);
+        const response = await fetch(`/api/forms/${formId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
         const data = await response.json();
         
         if (response.ok && data) {
@@ -302,6 +308,7 @@ function FormGeneratorContent() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // Include cookies for authentication
       });
       
       const data = await response.json();
@@ -525,7 +532,7 @@ function FormGeneratorContent() {
           <Input
             value={section.title}
             onChange={(e) => updateSectionTitle(section.id, e.target.value)}
-            className="font-medium border-blue-300 focus:border-blue-500"
+            className="font-medium border-blue-300 dark:border-blue-600 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             placeholder="Enter section title..."
             autoFocus
           />
@@ -533,9 +540,9 @@ function FormGeneratorContent() {
             variant="ghost"
             size="sm"
             onClick={() => setEditingSectionTitle(null)}
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20"
           >
-            <Check className="w-4 h-4 text-green-600" />
+            <Check className="w-4 h-4" />
           </Button>
         </div>
       );
@@ -543,14 +550,14 @@ function FormGeneratorContent() {
 
     return (
       <div className="flex items-center gap-2">
-        <h4 className="font-medium text-gray-900">
+        <h4 className="font-medium text-gray-900 dark:text-white">
           {section.title}
         </h4>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setEditingSectionTitle(section.id)}
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 p-0 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
         >
           <Edit className="w-4 h-4" />
         </Button>
@@ -565,7 +572,7 @@ function FormGeneratorContent() {
           <Input
             value={field.label}
             onChange={(e) => updateField(sectionId, field.id, { label: e.target.value })}
-            className="text-sm font-medium border-blue-300 focus:border-blue-500"
+            className="text-sm font-medium border-blue-300 dark:border-blue-600 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             placeholder="Enter field label..."
             autoFocus
           />
@@ -573,9 +580,9 @@ function FormGeneratorContent() {
             variant="ghost"
             size="sm"
             onClick={() => setEditingFieldLabel(null)}
-            className="h-6 w-6 p-0"
+            className="h-6 w-6 p-0 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20"
           >
-            <Check className="w-3 h-3 text-green-600" />
+            <Check className="w-3 h-3" />
           </Button>
         </div>
       );
@@ -583,14 +590,14 @@ function FormGeneratorContent() {
 
     return (
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium cursor-pointer hover:bg-gray-100 px-1 py-0.5 rounded">
+        <span className="text-sm font-medium cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 px-1 py-0.5 rounded text-gray-900 dark:text-white">
           {field.label}
         </span>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setEditingFieldLabel(field.id)}
-          className="h-6 w-6 p-0"
+          className="h-6 w-6 p-0 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
         >
           <Edit className="w-3 h-3" />
         </Button>
@@ -745,21 +752,21 @@ function FormGeneratorContent() {
   const renderAddFieldButton = (sectionId: string) => {
     if (showAddField === sectionId) {
       return (
-        <div className="p-4 border-2 border-dashed border-blue-300 rounded-lg bg-blue-50/50">
+        <div className="p-4 border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg bg-blue-50/50 dark:bg-blue-900/20">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <div className="flex-1">
-                <Label className="text-sm font-medium text-gray-700 mb-2 block">Field Type</Label>
+                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Field Type</Label>
                 <Select value={newFieldType} onValueChange={(value: FormField['type']) => setNewFieldType(value)}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="text">Text Input</SelectItem>
-                    <SelectItem value="number">Number Input</SelectItem>
-                    <SelectItem value="date">Date Picker</SelectItem>
-                    <SelectItem value="checkbox">Checkbox</SelectItem>
-                    <SelectItem value="dropdown">Dropdown</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <SelectItem value="text" className="text-gray-900 dark:text-white">Text Input</SelectItem>
+                    <SelectItem value="number" className="text-gray-900 dark:text-white">Number Input</SelectItem>
+                    <SelectItem value="date" className="text-gray-900 dark:text-white">Date Picker</SelectItem>
+                    <SelectItem value="checkbox" className="text-gray-900 dark:text-white">Checkbox</SelectItem>
+                    <SelectItem value="dropdown" className="text-gray-900 dark:text-white">Dropdown</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -770,15 +777,15 @@ function FormGeneratorContent() {
                     <TooltipTrigger asChild>
                       <Button
                         onClick={() => addField(sectionId, newFieldType)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                         size="sm"
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         Add Field
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Add {newFieldType} field to this section</p>
+                    <TooltipContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-900 dark:text-white">Add {newFieldType} field to this section</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -786,7 +793,7 @@ function FormGeneratorContent() {
                 <Button
                   variant="ghost"
                   onClick={() => setShowAddField(null)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
                   size="sm"
                 >
                   <X className="w-4 h-4" />
@@ -806,15 +813,15 @@ function FormGeneratorContent() {
               <Button
                 variant="outline"
                 onClick={() => setShowAddField(sectionId)}
-                className="w-full border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50/30 text-gray-600 hover:text-blue-600 transition-all duration-200 group-hover:border-blue-400 group-hover:bg-blue-50/30"
+                className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/30 dark:hover:bg-blue-900/20 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 group-hover:border-blue-400 dark:group-hover:border-blue-500 group-hover:bg-blue-50/30 dark:group-hover:bg-blue-900/20"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Field
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p>Add a new field to this section</p>
+            <TooltipContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <p className="text-gray-900 dark:text-white">Add a new field to this section</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -837,14 +844,14 @@ function FormGeneratorContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 md:pb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pb-20 md:pb-8">
       {/* Mobile Header */}
       <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="p-2 h-8 w-8">
+                <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
@@ -866,13 +873,13 @@ function FormGeneratorContent() {
                       size="sm" 
                       onClick={handleSaveDraft}
                       disabled={isPublishing}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <Save className="w-4 h-4" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Save as draft</p>
+                  <TooltipContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <p className="text-gray-900 dark:text-white">Save as draft</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -887,12 +894,12 @@ function FormGeneratorContent() {
                     {isEditMode ? "Update" : "Publish"}
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                   <DialogHeader>
-                                      <DialogTitle className="flex items-center gap-2">
-                    <Settings className="w-4 h-4" />
-                    {isEditMode ? "Update Settings" : "Publish Settings"}
-                  </DialogTitle>
+                    <DialogTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                      <Settings className="w-4 h-4" />
+                      {isEditMode ? "Update Settings" : "Publish Settings"}
+                    </DialogTitle>
                   </DialogHeader>
                   
                   <div className="space-y-6">
@@ -900,11 +907,11 @@ function FormGeneratorContent() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-2">
                         {publishSettings.shareSetting === "public" ? (
-                          <Globe className="w-4 h-4 text-green-600" />
+                          <Globe className="w-4 h-4 text-green-600 dark:text-green-400" />
                         ) : (
-                          <Lock className="w-4 h-4 text-orange-600" />
+                          <Lock className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                         )}
-                        <h3 className="font-semibold">Share Settings</h3>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Share Settings</h3>
                       </div>
                       
                       <RadioGroup
@@ -917,32 +924,32 @@ function FormGeneratorContent() {
                         <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                           <RadioGroupItem value="public" id="public" />
                           <div className="flex-1 min-w-0">
-                            <Label htmlFor="public" className="text-sm font-medium cursor-pointer dark:text-gray-200">Public Access</Label>
+                            <Label htmlFor="public" className="text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-200">Public Access</Label>
                             <p className="text-xs text-gray-600 dark:text-gray-400">Anyone with the link can access and submit the form</p>
                           </div>
-                          <Globe className="w-4 h-4 text-green-600 flex-shrink-0" />
+                          <Globe className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                         </div>
                         <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                           <RadioGroupItem value="private" id="private" />
                           <div className="flex-1 min-w-0">
-                            <Label htmlFor="private" className="text-sm font-medium cursor-pointer dark:text-gray-200">Private Access</Label>
+                            <Label htmlFor="private" className="text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-200">Private Access</Label>
                             <p className="text-xs text-gray-600 dark:text-gray-400">Requires an access code to view and submit the form</p>
                           </div>
-                          <Lock className="w-4 h-4 text-orange-600 flex-shrink-0" />
+                          <Lock className="w-4 h-4 text-orange-600 dark:text-orange-400 flex-shrink-0" />
                         </div>
                       </RadioGroup>
 
                       {publishSettings.shareSetting === "private" && (
-                        <div className="space-y-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                          <Label htmlFor="accessCode" className="text-sm font-medium text-orange-800">Access Code *</Label>
+                        <div className="space-y-2 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+                          <Label htmlFor="accessCode" className="text-sm font-medium text-orange-800 dark:text-orange-200">Access Code *</Label>
                           <Input
                             id="accessCode"
                             placeholder="Enter form access code"
                             value={publishSettings.accessCode}
                             onChange={(e) => setPublishSettings(prev => ({ ...prev, accessCode: e.target.value }))}
-                            className="border-orange-300 focus:border-orange-500"
+                            className="border-orange-300 dark:border-orange-600 focus:border-orange-500 dark:focus:border-orange-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                           />
-                          <p className="text-xs text-orange-600">Share this code with users who should have access to your form</p>
+                          <p className="text-xs text-orange-600 dark:text-orange-400">Share this code with users who should have access to your form</p>
                         </div>
                       )}
                     </div>
@@ -950,37 +957,38 @@ function FormGeneratorContent() {
                     {/* Response Message */}
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <MessageSquare className="w-4 h-4" />
-                        <h3 className="font-semibold">Response Message</h3>
+                        <MessageSquare className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Response Message</h3>
                       </div>
                       
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium text-gray-700">
+                        <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                           Success Message (Optional)
                         </Label>
                         <Textarea
                           value={publishSettings.responseDraft}
                           onChange={(e) => setPublishSettings(prev => ({ ...prev, responseDraft: e.target.value }))}
                           placeholder="Thank you for your submission! We'll get back to you soon."
-                          className="min-h-[80px] resize-none"
+                          className="min-h-[80px] resize-none bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                         />
-                        <p className="text-xs text-gray-500">This message will be shown to users after they successfully submit the form</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">This message will be shown to users after they successfully submit the form</p>
                       </div>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <Button
                         variant="outline"
                         onClick={() => setShowPublishDialog(false)}
                         disabled={isPublishing}
+                        className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                       >
                         Cancel
                       </Button>
                       <Button
                         onClick={handlePublish}
                         disabled={isPublishing}
-                        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
                       >
                         {isPublishing ? (
                           <div className="flex items-center gap-2">
@@ -1006,16 +1014,16 @@ function FormGeneratorContent() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="p-2">
+                <Button variant="ghost" size="sm" className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Dashboard
                 </Button>
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                   {isEditMode ? "Edit Form" : "Create Form"}
                 </h1>
-                <p className="text-gray-600 mt-1">
+                <p className="text-gray-600 dark:text-gray-400 mt-1">
                   {isEditMode ? "Modify your existing form" : "Build your form with our intuitive builder"}
                 </p>
               </div>
@@ -1025,6 +1033,7 @@ function FormGeneratorContent() {
                 variant="outline" 
                 onClick={handleSaveDraft}
                 disabled={isPublishing}
+                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
@@ -1046,10 +1055,10 @@ function FormGeneratorContent() {
 
         <div className="space-y-6">
           {/* Inline Form Builder */}
-          <Card className="border-0 shadow-lg">
+          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Eye className="w-4 h-4" />
+              <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 Live Form Builder
               </CardTitle>
             </CardHeader>
@@ -1083,12 +1092,12 @@ function FormGeneratorContent() {
                 </div>
 
                 {/* Form Content */}
-                <div className="bg-white p-4 sm:p-6 rounded-b-xl border border-gray-200">
+                <div className="bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-b-xl border border-gray-200 dark:border-gray-600">
                   <div className="space-y-6 sm:space-y-8">
                     {sections.map(section => (
                       <div key={section.id} className="space-y-3 sm:space-y-4">
                         {/* Section Header */}
-                        <div className="border-b border-gray-200 pb-2">
+                        <div className="border-b border-gray-200 dark:border-gray-600 pb-2">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -1100,14 +1109,14 @@ function FormGeneratorContent() {
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => removeSection(section.id)}
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50 h-6 w-6 p-0"
+                                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 h-6 w-6 p-0"
                                 >
                                   <Trash2 className="w-3 h-3" />
                                 </Button>
                               )}
                             </div>
                           </div>
-                          <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
                             {section.fields.length} field{section.fields.length !== 1 ? 's' : ''}
                           </p>
                         </div>
@@ -1126,7 +1135,7 @@ function FormGeneratorContent() {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => setEditingField(field.id)}
-                                    className="h-6 w-6 p-0 text-gray-500 hover:text-gray-700"
+                                    className="h-6 w-6 p-0 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
                                   >
                                     <Edit className="w-3 h-3" />
                                   </Button>
@@ -1134,37 +1143,37 @@ function FormGeneratorContent() {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeField(section.id, field.id)}
-                                    className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                    className="h-6 w-6 p-0 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                                   >
                                     <Trash2 className="w-3 h-3" />
                                   </Button>
                                 </div>
                               </div>
                               
-                              <div className="text-xs text-gray-500">
+                              <div className="text-xs text-gray-500 dark:text-gray-400">
                                 {field.type === 'text' && (
-                                  <Input placeholder={field.placeholder} disabled />
+                                  <Input placeholder={field.placeholder} disabled className="bg-gray-50 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400" />
                                 )}
                                 {field.type === 'number' && (
-                                  <Input type="number" placeholder={field.placeholder} disabled />
+                                  <Input type="number" placeholder={field.placeholder} disabled className="bg-gray-50 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400" />
                                 )}
                                 {field.type === 'date' && (
-                                  <Input type="date" disabled />
+                                  <Input type="date" disabled className="bg-gray-50 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400" />
                                 )}
                                 {field.type === 'checkbox' && (
                                   <div className="flex items-center space-x-3">
-                                    <input type="checkbox" disabled />
-                                    <span className="text-sm">{field.label}</span>
+                                    <input type="checkbox" disabled className="text-gray-400 dark:text-gray-500" />
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">{field.label}</span>
                                   </div>
                                 )}
                                 {field.type === 'dropdown' && (
                                   <Select disabled>
-                                    <SelectTrigger>
+                                    <SelectTrigger className="bg-gray-50 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400">
                                       <SelectValue placeholder={field.placeholder} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                                       {field.options?.map((option, index) => (
-                                        <SelectItem key={index} value={option}>{option}</SelectItem>
+                                        <SelectItem key={index} value={option} className="text-gray-900 dark:text-white">{option}</SelectItem>
                                       ))}
                                     </SelectContent>
                                   </Select>
@@ -1172,7 +1181,7 @@ function FormGeneratorContent() {
                               </div>
                               
                               {field.required && (
-                                <p className="text-xs text-gray-500 flex items-center gap-1">
+                                <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                                   <AlertCircle className="w-3 h-3" />
                                   This field is required
                                 </p>
@@ -1180,35 +1189,35 @@ function FormGeneratorContent() {
 
                               {/* Field Editor Overlay */}
                               {editingField === field.id && (
-                                <div className="mt-3 p-3 border border-blue-200 rounded-lg bg-blue-50/50">
+                                <div className="mt-3 p-3 border border-blue-200 dark:border-blue-600 rounded-lg bg-blue-50/50 dark:bg-blue-900/20">
                                   <div className="space-y-3">
                                     <div>
-                                      <Label className="text-xs font-medium text-gray-700">Field Label</Label>
+                                      <Label className="text-xs font-medium text-gray-700 dark:text-gray-300">Field Label</Label>
                                       <Input
                                         value={field.label}
                                         onChange={(e) => updateField(section.id, field.id, { label: e.target.value })}
-                                        className="mt-1 text-sm"
+                                        className="mt-1 text-sm bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                                       />
                                     </div>
                                     
                                     <div>
-                                      <Label className="text-xs font-medium text-gray-700">Placeholder</Label>
+                                      <Label className="text-xs font-medium text-gray-700 dark:text-gray-300">Placeholder</Label>
                                       <Input
                                         value={field.placeholder || ""}
                                         onChange={(e) => updateField(section.id, field.id, { placeholder: e.target.value })}
-                                        className="mt-1 text-sm"
+                                        className="mt-1 text-sm bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                                       />
                                     </div>
 
                                     {field.type === 'dropdown' && (
                                       <div>
-                                        <Label className="text-xs font-medium text-gray-700">Options (one per line)</Label>
+                                        <Label className="text-xs font-medium text-gray-700 dark:text-gray-300">Options (one per line)</Label>
                                         <Textarea
                                           value={field.options?.join('\n') || ""}
                                           onChange={(e) => updateField(section.id, field.id, { 
                                             options: e.target.value.split('\n').filter(option => option.trim()) 
                                           })}
-                                          className="mt-1 text-sm"
+                                          className="mt-1 text-sm bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                                           rows={3}
                                           placeholder="Option 1&#10;Option 2&#10;Option 3"
                                         />
@@ -1225,22 +1234,22 @@ function FormGeneratorContent() {
                                             onChange={(e) => updateField(section.id, field.id, { required: e.target.checked })}
                                             className="rounded"
                                           />
-                                          <Label htmlFor={`required-${field.id}`} className="text-xs">Required field</Label>
+                                          <Label htmlFor={`required-${field.id}`} className="text-xs text-gray-700 dark:text-gray-300">Required field</Label>
                                         </div>
                                         
                                         <Select
                                           value={field.type}
                                           onValueChange={(value: FormField['type']) => updateField(section.id, field.id, { type: value })}
                                         >
-                                          <SelectTrigger className="w-32 text-xs">
+                                          <SelectTrigger className="w-32 text-xs bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                                             <SelectValue />
                                           </SelectTrigger>
-                                          <SelectContent>
-                                            <SelectItem value="text">Text</SelectItem>
-                                            <SelectItem value="number">Number</SelectItem>
-                                            <SelectItem value="date">Date</SelectItem>
-                                            <SelectItem value="checkbox">Checkbox</SelectItem>
-                                            <SelectItem value="dropdown">Dropdown</SelectItem>
+                                          <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                                            <SelectItem value="text" className="text-gray-900 dark:text-white">Text</SelectItem>
+                                            <SelectItem value="number" className="text-gray-900 dark:text-white">Number</SelectItem>
+                                            <SelectItem value="date" className="text-gray-900 dark:text-white">Date</SelectItem>
+                                            <SelectItem value="checkbox" className="text-gray-900 dark:text-white">Checkbox</SelectItem>
+                                            <SelectItem value="dropdown" className="text-gray-900 dark:text-white">Dropdown</SelectItem>
                                           </SelectContent>
                                         </Select>
                                       </div>
@@ -1250,7 +1259,7 @@ function FormGeneratorContent() {
                                           variant="outline"
                                           size="sm"
                                           onClick={() => setEditingField(null)}
-                                          className="text-xs"
+                                          className="text-xs border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                                         >
                                           <X className="w-3 h-3 mr-1" />
                                           Done
@@ -1272,12 +1281,12 @@ function FormGeneratorContent() {
                     ))}
 
                     {/* Add Section Button */}
-                    <div className="pt-4 sm:pt-6 border-t border-gray-200">
+                    <div className="pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
                       <div className="group">
                         <Button
                           variant="outline"
                           onClick={addSection}
-                          className="w-full border-2 border-dashed border-gray-300 hover:border-green-400 hover:bg-green-50/30 text-gray-600 hover:text-green-600 transition-all duration-200 group-hover:border-green-400 group-hover:bg-green-50/30"
+                          className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500 hover:bg-green-50/30 dark:hover:bg-green-900/20 text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 group-hover:border-green-400 dark:group-hover:border-green-500 group-hover:bg-green-50/30 dark:group-hover:bg-green-900/20"
                           size="sm"
                         >
                           <Plus className="w-4 h-4 mr-2" />
@@ -1287,7 +1296,7 @@ function FormGeneratorContent() {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="pt-4 sm:pt-6 border-t border-gray-200">
+                    <div className="pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
                       <Button
                         className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-2 sm:py-3 text-base sm:text-lg font-medium shadow-lg"
                         disabled
