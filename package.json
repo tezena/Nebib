@@ -47,13 +47,13 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "type-fest": "^4.40.1",
+    "typescript": "^5",
     "uuid": "^11.1.0",
     "zod": "^3.24.2",
-    "zxing": "^0.1.2",
-    "typescript": "^5"
+    "zxing": "^0.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.19.8",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
