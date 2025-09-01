@@ -1,4 +1,5 @@
-FROM node:18-alpine AS base
+# Use Node.js 20 instead of 18 to meet the engine requirements
+FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -7,7 +8,10 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+# Copy prisma directory for schema
+COPY prisma ./prisma/
+# Install ALL dependencies (including dev) for building
+RUN npm ci
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -15,8 +19,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Change to the app directory
-WORKDIR /app
+# Copy prisma directory again to ensure it's available
+COPY --from=deps /app/prisma ./prisma/
 
 # Generate Prisma client
 RUN npx prisma generate
@@ -43,6 +47,9 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy only production node_modules
+COPY --from=deps /app/node_modules ./node_modules
+
 USER nextjs
 
 EXPOSE 3000
@@ -50,4 +57,4 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]
