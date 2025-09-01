@@ -3,9 +3,11 @@ generator client {
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
+
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:URazqrynAMopMcJVLtiWzDhikLOlsMqd@mainline.proxy.rlwy.net:15858/railway"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
