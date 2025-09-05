@@ -2,17 +2,25 @@ import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
   baseURL:
-    typeof window !== "undefined" && window.location.hostname === "localhost"
-      ? "http://localhost:3000"
-      : typeof window !== "undefined" && window.location.hostname === "10.77.185.88"
-      ? "http://10.77.185.88:3000"
-      : typeof window !== "undefined" && window.location.hostname === "nebibs.com"
-      ? "https://nebibs.com"
-      : typeof window !== "undefined" && window.location.hostname === "www.nebibs.com"
-      ? "https://www.nebibs.com"
-      : typeof window !== "undefined" && window.location.hostname.includes("amplifyapp.com")
-      ? `https://${window.location.hostname}`
-      : typeof window !== "undefined" && window.location.hostname.includes("railway.app")
-      ? `https://${window.location.hostname}`
-      : "https://nebib-production.up.railway.app", // fallback
+    typeof window !== "undefined" 
+      ? (() => {
+          const { hostname } = window.location;
+          
+          if (hostname === "localhost" || hostname === "127.0.0.1") {
+            return "http://localhost:3000";
+          }
+          if (hostname === "10.77.185.88") {
+            return "http://10.77.185.88:3000";
+          }
+          if (hostname === "nebibs.com" || hostname === "www.nebibs.com") {
+            return `https://${hostname}`;
+          }
+          if (hostname.includes("amplifyapp.com") || 
+              hostname.includes("railway.app") || 
+              hostname.includes("vercel.app")) {
+            return `https://${hostname}`;
+          }
+          return "https://nebib-weld.vercel.app"; // Changed to Vercel fallback
+        })()
+      : "https://nebib-weld.vercel.app", // Changed to Vercel for server-side
 });
