@@ -23,6 +23,7 @@ export const auth = betterAuth({
   },
   
   trustedOrigins: [
+    'https://nebib-weld.vercel.app',
     "https://nebib-forms-production.up.railway.app",
     "https://nebib-forms-production-c7f6.up.railway.app",
     "https://nebib-production.up.railway.app",

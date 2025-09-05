@@ -5,6 +5,7 @@ export function addCorsHeaders(response: NextResponse, request: NextRequest) {
   const origin = request.headers.get('origin');
 
   const allowedOrigins = [
+    'https://nebib-weld.vercel.app',
     'https://nebib-forms-production-c7f6.up.railway.app',
     'https://nebib-forms-production.up.railway.app',
     'https://nebib-production.up.railway.app',
@@ -22,6 +23,8 @@ export function addCorsHeaders(response: NextResponse, request: NextRequest) {
   // For deployment, be more permissive with CORS
   const isAllowedOrigin = origin && (
     allowedOrigins.includes(origin) || 
+    origin.includes('vercel.app') || 
+    origin.includes('vercel.com') ||
     origin.includes('railway.app') ||
     origin.includes('nebibs.com') ||
     origin.includes('amplifyapp.com') ||
