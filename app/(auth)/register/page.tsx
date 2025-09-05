@@ -24,27 +24,27 @@ const formSchema = z
   .object({
     organizationName: z
       .string()
-      .min(1, { message: "Organization name is required." })
-      .min(2, { message: "Organization name must be at least 2 characters." }),
+      .min(1, { message: "የድርጅት ስም ያስፈልጋል።" })
+      .min(2, { message: "የድርጅት ስም ቢያንስ 2 ቁምፊ መሆን አለበት።" }),
     adminName: z
       .string()
-      .min(1, { message: "Admin name is required." })
-      .min(2, { message: "Admin name must be at least 2 characters." }),
+      .min(1, { message: "የአስተዳዳሪ ስም ያስፈልጋል።" })
+      .min(2, { message: "የአስተዳዳሪ ስም ቢያንስ 2 ቁምፊ መሆን አለበት።" }),
     adminEmail: z
       .string()
-      .min(1, { message: "Email is required." })
-      .email({ message: "Please enter a valid email address." }),
+      .min(1, { message: "ኢሜይል ያስፈልጋል።" })
+      .email({ message: "እባክዎ ትክክለኛ ኢሜይል አድራሻ ያስገቡ።" }),
     password: z
       .string()
-      .min(1, { message: "Password is required." })
-      .min(8, { message: "Password must be at least 8 characters." }),
+      .min(1, { message: "የይለፍ ቃል ያስፈልጋል።" })
+      .min(8, { message: "የይለፍ ቃል ቢያንስ 8 ቁምፊ መሆን አለበት።" }),
     confirmPassword: z
       .string()
-      .min(1, { message: "Please confirm your password." })
-      .min(8, { message: "Password must be at least 8 characters." }),
+      .min(1, { message: "እባክዎ የይለፍ ቃልዎን ያረጋግጡ።" })
+      .min(8, { message: "የይለፍ ቃል ቢያንስ 8 ቁምፊ መሆን አለበት።" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "የይለፍ ቃሎች አይዛመዱም",
     path: ["confirmPassword"],
   });
 
@@ -95,177 +95,178 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
-        <div className="flex flex-col items-center text-center">
-          <div className="flex items-center gap-2 mb-2">
-            <Image
-              src="/images/logo.svg"
-              alt="NEBIB Logo"
-              width={32}
-              height={32}
-              className="w-8 h-8"
-            />
-            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">NEBIB</h1>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            Generate forms of your own
-          </h2>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline text-sm mt-2">
-            ← Back to Landing Page
-          </Link>
-        </div>
-
-        <div>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
-            >
-              <FormField
-                control={form.control}
-                name="organizationName"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Organization Name
-                    </Label>
-                    <FormControl>
-                      <Input
-                        placeholder="Example Org"
-                        className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
+    <div className="min-h-screen" style={{ backgroundColor: '#f7f7f7' }}>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center gap-2 mb-2">
+              <Image
+                src="/logo.png"
+                alt="ፍሬ Form Logo"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full"
               />
-
-              <FormField
-                control={form.control}
-                name="adminName"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Admin Name
-                    </Label>
-                    <FormControl>
-                      <Input
-                        placeholder="John Doe"
-                        className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="adminEmail"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Admin Email
-                    </Label>
-                    <FormControl>
-                      <Input
-                        placeholder="example@gmail.com"
-                        className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Password
-                    </Label>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 pr-10"
-                          {...field}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
-                        >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1.5">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Confirm Password
-                    </Label>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type={showConfirmPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          className="border-gray-300 dark:border-gray-600 rounded-md h-10 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 pr-10"
-                          {...field}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
-                        >
-                          {showConfirmPassword ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white h-10 mt-2 font-medium"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Registering..." : "Register Organization"}
-              </Button>
-            </form>
-          </Form>
-
-          <p className="text-gray-600 dark:text-gray-400 text-sm text-center mt-3">
-            Already have an account?{" "}
-            <Link className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline" href="/sign-in">
-              Sign In
+              <h1 className="text-2xl font-semibold" style={{ color: '#382606' }}>ፍሬ Form</h1>
+            </div>
+           
+            <Link href="/" className="hover:underline text-sm mt-2" style={{ color: '#f4be42' }}>
+              ← ወደ ዋና ገጽ ተመለስ
             </Link>
-          </p>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="organizationName"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1.5">
+                      <Label className="text-sm font-medium" style={{ color: '#382606' }}>
+                        የድርጅት ስም
+                      </Label>
+                      <FormControl>
+                        <Input
+                          className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42] transition-all duration-200 bg-white"
+                          style={{ color: '#382606' }}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="adminName"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1.5">
+                      <Label className="text-sm font-medium" style={{ color: '#382606' }}>
+                        የአስተዳዳሪ ስም
+                      </Label>
+                      <FormControl>
+                        <Input
+                          className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42] transition-all duration-200 bg-white"
+                          style={{ color: '#382606' }}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="adminEmail"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1.5">
+                      <Label className="text-sm font-medium" style={{ color: '#382606' }}>
+                        የአስተዳዳሪ ኢሜይል
+                      </Label>
+                      <FormControl>
+                        <Input
+                          className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42] transition-all duration-200 bg-white"
+                          style={{ color: '#382606' }}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1.5">
+                      <Label className="text-sm font-medium" style={{ color: '#382606' }}>
+                        የይለፍ ቃል
+                      </Label>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42] transition-all duration-200 bg-white pr-10"
+                            style={{ color: '#382606' }}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1.5">
+                      <Label className="text-sm font-medium" style={{ color: '#382606' }}>
+                        የይለፍ ቃል አረጋግጥ
+                      </Label>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showConfirmPassword ? "text" : "password"}
+                            className="border-gray-300 rounded-md h-10 px-4 focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42] transition-all duration-200 bg-white pr-10"
+                            style={{ color: '#382606' }}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  className="w-full text-white h-10 mt-2 font-medium border-0"
+                  style={{ backgroundColor: '#f4be42' }}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "በመመዝገብ ላይ..." : "ድርጅት ይመዝግቡ"}
+                </Button>
+              </form>
+            </Form>
+
+            <p className="text-sm text-center mt-3" style={{ color: '#382606', opacity: 0.8 }}>
+              አካውንት አለዎት?{" "}
+              <Link className="hover:underline" href="/sign-in" style={{ color: '#f4be42' }}>
+                ግባ
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

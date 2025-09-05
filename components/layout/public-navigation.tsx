@@ -70,15 +70,15 @@ export default function PublicNavigation({
           <Link href="/examples">
             <Button variant="ghost" style={{ color: '#382606' }}>አብነቶች</Button>
           </Link>
-          <Link href="/qr-demo">
+          {/* <Link href="/qr-demo">
             <Button variant="ghost" style={{ color: '#382606' }}>QR ማሳያ</Button>
           </Link>
           <Link href="/help">
             <Button variant="ghost" style={{ color: '#382606' }}>እርዳታ</Button>
-          </Link>
+          </Link> */}
           
           {/* Theme Toggle */}
-          <Button 
+          {/* <Button 
             variant="ghost" 
             size="sm" 
             className="p-2 rounded-lg transition-colors"
@@ -90,7 +90,7 @@ export default function PublicNavigation({
             ) : (
               <Sun className="h-5 w-5" />
             )}
-          </Button>
+          </Button> */}
           
           <Link href="/sign-in">
             <Button className="text-white border-0" style={{ backgroundColor: '#f4be42' }}>ይጀምሩ</Button>

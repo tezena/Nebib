@@ -157,7 +157,7 @@ export default function QRDemoPage() {
                     <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4">
                       <span className="text-white font-bold text-lg">3</span>
                     </div>
-                    <h3 className="font-semibold mb-2" style={{ color: '#382606' }}>አስተዳዳሪ ኮድ ይስካን</h3>
+                    <h3 className="font-semibold mb-2" style={{ color: '#382606' }}>አስተዳዳሪ ኮድ ስካን</h3>
                     <p className="text-sm" style={{ color: '#382606', opacity: 0.7 }}>
                       አስተዳዳሪ QR ኮዱን ይስካን በፈጣን ተገኝነት ለማስቀመጥ እና የተማሪ መረጃ ለማግኘት
                     </p>
