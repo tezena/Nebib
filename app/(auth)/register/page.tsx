@@ -52,6 +52,7 @@ const RegisterPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [authError, setAuthError] = useState<string>("");
   const router = useRouter();
 
   // Initialize the form
@@ -69,6 +70,7 @@ const RegisterPage = () => {
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
+    setAuthError(""); // Clear previous errors
     try {
       // Here you would typically send the data to your API
       console.log(values);
@@ -83,12 +85,20 @@ const RegisterPage = () => {
         } as any,
         {
           onSuccess: (ctx) => {
+            console.log("✅ Registration successful:", ctx);
             router.push("/dashboard");
+          },
+          onError: (error) => {
+            console.error("❌ Registration error:", error);
+            const errorMessage = error?.error?.message || "Registration failed. Please try again.";
+            setAuthError(errorMessage);
           },
         }
       );
     } catch (error) {
       console.error("Registration failed:", error);
+      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
+      setAuthError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -248,6 +258,13 @@ const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
+
+                {/* Authentication Error Display */}
+                {authError && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                    <p className="text-sm text-red-600">{authError}</p>
+                  </div>
+                )}
 
                 <Button
                   type="submit"
