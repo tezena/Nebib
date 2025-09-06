@@ -35,14 +35,14 @@ export default function DashboardPage() {
   // Show loading skeleton if data is loading
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 md:pb-8">
+      <div className="min-h-screen pb-20 md:pb-8" style={{ backgroundColor: '#f7f7f7' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           {/* Header */}
           <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Forms</h1>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">Manage all your forms</p>
+                <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: '#382606' }}>ቅጾች</h1>
+                <p className="mt-1" style={{ color: '#382606', opacity: 0.8 }}>ሁሉንም ቅጾችዎን ያስተዳድሩ</p>
               </div>
             </div>
           </div>
@@ -58,15 +58,15 @@ export default function DashboardPage() {
           {/* Forms Grid - Loading Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Card key={i} className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+              <Card key={i} className="border-0 shadow-lg bg-white">
                 <CardContent className="p-6">
                   <div className="space-y-4">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 animate-pulse"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/3 animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/3 animate-pulse"></div>
                     <div className="flex justify-between items-center">
-                      <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
-                      <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-20 animate-pulse"></div>
+                      <div className="h-6 bg-gray-200 rounded w-16 animate-pulse"></div>
+                      <div className="h-8 bg-gray-200 rounded w-20 animate-pulse"></div>
                     </div>
                   </div>
                 </CardContent>
@@ -80,11 +80,11 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 pb-20 md:pb-8">
+      <div className="min-h-screen flex items-center justify-center p-4 pb-20 md:pb-8" style={{ backgroundColor: '#f7f7f7' }}>
         <div className="text-center">
           <FileText className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Error Loading Forms</h2>
-          <p className="text-gray-600 dark:text-gray-400">Failed to load forms. Please try again.</p>
+          <h2 className="text-xl font-semibold mb-2" style={{ color: '#382606' }}>ቅጾችን ማግኛ ስህተት</h2>
+          <p style={{ color: '#382606', opacity: 0.7 }}>ቅጾችን ማግኛ አልተሳካም። እባክዎ እንደገና ይሞክሩ።</p>
         </div>
       </div>
     );
@@ -115,20 +115,20 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 md:pb-8">
+    <div className="min-h-screen" style={{ backgroundColor: '#f7f7f7' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Forms</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">Manage all your forms</p>
+              <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: '#382606' }}>ቅጾች</h1>
+              <p className="mt-1" style={{ color: '#382606', opacity: 0.8 }}>ሁሉንም ቅጾችዎን ያስተዳድሩ</p>
             </div>
             <div className="flex items-center gap-3">
               <Link href="/form-generator">
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg">
+                <Button className="text-white shadow-lg border-0" style={{ backgroundColor: '#f4be42' }}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Form
+                  ቅጽ ፍጠር
                 </Button>
               </Link>
             </div>
@@ -138,23 +138,25 @@ export default function DashboardPage() {
         {/* Search and Filter */}
         <div className="mb-6 flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
-              placeholder="Search forms..."
+              placeholder="ቅጾችን ይፈልጉ..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              className="pl-10 bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42]"
+              style={{ color: '#382606' }}
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4be42] focus:border-transparent bg-white"
+            style={{ color: '#382606' }}
           >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="draft">Draft</option>
-            <option value="archived">Archived</option>
+            <option value="all">ሁሉም ሁኔታ</option>
+            <option value="active">ንቁ</option>
+            <option value="draft">ረቂቅ</option>
+            <option value="archived">ተጠባቀቀ</option>
           </select>
         </div>
 
@@ -162,45 +164,45 @@ export default function DashboardPage() {
         {filteredForms.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredForms.map((form) => (
-              <Card key={form.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-200 dark:bg-gray-800 dark:border-gray-700">
+              <Card key={form.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-200 bg-white">
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     {/* Form Header */}
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-lg truncate">{form.topic}</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 line-clamp-2">{form.description || "No description"}</p>
+                        <h3 className="font-semibold text-lg truncate" style={{ color: '#382606' }}>{form.topic}</h3>
+                        <p className="text-sm mt-1 line-clamp-2" style={{ color: '#382606', opacity: 0.7 }}>{form.description || "ምንም መግለጫ የለም"}</p>
                       </div>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <MoreHorizontal className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-gray-100">
+                            <MoreHorizontal className="w-4 h-4 text-gray-600" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
-                          <DropdownMenuItem asChild className="dark:text-gray-200 dark:hover:bg-gray-700">
+                        <DropdownMenuContent align="end" className="bg-white border-gray-200">
+                          <DropdownMenuItem asChild className="text-gray-700 hover:bg-gray-100">
                             <Link href={`/form-generator?edit=1&id=${form.id}`}>
                               <Edit className="w-4 h-4 mr-2" />
-                              Edit Form
+                              ቅጽ አርትዕ
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="dark:text-gray-200 dark:hover:bg-gray-700">
+                          <DropdownMenuItem className="text-gray-700 hover:bg-gray-100">
                             <Download className="w-4 h-4 mr-2" />
-                            Export Data
+                            ውሂብ ወደ ውጭ ላክ
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600 dark:text-red-400 dark:hover:bg-gray-700">
+                          <DropdownMenuItem className="text-red-600 hover:bg-red-50">
                             <Trash2 className="w-4 h-4 mr-2" />
-                            Delete Form
+                            ቅጽ ሰርዝ
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
 
                     {/* Form Stats */}
-                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-4 text-sm" style={{ color: '#382606', opacity: 0.7 }}>
                       <div className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
-                        <span>{form.datas?.length || 0} submissions</span>
+                        <span>{form.datas?.length || 0} ምላሾች</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
@@ -211,12 +213,12 @@ export default function DashboardPage() {
                     {/* Status and Actions */}
                     <div className="flex items-center justify-between pt-2">
                       <Badge className={getStatusColor(form.status)}>
-                        {form.status}
+                        {form.status === 'active' ? 'ንቁ' : form.status === 'draft' ? 'ረቂቅ' : 'ተጠባቀቀ'}
                       </Badge>
                       <Link href={`/form-management/${form.id}`}>
-                        <Button variant="outline" size="sm" className="hover:bg-blue-50 hover:border-blue-200 dark:hover:bg-blue-900/20 dark:border-gray-600 dark:text-gray-200">
+                        <Button variant="outline" size="sm" className="hover:bg-gray-50 hover:border-gray-300 border-gray-300" style={{ color: '#382606' }}>
                           <Eye className="w-4 h-4 mr-2" />
-                          Manage
+                          አስተዳድር
                         </Button>
                       </Link>
                     </div>
@@ -227,21 +229,21 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-              {searchTerm || statusFilter !== "all" ? "No forms found" : "No forms created yet"}
+            <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <h3 className="text-lg font-medium mb-2" style={{ color: '#382606' }}>
+              {searchTerm || statusFilter !== "all" ? "ቅጽ አልተገኘም" : "እስካሁን ቅጽ አልተፈጠረም"}
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">
+            <p className="mb-6" style={{ color: '#382606', opacity: 0.7 }}>
               {searchTerm || statusFilter !== "all" 
-                ? "Try adjusting your search or filter criteria" 
-                : "Get started by creating your first form"
+                ? "የፍለጋ ወይም የማጣሪያ መስፈርቶችዎን ይለውጡ" 
+                : "የመጀመሪያውን ቅጽዎን በመፍጠር ይጀምሩ"
               }
             </p>
             {!searchTerm && statusFilter === "all" && (
               <Link href="/form-generator">
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+                <Button className="text-white border-0" style={{ backgroundColor: '#f4be42' }}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Your First Form
+                  የመጀመሪያውን ቅጽዎን ፍጠር
                 </Button>
               </Link>
             )}
@@ -251,7 +253,7 @@ export default function DashboardPage() {
 
       {/* Floating Action Button */}
       <Link href="/form-generator">
-        <Button className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 z-50">
+        <Button className="fixed bottom-6 right-6 w-14 h-14 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 z-50 border-0" style={{ backgroundColor: '#f4be42' }}>
           <Plus className="w-6 h-6" />
         </Button>
       </Link>

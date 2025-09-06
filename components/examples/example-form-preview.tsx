@@ -316,7 +316,7 @@ export default function ExampleFormPreview({ form, children }: ExampleFormPrevie
                     ) : (
                       <>
                         <Send className="w-4 h-4 mr-2" />
-                        Submit Form
+                        ቅስ ያስገቡ
                       </>
                     )}
                   </Button>

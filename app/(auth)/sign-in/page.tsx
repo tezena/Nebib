@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import Image from "next/image";
-import { z } from "zod";
+import { z } from "zod";                                                                                                                                                                                                                                                                                                    
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,9 +25,9 @@ import { toast } from "sonner";
 const formSchema = z.object({
   email: z
     .string()
-    .min(1, { message: "Email is required." })
-    .email({ message: "Please enter a valid email address." }),
-  password: z.string().min(1, { message: "Password is required." }),
+    .min(1, { message: "ኢሜይል ያስፈልጋል።" })
+    .email({ message: "እባክዎ ትክክለኛ ኢሜይል አድራሻ ያስገቡ።" }),
+  password: z.string().min(1, { message: "የይለፍ ቃል ያስፈልጋል።" }),
   rememberMe: z.boolean().optional().default(false),
 });
 
@@ -65,12 +65,12 @@ export default function LoginPage() {
         {
           onSuccess: (ctx) => {
             console.log("✅ Sign-in successful:", ctx);
-            toast.success("Signed in successfully!");
+            toast.success("በተሳካ ሁኔታ ተገብያለህ!");
             router.push("/dashboard");
           },
           onError: (error) => {
             console.error("❌ Sign-in error:", error);
-            const errorMessage = error?.error?.message || "Invalid email or password. Please try again.";
+            const errorMessage = error?.error?.message || "ትክክል ያልሆነ ኢሜይል ወይም የይለፍ ቃል። እባክዎ እንደገና ይሞክሩ።";
             setAuthError(errorMessage);
             toast.error(errorMessage);
           },
@@ -78,7 +78,7 @@ export default function LoginPage() {
       );
     } catch (error) {
       console.error("🚨 Login failed:", error);
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
+      const errorMessage = error instanceof Error ? error.message : "ያልተጠበቀ ስህተት ተከስቷል። እባክዎ እንደገና ይሞክሩ።";
       setAuthError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -87,147 +87,157 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
-      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
-        {/* Logo and Header */}
-        <div className="flex flex-col items-center text-center">
-          <div className="flex items-center gap-2 mb-2">
-            <Image
-              src="/images/logo.svg"
-              alt="NEBIB Logo"
-              width={32}
-              height={32}
-              className="w-8 h-8"
-            />
-            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">NEBIB</h1>
+    <div className="min-h-screen" style={{ backgroundColor: '#f7f7f7' }}>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl space-y-8">
+          {/* Logo and Header */}
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center gap-2 mb-2">
+              <Image
+                src="/logo.png"
+                alt="ፍሬ Form Logo"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full"
+              />
+              <h1 className="text-2xl font-semibold" style={{ color: '#382606' }}>ፍሬ Form</h1>
+            </div>
+            {/* <h2 className="text-2xl font-bold" style={{ color: '#382606' }}>
+              የራስዎን ቅጾች ይፍጠሩ
+            </h2> */}
+            <Link href="/" className="hover:underline text-sm mt-2" style={{ color: '#f4be42' }}>
+              ← ወደ ዋና ገጽ ተመለስ
+            </Link>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            Generate forms of your own
-          </h2>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline text-sm mt-2">
-            ← Back to Landing Page
-          </Link>
-        </div>
 
-        {/* Login Form */}
-        <div className="mt-6 space-y-6">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <Label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      Email address
-                    </Label>
-                    <FormControl>
-                      <Input
-                        id="email"
-                        type="email"
-                        autoComplete="email"
-                        className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white dark:placeholder-gray-400"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <Label
-                        htmlFor="password"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                      >
-                        Password
-                      </Label>
-                      <Link
-                        href="#"
-                        className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          id="password"
-                          type={showPassword ? "text" : "password"}
-                          autoComplete="current-password"
-                          className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 dark:text-white dark:placeholder-gray-400"
-                          {...field}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+          {/* Login Form */}
+          <div className="mt-6 space-y-6">
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <Label
+                          htmlFor="email"
+                          className="block text-sm font-medium"
+                          style={{ color: '#382606' }}
                         >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormMessage className="text-xs text-red-500 dark:text-red-400" />
-                  </FormItem>
-                )}
-              />
+                          ኢሜይል አድራሻ
+                        </Label>
+                        <FormControl>
+                          <Input
+                            id="email"
+                            type="email"
+                            autoComplete="email"
+                            className="w-full bg-white border-gray-300 rounded-md focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42]"
+                            style={{ color: '#382606' }}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="rememberMe"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        id="remember"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        className="border-gray-300 dark:border-gray-600 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
-                      />
-                    </FormControl>
-                    <Label htmlFor="remember" className="text-sm text-gray-700 dark:text-gray-300">
-                      Remember me
-                    </Label>
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <Label
+                            htmlFor="password"
+                            className="block text-sm font-medium"
+                            style={{ color: '#382606' }}
+                          >
+                            የይለፍ ቃል
+                          </Label>
+                          <Link
+                            href="#"
+                            className="text-sm hover:underline"
+                            style={{ color: '#f4be42' }}
+                          >
+                            የይለፍ ቃል ረሳህ?
+                          </Link>
+                        </div>
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              id="password"
+                              type={showPassword ? "text" : "password"}
+                              autoComplete="current-password"
+                              className="w-full bg-white border-gray-300 rounded-md focus:ring-2 focus:border-[#f4be42] focus:ring-[#f4be42] pr-10"
+                              style={{ color: '#382606' }}
+                              {...field}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showPassword ? (
+                                <EyeOff className="h-4 w-4" />
+                              ) : (
+                                <Eye className="h-4 w-4" />
+                              )}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs text-red-500 dark:text-red-400" />
+                      </FormItem>
+                    )}
+                  />
 
-              {/* Authentication Error Display */}
-              {authError && (
-                <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                  <p className="text-sm text-red-600 dark:text-red-400">{authError}</p>
-                </div>
-              )}
+                  <FormField
+                    control={form.control}
+                    name="rememberMe"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            id="remember"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="border-gray-300 data-[state=checked]:bg-[#f4be42] data-[state=checked]:border-[#f4be42]"
+                          />
+                        </FormControl>
+                        <Label htmlFor="remember" className="text-sm" style={{ color: '#382606' }}>
+                          አስታውሰኝ
+                        </Label>
+                      </FormItem>
+                    )}
+                  />
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Signing in..." : "Sign in"}
-              </Button>
-            </form>
-          </Form>
+                  {/* Authentication Error Display */}
+                  {authError && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                      <p className="text-sm text-red-600">{authError}</p>
+                    </div>
+                  )}
 
-          <div className="text-center mt-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Not a member?{" "}
-              <Link href="/register" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline">
-                Register your organization
-              </Link>
-            </p>
+                  <Button
+                    type="submit"
+                    className="w-full text-white border-0"
+                    style={{ backgroundColor: '#f4be42' }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "በመግባት ላይ..." : "ግባ"}
+                  </Button>
+                </form>
+              </Form>
+
+              <div className="text-center mt-6">
+                <p className="text-sm" style={{ color: '#382606', opacity: 0.8 }}>
+                  አባል አይደለህም?{" "}
+                  <Link href="/register" className="hover:underline" style={{ color: '#f4be42' }}>
+                    ድርጅትዎን ይመዝግቡ
+                  </Link>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -552,9 +552,9 @@ export default function FormDetailPage() {
   const lateCount = todayAttendance.filter(record => record.status === 'late').length
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 md:pb-8">
+    <div className="min-h-screen pb-20 md:pb-8" style={{ backgroundColor: '#f7f7f7' }}>
       {/* Mobile Header */}
-      <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+      <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -562,13 +562,13 @@ export default function FormDetailPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => router.back()}
-                className="p-2 h-8 w-8 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-2 h-8 w-8 text-gray-700 hover:text-gray-900 hover:bg-gray-100"
               >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
               <div>
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white truncate">{formData.topic}</h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Form Management</p>
+                <h1 className="text-lg font-bold truncate" style={{ color: '#382606' }}>{formData.topic}</h1>
+                <p className="text-xs" style={{ color: '#382606', opacity: 0.7 }}>ቅጽ አስተዳደር</p>
               </div>
             </div>
             <DropdownMenu>
@@ -577,25 +577,25 @@ export default function FormDetailPage() {
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                <DropdownMenuItem onClick={copyLink} className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <DropdownMenuContent align="end" className="bg-white border-gray-200">
+                <DropdownMenuItem onClick={copyLink} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <Copy className="mr-2 h-4 w-4" />
-                  Copy Link
+                  copy link
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={openFormLink} className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <DropdownMenuItem onClick={openFormLink} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <ExternalLink className="mr-2 h-4 w-4" />
-                  Open Form
+                  ቅጽ ክፈት
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleEditForm} className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <DropdownMenuItem onClick={handleEditForm} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <Edit className="mr-2 h-4 w-4" />
-                  Edit Form
+                  ቅጽ አርትዕ
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setShowDeleteDialog(true)}
-                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer"
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Form
+                  ቅጽ ሰርዝ
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -609,10 +609,10 @@ export default function FormDetailPage() {
           <Button
             variant="ghost"
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Forms
+            ወደ ቅጾች ተመለስ
           </Button>
         </div>
 
@@ -620,29 +620,29 @@ export default function FormDetailPage() {
         <div className="mb-6">
           <div className="flex items-center justify-between">
               <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{formData.topic}</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">{formData.description}</p>
+              <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: '#382606' }}>{formData.topic}</h1>
+              <p className="mt-1" style={{ color: '#382606', opacity: 0.7 }}>{formData.description}</p>
             </div>
                 <div className="flex items-center gap-3">
-              <Button variant="outline" onClick={copyLink} className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <Button variant="outline" onClick={copyLink} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Copy className="w-4 h-4 mr-2" />
-                Copy Link
+                copy link
               </Button>
-              <Button variant="outline" onClick={handleEditForm} className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <Button variant="outline" onClick={handleEditForm} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Edit className="w-4 h-4 mr-2" />
-                Edit Form
+                ቅጽ አርትዕ
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => setShowDeleteDialog(true)}
-                className="border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-400 dark:hover:border-red-500"
+                className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Delete Form
+                ቅጽ ሰርዝ
               </Button>
-              <Button onClick={openFormLink} className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+              <Button onClick={openFormLink} className="text-white border-0" style={{ backgroundColor: '#f4be42' }}>
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Open Form
+                ቅጽ ክፈት
               </Button>
                 </div>
           </div>
@@ -650,85 +650,85 @@ export default function FormDetailPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Submissions</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalSubmissions}</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ጠቅላላ ዝርዝር</p>
+                  <p className="text-2xl font-bold" style={{ color: '#382606' }}>{totalSubmissions}</p>
                 </div>
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                  <FileText className="w-5 h-5" style={{ color: '#f4be42' }} />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">This Week</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{recentSubmissions}</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ይህ ሳምንት</p>
+                  <p className="text-2xl font-bold" style={{ color: '#382606' }}>{recentSubmissions}</p>
                 </div>
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                  <Calendar className="w-5 h-5" style={{ color: '#f4be42' }} />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Unique Emails</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{uniqueEmails}</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>የተለያዩ ኢሜይሎች</p>
+                  <p className="text-2xl font-bold" style={{ color: '#382606' }}>{uniqueEmails}</p>
               </div>
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                  <Users className="w-5 h-5" style={{ color: '#f4be42' }} />
               </div>
             </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Present Today</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{presentCount}</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ የተገኙ</p>
+                  <p className="text-2xl font-bold" style={{ color: '#382606' }}>{presentCount}</p>
               </div>
-                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                  <CheckCircle className="w-5 h-5" style={{ color: '#f4be42' }} />
               </div>
             </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Absent Today</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{absentCount}</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ ያልተገኙ</p>
+                  <p className="text-2xl font-bold" style={{ color: '#382606' }}>{absentCount}</p>
               </div>
-                <div className="w-10 h-10 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-                  <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                  <XCircle className="w-5 h-5" style={{ color: '#f4be42' }} />
               </div>
             </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Late Today</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{lateCount}</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ ያረፈደው</p>
+                  <p className="text-2xl font-bold" style={{ color: '#382606' }}>{lateCount}</p>
               </div>
-                <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                  <Clock className="w-5 h-5" style={{ color: '#f4be42' }} />
               </div>
             </div>
             </CardContent>
@@ -737,35 +737,35 @@ export default function FormDetailPage() {
 
         {/* Tabs */}
         <Tabs defaultValue="submissions" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6 bg-white dark:bg-gray-800">
-            <TabsTrigger value="submissions" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">Form Submissions</TabsTrigger>
-            <TabsTrigger value="attendance" className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20">Attendance</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 mb-6 bg-white">
+            <TabsTrigger value="submissions" className="data-[state=active]:bg-[#f4be42] data-[state=active]:text-white">ቅጽ ዝርዝር</TabsTrigger>
+            <TabsTrigger value="attendance" className="data-[state=active]:bg-[#f4be42] data-[state=active]:text-white">አቴንዳንስ</TabsTrigger>
           </TabsList>
 
           <TabsContent value="submissions" className="space-y-4">
-            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+            <Card className="border-0 shadow-lg bg-white">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-gray-900 dark:text-white">Form Submissions</CardTitle>
-                  <Button onClick={exportSubmissions} variant="outline" disabled={submissions.length === 0} className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <CardTitle style={{ color: '#382606' }}>ቅጽ ዝርዝር</CardTitle>
+                  <Button onClick={exportSubmissions} variant="outline" disabled={submissions.length === 0} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                     <Download className="w-4 h-4 mr-2" />
-                    Export CSV
+                    CSV ወደ ውጭ ላክ
                   </Button>
           </div>
               </CardHeader>
               <CardContent>
                 {submissions.length === 0 ? (
                   <div className="text-center py-8">
-                    <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No submissions yet</h3>
-                    <p className="text-gray-500 dark:text-gray-400">When users submit your form, their responses will appear here.</p>
+                    <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                    <h3 className="text-lg font-medium mb-2" style={{ color: '#382606' }}>እስካሁን ዝርዝር የለም</h3>
+                    <p style={{ color: '#382606', opacity: 0.7 }}>ተጠቃሚዎች ቅጽዎን ሲሞሉ፣ ምላሾቻቸው እዚህ ይታያሉ።</p>
         </div>
                 ) : (
                   <div className="space-y-4">
                     {submissions.map((submission) => {
                       const isExpanded = expandedSubmission === submission.id
                       const qrCodeUrl = generateSubmissionQR(submission)
-                      const studentName = submission.name || `Student ${submission.id.slice(-6)}`
+                      const studentName = submission.name || submission.fields[0]?.value || `Student ${submission.id.slice(-6)}`
                       
                       return (
                         <div key={submission.id} className="border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
@@ -929,12 +929,12 @@ export default function FormDetailPage() {
           </TabsContent>
 
           <TabsContent value="attendance" className="space-y-4">
-            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+            <Card className="border-0 shadow-lg bg-white">
               <CardHeader>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+                  <CardTitle className="flex items-center gap-2" style={{ color: '#382606' }}>
                     <Calendar className="w-5 h-5" />
-                    Attendance Management
+                    አቴንዳንስ አስተዳደር
                   </CardTitle>
                   
                   {/* Mobile: Stack controls vertically */}
@@ -950,12 +950,12 @@ export default function FormDetailPage() {
                       <select
                         value={attendanceFilter}
                         onChange={(e) => setAttendanceFilter(e.target.value as any)}
-                        className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f4be42] focus:border-transparent text-sm bg-white text-gray-900"
                       >
-                        <option value="all">All Status</option>
-                        <option value="present">Present</option>
-                        <option value="absent">Absent</option>
-                        <option value="late">Late</option>
+                        <option value="all">ሁሉም ሁኔታ</option>
+                        <option value="present">የተገኘ</option>
+                        <option value="absent">ያልተገኘ</option>
+                        <option value="late">ያረፈደ</option>
                       </select>
                     </div>
                     
@@ -965,18 +965,18 @@ export default function FormDetailPage() {
                         onClick={openQRScanner} 
                         variant="outline" 
                         size="sm"
-                        className="flex items-center gap-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50"
                       >
                         <Scan className="w-4 h-4" />
-                        <span className="hidden sm:inline">Scan Student QR</span>
+                        <span className="hidden sm:inline">ተማሪ QR አንብብ</span>
                       </Button>
-                      <Button onClick={markAllPresent} variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span className="hidden sm:inline">Mark All Present</span>
-                        <span className="sm:hidden">All Present</span>
+                      <Button onClick={markAllPresent} variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                        <span className="hidden sm:inline">ሁሉንም የተገኘ ምልክት አድርግ</span>
+                        <span className="sm:hidden">ሁሉም የተገኘ</span>
                       </Button>
-                      <Button onClick={markAllAbsent} variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <span className="hidden sm:inline">Mark All Absent</span>
-                        <span className="sm:hidden">All Absent</span>
+                      <Button onClick={markAllAbsent} variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                        <span className="hidden sm:inline">ሁሉንም ያልተገኘ ምልክት አድርግ</span>
+                        <span className="sm:hidden">ሁሉም ያልተገኘ</span>
             </Button>
           </div>
                   </div>
@@ -985,14 +985,14 @@ export default function FormDetailPage() {
               <CardContent>
                 {attendanceLoading ? (
                   <div className="flex justify-center items-center py-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
-                    <span className="ml-2 text-gray-600 dark:text-gray-400">Loading attendance data...</span>
+                    <Loader2 className="h-8 w-8 animate-spin" style={{ color: '#f4be42' }} />
+                    <span className="ml-2" style={{ color: '#382606', opacity: 0.7 }}>አቴንዳንስ ዳታ በመጫን ላይ...</span>
                   </div>
                 ) : submissions.length === 0 ? (
                   <div className="text-center py-8">
-                    <Users className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No students registered</h3>
-                    <p className="text-gray-500 dark:text-gray-400">Students need to submit the form before you can track attendance.</p>
+                    <Users className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                    <h3 className="text-lg font-medium mb-2" style={{ color: '#382606' }}>ተማሪዎች አልተመዘገቡም</h3>
+                    <p style={{ color: '#382606', opacity: 0.7 }}>አቴንዳንስን ለመከታተል ተማሪዎች በመጀመሪያ ቅጹን ማስገባት አለባቸው።</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -1044,36 +1044,36 @@ export default function FormDetailPage() {
                                 variant={currentStatus === 'present' ? 'default' : 'outline'}
                                 onClick={() => markAttendance(submission.id, 'present')}
                                 className={`${
-                                  currentStatus === 'present' ? 'bg-green-600 hover:bg-green-700' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                  currentStatus === 'present' ? 'bg-green-600 hover:bg-green-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                                 } text-xs sm:text-sm`}
                               >
                                 <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                <span className="hidden sm:inline">Present</span>
-                                <span className="sm:hidden">P</span>
+                                <span className="hidden sm:inline">የተገኘ</span>
+                                <span className="sm:hidden">የ</span>
                               </Button>
                               <Button
                                 size="sm"
                                 variant={currentStatus === 'absent' ? 'default' : 'outline'}
                                 onClick={() => markAttendance(submission.id, 'absent')}
                                 className={`${
-                                  currentStatus === 'absent' ? 'bg-red-600 hover:bg-red-700' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                  currentStatus === 'absent' ? 'bg-red-600 hover:bg-red-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                                 } text-xs sm:text-sm`}
                               >
                                 <XCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                <span className="hidden sm:inline">Absent</span>
-                                <span className="sm:hidden">A</span>
+                                <span className="hidden sm:inline">ያልተገኘ</span>
+                                <span className="sm:hidden">ያ</span>
                               </Button>
                               <Button
                                 size="sm"
                                 variant={currentStatus === 'late' ? 'default' : 'outline'}
                                 onClick={() => markAttendance(submission.id, 'late')}
                                 className={`${
-                                  currentStatus === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                  currentStatus === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                                 } text-xs sm:text-sm`}
                               >
                                 <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                <span className="hidden sm:inline">Late</span>
-                                <span className="sm:hidden">L</span>
+                                <span className="hidden sm:inline">ያረፈደ</span>
+                                <span className="sm:hidden">የተ</span>
                               </Button>
                 </div>
                             
@@ -1107,24 +1107,24 @@ export default function FormDetailPage() {
       {/* QR Scanner Modal */}
       {showQRScanner && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full border border-gray-200 dark:border-gray-700">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full border border-gray-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Scan Student QR Code</h3>
+              <h3 className="text-lg font-semibold" style={{ color: '#382606' }}>ተማሪ QR ኮድ አንብብ</h3>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={closeQRScanner}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                className="text-gray-500 hover:text-gray-700"
               >
                 <X className="w-5 h-5" />
               </Button>
             </div>
             <div className="space-y-4">
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <div className="bg-gray-50 rounded-lg p-4">
                 <QRScanner onScan={handleQRScan} />
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                Point the camera at a student's QR code to mark them present
+              <p className="text-sm text-center" style={{ color: '#382606', opacity: 0.7 }}>
+                ተማሪውን የተገኘ ምልክት ለማድረግ በተማሪው QR ኮድ ላይ ካሜራውን ያቅኑ
               </p>
             </div>
           </div>
@@ -1136,10 +1136,10 @@ export default function FormDetailPage() {
         isOpen={showDeleteDialog}
         onClose={() => setShowDeleteDialog(false)}
         onConfirm={handleDeleteForm}
-        title="Delete Form"
-        description="Are you sure you want to delete this form? This action cannot be undone and will permanently remove the form and all its data including submissions and attendance records."
-        confirmText="Delete Form"
-        cancelText="Cancel"
+        title="ቅጽ ሰርዝ"
+        description="ይህን ቅጽ መሰረዝ እርግጠኛ ነዎት? ይህ እርምጃ ሊመለስ አይችልም እና ቅጹን እና ሁሉንም ዳታውን ዝርዝርን እና የአቴንዳንስ ምዝግብሮችን በቋሚነት ያስወግዳል።"
+        confirmText="ቅጽ ሰርዝ"
+        cancelText="ሰርዝ"
         variant="destructive"
         loading={isDeleting}
       />

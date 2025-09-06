@@ -255,7 +255,7 @@ export default function HelpPage() {
                             <span className="text-green-600 text-sm font-semibold">4</span>
                           </div>
                           <div>
-                            <h4 className="font-medium">Publish Form</h4>
+                            <h4 className="font-medium">ቅስ ያትሙ</h4>
                             <p className="text-sm text-gray-600">Click "Publish" to make your form live and shareable.</p>
                           </div>
                         </div>

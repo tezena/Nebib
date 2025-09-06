@@ -70,8 +70,8 @@ export default function PublicFormRenderer() {
       setIsSubmitted(true)
       toast.success("Form submitted successfully! Your QR code is ready.")
     } catch (error) {
-      console.error("Failed to submit form", error)
-      toast.error("Failed to submit form")
+      console.error("Failed to ቅስ ያስገቡ", error)
+      toast.error("Failed to ቅስ ያስገቡ")
     }
   }
 
@@ -316,7 +316,7 @@ export default function PublicFormRenderer() {
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Sparkles className="w-6 h-6 text-blue-500 dark:text-blue-400" />
                 <Badge className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">
-                  Powered by NEBIB
+                  Powered by ፍሬ Form
                 </Badge>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -346,7 +346,7 @@ export default function PublicFormRenderer() {
                   ) : (
                     <div className="flex items-center gap-2">
                       <Send className="w-4 h-4" />
-                      Submit Form
+                      ቅስ ያስገቡ
                     </div>
                   )}
                 </Button>

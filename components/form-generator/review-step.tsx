@@ -195,7 +195,7 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
             <div className="space-y-2">
               <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Form Title</Label>
               <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                <p className="text-gray-900 dark:text-white font-medium">{formData.topic || "Untitled Form"}</p>
+                <p className="text-gray-900 dark:text-white font-medium">{formData.topic || "የቅጽ ስም"}</p>
               </div>
             </div>
             
@@ -218,7 +218,7 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
           <div className="space-y-2">
             <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Description</Label>
             <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-              <p className="text-gray-900 dark:text-white">{formData.description || "No description provided"}</p>
+              <p className="text-gray-900 dark:text-white">{formData.description || "የቅጽ ማብራሪያ"}</p>
             </div>
           </div>
         </CardContent>
@@ -242,7 +242,7 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
-                    <h1 className="text-lg font-bold">Nebib Forms</h1>
+                    <h1 className="text-lg font-bold">ፍሬ Forms</h1>
                     <p className="text-sm text-blue-100">Professional form builder</p>
                   </div>
                 </div>
@@ -252,8 +252,8 @@ export default function ReviewStep({ setCurrentStep, onComplete, onIncomplete }:
               </div>
               
               <div className="text-center">
-                <h2 className="text-xl font-bold mb-2">{formData.topic || "Untitled Form"}</h2>
-                <p className="text-blue-100">{formData.description || "No description provided"}</p>
+                <h2 className="text-xl font-bold mb-2">{formData.topic || "የቅጽ ስም"}</h2>
+                <p className="text-blue-100">{formData.description || "የቅጽ ማብራሪያ አልተሰጠም"}</p>
               </div>
             </div>
 

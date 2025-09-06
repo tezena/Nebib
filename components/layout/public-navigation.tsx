@@ -37,12 +37,12 @@ export default function PublicNavigation({
   };
 
   return (
-    <header className="border-b border-blue-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
+    <header className="border-b backdrop-blur-sm sticky top-0 z-50" style={{ borderColor: '#f4be42', backgroundColor: 'rgba(247, 247, 247, 0.9)' }}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           {showBackButton && (
             <Link href={backUrl}>
-              <Button variant="ghost" size="sm" className="gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+              <Button variant="ghost" size="sm" className="gap-2" style={{ color: '#382606' }}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
@@ -50,49 +50,50 @@ export default function PublicNavigation({
               </Button>
             </Link>
           )}
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Image
-              src="/images/logo.svg"
-              alt="NEBIB Logo"
-              width={20}
+              src="/logo.png"
+              alt="ፍሬ Form Logo"
+              width={32}
               height={32}
-              className="w-8 h-8"
+              className="w-8 h-8 rounded-full"
             />
-            <span className="text-xl font-bold text-gray-800 dark:text-white">NEBIB</span>
-          </div>
+            <span className="text-xl font-bold" style={{ color: '#382606' }}>ፍሬ Form</span>
+          </Link>
         </div>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
           <Link href="/features">
-            <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Features</Button>
+            <Button variant="ghost" style={{ color: '#382606' }}>ይዘት</Button>
           </Link>
           <Link href="/examples">
-            <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Templates</Button>
+            <Button variant="ghost" style={{ color: '#382606' }}>አብነቶች</Button>
           </Link>
-          <Link href="/qr-demo">
-            <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">QR Demo</Button>
+          {/* <Link href="/qr-demo">
+            <Button variant="ghost" style={{ color: '#382606' }}>QR ማሳያ</Button>
           </Link>
           <Link href="/help">
-            <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Help</Button>
-          </Link>
+            <Button variant="ghost" style={{ color: '#382606' }}>እርዳታ</Button>
+          </Link> */}
           
           {/* Theme Toggle */}
-          <Button 
+          {/* <Button 
             variant="ghost" 
             size="sm" 
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors"
+            style={{ color: '#382606' }}
             onClick={toggleTheme}
           >
             {theme === 'light' ? (
-              <Moon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Moon className="h-5 w-5" />
             ) : (
-              <Sun className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Sun className="h-5 w-5" />
             )}
-          </Button>
+          </Button> */}
           
           <Link href="/sign-in">
-            <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">Get Started</Button>
+            <Button className="text-white border-0" style={{ backgroundColor: '#f4be42' }}>ይጀምሩ</Button>
           </Link>
         </div>
 
@@ -102,13 +103,14 @@ export default function PublicNavigation({
           <Button 
             variant="ghost" 
             size="sm" 
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors"
+            style={{ color: '#382606' }}
             onClick={toggleTheme}
           >
             {theme === 'light' ? (
-              <Moon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Moon className="h-5 w-5" />
             ) : (
-              <Sun className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Sun className="h-5 w-5" />
             )}
           </Button>
           
@@ -119,9 +121,9 @@ export default function PublicNavigation({
             className="p-2"
           >
             {isMenuOpen ? (
-              <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              <X className="w-5 h-5" style={{ color: '#382606' }} />
             ) : (
-              <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              <Menu className="w-5 h-5" style={{ color: '#382606' }} />
             )}
           </Button>
         </div>
@@ -129,32 +131,32 @@ export default function PublicNavigation({
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden border-t border-blue-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+        <div className="md:hidden border-t backdrop-blur-sm" style={{ borderColor: '#f4be42', backgroundColor: 'rgba(247, 247, 247, 0.95)' }}>
           <div className="container mx-auto px-4 py-4 space-y-2">
             <Link href="/features">
-              <Button variant="ghost" className="w-full justify-start text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                Features
+              <Button variant="ghost" className="w-full justify-start" style={{ color: '#382606' }}>
+                ባህሪያት
               </Button>
             </Link>
             <Link href="/examples">
-              <Button variant="ghost" className="w-full justify-start text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                Templates
+              <Button variant="ghost" className="w-full justify-start" style={{ color: '#382606' }}>
+                አብነቶች
               </Button>
             </Link>
             <Link href="/qr-demo">
-              <Button variant="ghost" className="w-full justify-start text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                QR Demo
+              <Button variant="ghost" className="w-full justify-start" style={{ color: '#382606' }}>
+                QR ማሳያ
               </Button>
             </Link>
             <Link href="/help">
-              <Button variant="ghost" className="w-full justify-start text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                Help
+              <Button variant="ghost" className="w-full justify-start" style={{ color: '#382606' }}>
+                እርዳታ
               </Button>
             </Link>
-            <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-2" style={{ borderTop: '1px solid #f4be42' }}>
               <Link href="/sign-in">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-                  Get Started
+                <Button className="w-full text-white border-0" style={{ backgroundColor: '#f4be42' }}>
+                  ይጀምሩ
                 </Button>
               </Link>
             </div>
