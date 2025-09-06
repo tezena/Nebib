@@ -12,8 +12,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "NEBIB",
-  description: "generate forms of your own",
+  title: "ፍሬ Form",
+  description: "የራስዎን ቅጾች ይፍጠሩ",
 };
 
 export default function RootLayout({

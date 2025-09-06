@@ -336,7 +336,7 @@ const PublishStep = forwardRef<{ saveToDatabase: () => Promise<void> }, PublishS
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
           >
-            {isLoading ? "Publishing..." : publishedFormId ? "Update Form" : "Publish Form"}
+            {isLoading ? "Publishing..." : publishedFormId ? "Update Form" : "ቅስ ያትሙ"}
           </Button>
         </div>
       </div>
@@ -364,7 +364,7 @@ const PublishStep = forwardRef<{ saveToDatabase: () => Promise<void> }, PublishS
           disabled={isLoading}
           className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
         >
-          {isLoading ? "Publishing..." : publishedFormId ? "Update Form" : "Publish Form"}
+          {isLoading ? "Publishing..." : publishedFormId ? "Update Form" : "ቅስ ያትሙ"}
         </Button>
       </div>
     </div>

@@ -84,12 +84,12 @@ export default function FormPage() {
       // Optionally reset form values
       setFormValues({});
     } catch (error) {
-      console.error("Failed to submit form", error);
+      console.error("Failed to ቅስ ያስገቡ", error);
     } 
   };
 
   if (submissionError) {
-    toast.error("unable to submit form");
+    toast.error("unable to ቅስ ያስገቡ");
   }
 
   // Render different field types
@@ -310,7 +310,7 @@ export default function FormPage() {
                       Submitting...
                     </div>
                   ) : (
-                    "Submit Form"
+                    "ቅስ ያስገቡ"
                   )}
                 </Button>
               </div>

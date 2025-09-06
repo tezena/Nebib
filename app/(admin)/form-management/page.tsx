@@ -24,20 +24,20 @@ export default async function page() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pb-20 md:pb-8">
+      <div className="min-h-screen pb-20 md:pb-8" style={{ backgroundColor: '#f7f7f7' }}>
         {/* Mobile Header */}
-        <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white">Forms</h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Manage your published forms</p>
+                <h1 className="text-lg font-bold" style={{ color: '#382606' }}>ቅጾች</h1>
+                <p className="text-xs" style={{ color: '#382606', opacity: 0.7 }}>የታተሙ ቅጾችዎን ያስተዳድሩ</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 rounded-full">
+                <div className="px-3 py-1 rounded-full" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span className="text-xs font-medium text-blue-700 dark:text-blue-400">Live</span>
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#f4be42' }}></div>
+                    <span className="text-xs font-medium" style={{ color: '#382606' }}>ቀጥተኛ</span>
                   </div>
                 </div>
               </div>
@@ -54,25 +54,25 @@ export default async function page() {
           {/* Mobile Stats */}
           <div className="md:hidden mb-6">
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20 dark:border-gray-700/20">
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Total Forms</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">-</p>
+                    <p className="text-xs font-medium" style={{ color: '#382606', opacity: 0.7 }}>ጠቅላላ ቅጾች</p>
+                    <p className="text-lg font-bold" style={{ color: '#382606' }}>-</p>
                   </div>
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                    <div className="w-4 h-4 bg-blue-500 rounded"></div>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                    <div className="w-4 h-4 rounded" style={{ backgroundColor: '#f4be42' }}></div>
                   </div>
                 </div>
               </div>
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20 dark:border-gray-700/20">
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Active</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">-</p>
+                    <p className="text-xs font-medium" style={{ color: '#382606', opacity: 0.7 }}>ንቁ</p>
+                    <p className="text-lg font-bold" style={{ color: '#382606' }}>-</p>
                   </div>
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                    <div className="w-4 h-4 bg-green-500 rounded"></div>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
+                    <div className="w-4 h-4 rounded" style={{ backgroundColor: '#f4be42' }}></div>
                   </div>
                 </div>
               </div>

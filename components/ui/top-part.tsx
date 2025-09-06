@@ -95,7 +95,7 @@ export default function TopPart() {
           <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">N</span>
           </div>
-          <span className="font-semibold text-gray-900 dark:text-white hidden sm:block">Nebib Forms</span>
+          <span className="font-semibold text-gray-900 dark:text-white hidden sm:block">ፍሬ Forms</span>
         </div>
       </div>
 

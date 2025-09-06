@@ -223,7 +223,7 @@ export default function FormPreview() {
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-lg font-bold">Nebib Forms</h1>
+              <h1 className="text-lg font-bold">ፍሬ Forms</h1>
               <p className="text-sm text-blue-100">Professional form builder</p>
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function FormPreview() {
             ) : (
               <div className="flex items-center gap-2">
                 <Send className="w-4 h-4" />
-                Submit Form
+                ቅስ ያስገቡ
               </div>
             )}
           </Button>

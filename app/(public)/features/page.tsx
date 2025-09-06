@@ -6,30 +6,30 @@ import Link from "next/link";
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen" style={{ backgroundColor: '#f7f7f7' }}>
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
-        <Badge className="mb-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0">
-          ⚡ Powerful Features
+        <Badge className="mb-6 text-white border-0" style={{ backgroundColor: '#f4be42' }}>
+          ⚡ ኃይለኛ ባህሪያት
         </Badge>
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-800 via-blue-700 to-indigo-700 dark:from-white dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-          Everything You Need for Modern Form Management
+        <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#382606' }}>
+          ዘመናዊ ፎርም አስተዳደር ለሚያስፈልጉ ሁሉም ነገር
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-          From revolutionary inline form building to advanced QR code attendance tracking, 
-          NEBIB provides a complete solution that's better than Google Forms.
+        <p className="text-xl mb-8 max-w-3xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
+          ከአብሮገነት የፎርም ግንባታ እስከ የላቀ QR ኮድ አቴንዳንስ ክትትል ድረስ፣ 
+          ፍሬ Form ከGoogle Forms የተሻለ ሙሉ መፍትሄ ይሰጣል።
         </p>
       </section>
 
       {/* Form Builder Features */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-            Revolutionary Inline Form Builder
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
+            አብሮገነት የፎርም ገንቢ
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Create professional forms with our revolutionary inline editing interface - better than Google Forms
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
+            ከአብሮገነት የመስመር ላይ አርትዖት በይነገጽ የሙያዊ ፎርሞች ይፍጠሩ - ከGoogle Forms የተሻለ
           </p>
         </div>
 
@@ -39,9 +39,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4">
                 <FileText className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Inline Editing Interface</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Revolutionary inline editing with "what you see is what you get" experience. Edit everything directly in the preview.
+              <CardTitle style={{ color: '#382606' }}>የመስመር ላይ አርትዖት በይነገጽ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                "የምታየው የምታገኘው ነው" በሚለው አብሮገነት የመስመር ላይ አርትዖት። ሁሉንም ነገር በቀጥታ በቅድሚያ እይታ ውስጥ ያርትዑ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -51,9 +51,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4">
                 <Settings className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Multiple Field Types</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Support for text, email, number, date, checkbox, textarea, select dropdowns, and file uploads.
+              <CardTitle style={{ color: '#382606' }}>በርካታ የመስኮች አይነቶች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የጽሑፍ፣ ኢሜይል፣ ቁጥር፣ ቀን፣ ቼክቦክስ፣ የጽሑፍ አካባቢ፣ የምርጫ ዝርዝሮች እና የፋይል ማስገባት ድጋፍ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -63,9 +63,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Eye className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Single-Page Builder</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                No more complex multi-step processes. Create, edit, and publish forms all in one seamless interface.
+              <CardTitle style={{ color: '#382606' }}>አንድ-ገጽ ገንቢ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የተወሳሰቡ ባለብዙ-ደረጃ ሂደቶች የሉም። ፎርሞችን ይፍጠሩ፣ ያርትዑ እና በአንድ የማያልቅ በይነገጽ ያሰራጩ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -75,9 +75,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
                 <Upload className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">File Upload Support</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Allow users to upload documents, images, and other files with size and type restrictions.
+              <CardTitle style={{ color: '#382606' }}>የፋይል ማስገባት ድጋፍ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ተጠቃሚዎች ሰነዶች፣ ምስሎች እና ሌሎች ፋይሎችን በመጠን እና በአይነት ገደቦች ይሰጥ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -87,9 +87,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Validation Rules</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Set required fields, format validation, and custom validation rules for data integrity.
+              <CardTitle style={{ color: '#382606' }}>የማረጋገጫ ህጎች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የሚያስፈልጉ መስኮች፣ የቅርጸት ማረጋገጫ እና ለመረጃ አጠቃላይነት ልዩ የማረጋገጫ ህጎች ያዘጋጁ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -99,9 +99,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
                 <Globe className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Public Forms</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Share forms with anyone via public links. No registration required for form submissions.
+              <CardTitle style={{ color: '#382606' }}>የህዝብ ፎርሞች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ፎርሞችን በህዝብ አገናኞች ከማንም ጋር ያጋሩ። ለፎርም ማስገባት ምዝገባ አያስፈልግም።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -111,9 +111,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center mb-4">
                 <HelpCircle className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Built-in Help System</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Comprehensive help guides, troubleshooting, and instant support integrated into the platform.
+              <CardTitle style={{ color: '#382606' }}>የተነደፈ የእርዳታ ስርዓት</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የተሟላ የእርዳታ መመሪያዎች፣ ችግር መፍታት እና ወደ መድረኩ የተዋሃደ ፈጣን ድጋፍ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -123,11 +123,11 @@ export default function FeaturesPage() {
       {/* QR Code Features */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-            Advanced QR Code Attendance System
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
+            የላቀ QR ኮድ አቴንዳንስ ስርዓት
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Generate unique QR codes for each student and track attendance with continuous scanning
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
+            ለእያንዳንዱ ተማሪ ልዩ QR ኮዶች ይፍጠሩ እና በቀጣይ ስካን አቴንዳንስ ይክትቱ
           </p>
         </div>
 
@@ -137,9 +137,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4">
                 <QrCode className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Unique QR Codes</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Generate unique QR codes for each student with their information embedded for secure attendance tracking.
+              <CardTitle style={{ color: '#382606' }}>ልዩ QR ኮዶች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ለእያንዳንዱ ተማሪ ልዩ QR ኮዶች ይፍጠሩ ከመረጃቸው ጋር ለአስተማማኝ አቴንዳንስ ክትትል የተካተተ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -149,9 +149,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4">
                 <Camera className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Continuous Scanning</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Admin scans student QR codes for instant attendance marking with continuous scanning capability.
+              <CardTitle style={{ color: '#382606' }}>ቀጣይ ስካን</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                አስተዳዳሪ የተማሪዎች QR ኮዶችን ለፈጣን አቴንዳንስ ምልክት በቀጣይ ስካን ችሎታ ይስካን።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -161,9 +161,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Real-time Tracking</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Track attendance in real-time with instant updates and notifications for absent students.
+              <CardTitle style={{ color: '#382606' }}>በትክክለኛ ጊዜ ክትትል</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                በትክክለኛ ጊዜ አቴንዳንስን በፈጣን ዝማኔዎች እና ለማይገኙ ተማሪዎች ማሳወቂያዎች ይክትቱ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -173,9 +173,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
                 <Download className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">QR Code Downloads</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Students can download their QR codes as images or PDFs for easy access and printing.
+              <CardTitle style={{ color: '#382606' }}>QR ኮድ ማውረዶች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ተማሪዎች የእነሱን QR ኮዶች እንደ ምስሎች ወይም PDFዎች ለቀላል መዳረሻ እና ለመስተማር ማውረድ ይችላሉ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -185,9 +185,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
                 <Clock className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Attendance History</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Maintain detailed attendance history with timestamps and attendance patterns over time.
+              <CardTitle style={{ color: '#382606' }}>የአቴንዳንስ ታሪክ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ዝርዝር የአቴንዳንስ ታሪክን ከጊዜ ምልክቶች እና በጊዜ ሂደት የአቴንዳንስ ቅደም ተከተሎች ጋር ይጠብቁ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -197,9 +197,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
                 <Mail className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Automated Notifications</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Send automated notifications to parents or guardians about attendance status.
+              <CardTitle style={{ color: '#382606' }}>የራስ-ሰር ማሳወቂያዎች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ስለ አቴንዳንስ ሁኔታ ለወላጆች ወይም ለተጠባባቂዎች የራስ-ሰር ማሳወቂያዎች ይላኩ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -209,11 +209,11 @@ export default function FeaturesPage() {
       {/* Analytics Features */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-            Powerful Analytics & Reporting
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
+            ኃይለኛ ትንተና እና ሪፖርት
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Get insights into form submissions, attendance rates, and generate detailed reports
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
+            ወደ ፎርም ማስገባቶች፣ የአቴንዳንስ መጠኖች እና ዝርዝር ሪፖርቶች ይፍጠሩ ግንዛቤ ያግኙ
           </p>
         </div>
 
@@ -223,9 +223,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Real-time Analytics</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Track form submissions, attendance rates, and user engagement with real-time dashboards.
+              <CardTitle style={{ color: '#382606' }}>በትክክለኛ ጊዜ ትንተና</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ፎርም ማስገባቶች፣ የአቴንዳንስ መጠኖች እና የተጠቃሚ ተሳትፎ በትክክለኛ ጊዜ ዳሽቦርዶች ይክትቱ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -235,9 +235,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Performance Metrics</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Monitor form performance, completion rates, and identify areas for improvement.
+              <CardTitle style={{ color: '#382606' }}>የአፈጻጸም መለኪያዎች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የፎርም አፈጻጸም፣ የማጠናቀቂያ መጠኖች ይክትቱ እና ለማሻሻል አካባቢዎችን ይለዩ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -247,9 +247,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Download className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Export Reports</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Export data in multiple formats including CSV, Excel, and PDF for further analysis.
+              <CardTitle style={{ color: '#382606' }}>ሪፖርቶች ማውጣት</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                መረጃን በበርካታ ቅርጸቶች ማውጣት CSV፣ Excel እና PDF ለተጨማሪ ትንተና።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -259,9 +259,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">User Analytics</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Track user behavior, form completion patterns, and demographic insights.
+              <CardTitle style={{ color: '#382606' }}>የተጠቃሚ ትንተና</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የተጠቃሚ ባህሪ፣ የፎርም ማጠናቀቂያ ቅደም ተከተሎች እና የህዝብ ቆጠራ ግንዛቤዎች ይክትቱ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -271,9 +271,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
                 <Eye className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Visual Dashboards</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Beautiful visualizations with charts, graphs, and interactive dashboards.
+              <CardTitle style={{ color: '#382606' }}>የምስል ዳሽቦርዶች</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የሚያምሩ የምስል አቀራረቦች ከገበታዎች፣ ግራፎች እና በይነገጽ ዳሽቦርዶች ጋር።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -283,9 +283,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
                 <Clock className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Historical Data</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Access historical data and trends to make informed decisions and track progress over time.
+              <CardTitle style={{ color: '#382606' }}>የታሪክ መረጃ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የታሪክ መረጃ እና አዝማሚያዎችን ይድረሱ በመረጃ የተመሰረቱ ውሳኔዎች ለመውሰድ እና በጊዜ ሂደት እድገትን ለመክትት።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -295,11 +295,11 @@ export default function FeaturesPage() {
       {/* Security Features */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-            Enterprise-Grade Security
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
+            የድርጅት-ደረጃ ደህንነት
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Your data is protected with enterprise-grade security and privacy measures
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
+            የእርስዎ መረጃ በድርጅት-ደረጃ ደህንነት እና የግላዊነት እርምጃዎች የተጠበቀ ነው
           </p>
         </div>
 
@@ -309,9 +309,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Data Encryption</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                All data is encrypted in transit and at rest using industry-standard encryption protocols.
+              <CardTitle style={{ color: '#382606' }}>የመረጃ ምስጢር ማስተርሰያ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ሁሉም መረጃ በመጓዝ እና በማረፊያ በኢንዱስትሪ-መስፈርት ምስጢር ማስተርሰያ ፕሮቶኮሎች የተመስጠረ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -321,9 +321,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4">
                 <Database className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Secure Storage</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Data is stored in secure, redundant cloud infrastructure with automatic backups.
+              <CardTitle style={{ color: '#382606' }}>አስተማማኝ ማከማቻ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                መረጃ በአስተማማኝ፣ ተጨማሪ የደመና መሠረተ-ልማት ከራስ-ሰር የመመለሻ ቅጂዎች ጋር ይቀመጣል።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -333,9 +333,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">User Authentication</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Secure user authentication with multi-factor authentication and role-based access control.
+              <CardTitle style={{ color: '#382606' }}>የተጠቃሚ ማረጋገጫ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                አስተማማኝ የተጠቃሚ ማረጋገጫ ከባለብዙ-አካል ማረጋገጫ እና በሚና የተመሰረተ የመዳረሻ ቁጥጥር።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -345,9 +345,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
                 <Globe className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">GDPR Compliance</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Full GDPR compliance with data protection, privacy controls, and user consent management.
+              <CardTitle style={{ color: '#382606' }}>GDPR ተከተል</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                ሙሉ GDPR ተከተል ከመረጃ ጥበቃ፣ የግላዊነት ቁጥጥሮች እና የተጠቃሚ ፈቃድ አስተዳደር ጋር።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -357,9 +357,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
                 <Smartphone className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">Mobile Security</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Secure mobile access with biometric authentication and encrypted data transmission.
+              <CardTitle style={{ color: '#382606' }}>የሞባይል ደህንነት</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                አስተማማኝ የሞባይል መዳረሻ ከባዮሜትሪክ ማረጋገጫ እና የተመስጠረ የመረጃ ማስተላልፍ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -369,9 +369,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
                 <HelpCircle className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-gray-800 dark:text-white">24/7 Support</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
-                Round-the-clock technical support and security monitoring to ensure your data is always protected.
+              <CardTitle style={{ color: '#382606' }}>24/7 ድጋፍ</CardTitle>
+              <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
+                የሙሉ ጊዜ ቴክኒካል ድጋፍ እና የደህንነት ክትትል የእርስዎ መረጃ ሁልጊዜ እንዲጠበቅ ለማረጋገጥ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -381,21 +381,21 @@ export default function FeaturesPage() {
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-            Ready to Experience the Future of Form Management?
+          <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
+            የፎርም አስተዳደር ወደፊት ለማየት ዝግጁ ነዎት?
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of organizations already using NEBIB to streamline their form creation and attendance tracking.
+          <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
+            የፎርም ፍጠራ እና አቴንዳንስ ክትትል ለማሻሻል ፍሬ Form ን የሚጠቀሙ በሺዎች የሚቆጠሩ ድርጅቶች ይቀላቀሉ።
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/sign-in">
-              <Button size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white">
-                Get Started Free
+              <Button size="lg" className="text-lg px-8 py-6 text-white border-0" style={{ backgroundColor: '#f4be42' }}>
+                ነፃ ይጀምሩ
               </Button>
             </Link>
             <Link href="/examples">
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">
-                View Templates
+              <Button variant="outline" size="lg" className="text-lg px-8 py-6" style={{ borderColor: '#f4be42', color: '#f4be42' }}>
+                አብነቶች ይመልከቱ
               </Button>
             </Link>
           </div>

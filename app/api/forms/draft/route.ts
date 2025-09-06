@@ -40,7 +40,7 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Use default description if not provided
-    const finalDescription = description && description.trim() ? description.trim() : "No description provided";
+    const finalDescription = description && description.trim() ? description.trim() : "የቅጽ ማብራሪያ አልተሰጠም provided";
 
     let draftForm;
 
