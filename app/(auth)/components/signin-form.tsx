@@ -30,6 +30,7 @@ const formSchema = z.object({
 
 export default function SigninForm() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string>("");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,6 +44,7 @@ export default function SigninForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
+      setAuthError(""); // Clear previous errors
       console.log("🔐 Sign-in: Attempting to sign in with:", values.email);
       
       await authClient.signIn.email(
@@ -62,12 +64,17 @@ export default function SigninForm() {
           },
           onError: (ctx) => {
             console.log("❌ Sign-in: Error context:", ctx);
-            toast.error(ctx.error.message);
+            const errorMessage = ctx.error?.message || "Invalid email or password. Please try again.";
+            setAuthError(errorMessage);
+            toast.error(errorMessage);
           },
         }
       );
     } catch (err) {
       console.log("🚨 Sign-in: Exception:", err);
+      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred. Please try again.";
+      setAuthError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -136,6 +143,13 @@ export default function SigninForm() {
                 Remember Password
               </label>
             </div>
+
+            {/* Authentication Error Display */}
+            {authError && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{authError}</p>
+              </div>
+            )}
 
             <button
               type="submit"

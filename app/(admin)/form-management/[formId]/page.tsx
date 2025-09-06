@@ -657,8 +657,8 @@ export default function FormDetailPage() {
                   <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ጠቅላላ ዝርዝር</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{totalSubmissions}</p>
                 </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
-                  <FileText className="w-5 h-5" style={{ color: '#f4be42' }} />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-yellow-400/30 border-2 border-yellow-400/50 shadow-md">
+                  <FileText className="w-6 h-6 text-yellow-600" />
                 </div>
               </div>
             </CardContent>
@@ -671,14 +671,14 @@ export default function FormDetailPage() {
                   <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ይህ ሳምንት</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{recentSubmissions}</p>
                 </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
-                  <Calendar className="w-5 h-5" style={{ color: '#f4be42' }} />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-yellow-400/30 border-2 border-yellow-400/50 shadow-md">
+                  <Calendar className="w-6 h-6 text-yellow-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-white">
+          {/* <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -690,7 +690,7 @@ export default function FormDetailPage() {
               </div>
             </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           <Card className="border-0 shadow-lg bg-white">
             <CardContent className="p-4">
@@ -699,9 +699,9 @@ export default function FormDetailPage() {
                   <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ የተገኙ</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{presentCount}</p>
               </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
-                  <CheckCircle className="w-5 h-5" style={{ color: '#f4be42' }} />
-              </div>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-green-400/30 border-2 border-green-400/50 shadow-md">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
             </div>
             </CardContent>
           </Card>
@@ -713,9 +713,9 @@ export default function FormDetailPage() {
                   <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ ያልተገኙ</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{absentCount}</p>
               </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
-                  <XCircle className="w-5 h-5" style={{ color: '#f4be42' }} />
-              </div>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-red-400/30 border-2 border-red-400/50 shadow-md">
+                  <XCircle className="w-6 h-6 text-red-600" />
+                </div>
             </div>
             </CardContent>
           </Card>
@@ -727,9 +727,9 @@ export default function FormDetailPage() {
                   <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ ያረፈደው</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{lateCount}</p>
               </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
-                  <Clock className="w-5 h-5" style={{ color: '#f4be42' }} />
-              </div>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-orange-400/30 border-2 border-orange-400/50 shadow-md">
+                  <Clock className="w-6 h-6 text-orange-600" />
+                </div>
             </div>
             </CardContent>
           </Card>
@@ -737,9 +737,21 @@ export default function FormDetailPage() {
 
         {/* Tabs */}
         <Tabs defaultValue="submissions" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6 bg-white">
-            <TabsTrigger value="submissions" className="data-[state=active]:bg-[#f4be42] data-[state=active]:text-white">ቅጽ ዝርዝር</TabsTrigger>
-            <TabsTrigger value="attendance" className="data-[state=active]:bg-[#f4be42] data-[state=active]:text-white">አቴንዳንስ</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 mb-6 bg-white border border-gray-200">
+            <TabsTrigger 
+              value="submissions" 
+              className="tabs-trigger data-[state=active]:bg-[#f4be42] data-[state=active]:text-white text-gray-700 hover:text-gray-900"
+              style={{ color: '#382606' }}
+            >
+              ቅጽ ዝርዝር
+            </TabsTrigger>
+            <TabsTrigger 
+              value="attendance" 
+              className="tabs-trigger data-[state=active]:bg-[#f4be42] data-[state=active]:text-white text-gray-700 hover:text-gray-900"
+              style={{ color: '#382606' }}
+            >
+              አቴንዳንስ
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="submissions" className="space-y-4">
@@ -965,20 +977,30 @@ export default function FormDetailPage() {
                         onClick={openQRScanner} 
                         variant="outline" 
                         size="sm"
-                        className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+                        className="attendance-action-button flex items-center gap-2"
                       >
                         <Scan className="w-4 h-4" />
                         <span className="hidden sm:inline">ተማሪ QR አንብብ</span>
                       </Button>
-                      <Button onClick={markAllPresent} variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                      <Button 
+                        onClick={markAllPresent} 
+                        variant="outline" 
+                        size="sm" 
+                        className="attendance-action-button"
+                      >
                         <span className="hidden sm:inline">ሁሉንም የተገኘ ምልክት አድርግ</span>
                         <span className="sm:hidden">ሁሉም የተገኘ</span>
                       </Button>
-                      <Button onClick={markAllAbsent} variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                      <Button 
+                        onClick={markAllAbsent} 
+                        variant="outline" 
+                        size="sm" 
+                        className="attendance-action-button"
+                      >
                         <span className="hidden sm:inline">ሁሉንም ያልተገኘ ምልክት አድርግ</span>
                         <span className="sm:hidden">ሁሉም ያልተገኘ</span>
-            </Button>
-          </div>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
@@ -1011,7 +1033,7 @@ export default function FormDetailPage() {
                     </div>
                             <div className="min-w-0 flex-1">
                               <div className="font-medium text-gray-900 dark:text-white truncate">
-                                {submission.name || `Student ${submission.id.slice(-6)}`}
+                                {submission.name || submission.fields[0].value || `Student ${submission.id.slice(-6)}`}
                       </div>
                               <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
                                 {submission.email || 'No email provided'}
@@ -1044,8 +1066,15 @@ export default function FormDetailPage() {
                                 variant={currentStatus === 'present' ? 'default' : 'outline'}
                                 onClick={() => markAttendance(submission.id, 'present')}
                                 className={`${
-                                  currentStatus === 'present' ? 'bg-green-600 hover:bg-green-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                                  currentStatus === 'present' 
+                                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                                    : 'attendance-action-button border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                                 } text-xs sm:text-sm`}
+                                style={currentStatus !== 'present' ? {
+                                  color: '#374151',
+                                  borderColor: '#d1d5db',
+                                  backgroundColor: 'transparent'
+                                } : {}}
                               >
                                 <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                                 <span className="hidden sm:inline">የተገኘ</span>
@@ -1056,8 +1085,15 @@ export default function FormDetailPage() {
                                 variant={currentStatus === 'absent' ? 'default' : 'outline'}
                                 onClick={() => markAttendance(submission.id, 'absent')}
                                 className={`${
-                                  currentStatus === 'absent' ? 'bg-red-600 hover:bg-red-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                                  currentStatus === 'absent' 
+                                    ? 'bg-red-600 hover:bg-red-700 text-white' 
+                                    : 'attendance-action-button border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                                 } text-xs sm:text-sm`}
+                                style={currentStatus !== 'absent' ? {
+                                  color: '#374151',
+                                  borderColor: '#d1d5db',
+                                  backgroundColor: 'transparent'
+                                } : {}}
                               >
                                 <XCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                                 <span className="hidden sm:inline">ያልተገኘ</span>
@@ -1068,8 +1104,15 @@ export default function FormDetailPage() {
                                 variant={currentStatus === 'late' ? 'default' : 'outline'}
                                 onClick={() => markAttendance(submission.id, 'late')}
                                 className={`${
-                                  currentStatus === 'late' ? 'bg-yellow-600 hover:bg-yellow-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                                  currentStatus === 'late' 
+                                    ? 'bg-yellow-600 hover:bg-yellow-700 text-white' 
+                                    : 'attendance-action-button border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                                 } text-xs sm:text-sm`}
+                                style={currentStatus !== 'late' ? {
+                                  color: '#374151',
+                                  borderColor: '#d1d5db',
+                                  backgroundColor: 'transparent'
+                                } : {}}
                               >
                                 <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                                 <span className="hidden sm:inline">ያረፈደ</span>
@@ -1106,8 +1149,11 @@ export default function FormDetailPage() {
 
       {/* QR Scanner Modal */}
       {showQRScanner && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full border border-gray-200">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 qr-scanner-modal"
+          style={{ zIndex: 10000 }}
+        >
+          <div className="bg-white rounded-lg p-6 max-w-md w-full border border-gray-200 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold" style={{ color: '#382606' }}>ተማሪ QR ኮድ አንብብ</h3>
               <Button

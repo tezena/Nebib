@@ -64,6 +64,9 @@ export default function PublicNavigation({
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
+          <Link href="/">
+            <Button variant="ghost" style={{ color: '#382606' }}>ዋና ገጽ</Button>
+          </Link>
           <Link href="/features">
             <Button variant="ghost" style={{ color: '#382606' }}>ይዘት</Button>
           </Link>
@@ -133,6 +136,11 @@ export default function PublicNavigation({
       {isMenuOpen && (
         <div className="md:hidden border-t backdrop-blur-sm" style={{ borderColor: '#f4be42', backgroundColor: 'rgba(247, 247, 247, 0.95)' }}>
           <div className="container mx-auto px-4 py-4 space-y-2">
+            <Link href="/">
+              <Button variant="ghost" className="w-full justify-start" style={{ color: '#382606' }}>
+                ዋና ገጽ
+              </Button>
+            </Link>
             <Link href="/features">
               <Button variant="ghost" className="w-full justify-start" style={{ color: '#382606' }}>
                 ባህሪያት
