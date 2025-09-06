@@ -580,7 +580,7 @@ export default function FormDetailPage() {
               <DropdownMenuContent align="end" className="bg-white border-gray-200">
                 <DropdownMenuItem onClick={copyLink} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <Copy className="mr-2 h-4 w-4" />
-                  አገናኝ ቅዳ
+                  copy link
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={openFormLink} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <ExternalLink className="mr-2 h-4 w-4" />
@@ -626,7 +626,7 @@ export default function FormDetailPage() {
                 <div className="flex items-center gap-3">
               <Button variant="outline" onClick={copyLink} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Copy className="w-4 h-4 mr-2" />
-                አገናኝ ቅዳ
+                copy link
               </Button>
               <Button variant="outline" onClick={handleEditForm} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Edit className="w-4 h-4 mr-2" />
@@ -765,7 +765,7 @@ export default function FormDetailPage() {
                     {submissions.map((submission) => {
                       const isExpanded = expandedSubmission === submission.id
                       const qrCodeUrl = generateSubmissionQR(submission)
-                      const studentName = submission.name || `Student ${submission.id.slice(-6)}`
+                      const studentName = submission.name || submission.fields[0]?.value || `Student ${submission.id.slice(-6)}`
                       
                       return (
                         <div key={submission.id} className="border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
