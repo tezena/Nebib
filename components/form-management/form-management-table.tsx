@@ -130,7 +130,7 @@ const FormManagementTable = () => {
                 {row.getValue("topic")}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {row.original.description || "No description"}
+                {row.original.description || "የቅጽ ማብራሪያ አልተሰጠም"}
               </div>
             </div>
           </div>
@@ -317,7 +317,7 @@ const FormManagementTable = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-gray-900 text-base truncate">{form.topic}</h3>
-                        <p className="text-sm text-gray-500 truncate">{form.description || "No description"}</p>
+                        <p className="text-sm text-gray-500 truncate">{form.description || "የቅጽ ማብራሪያ አልተሰጠም"}</p>
                         <div className="flex items-center gap-2 mt-2">
                           <Badge 
                             variant={form.status === "active" ? "default" : "secondary"}

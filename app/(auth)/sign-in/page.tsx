@@ -103,7 +103,7 @@ export default function LoginPage() {
               <h1 className="text-2xl font-semibold" style={{ color: '#382606' }}>ፍሬ Form</h1>
             </div>
             {/* <h2 className="text-2xl font-bold" style={{ color: '#382606' }}>
-              የራስዎን ቅጦች ይፍጠሩ
+              የራስዎን ቅጾች ይፍጠሩ
             </h2> */}
             <Link href="/" className="hover:underline text-sm mt-2" style={{ color: '#f4be42' }}>
               ← ወደ ዋና ገጽ ተመለስ

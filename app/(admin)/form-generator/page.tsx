@@ -81,7 +81,7 @@ function FormGeneratorContent() {
   const [sections, setSections] = useState<FormSection[]>([
     {
       id: "section-1",
-      title: "General Information",
+      title: "አጠቃላይ መረጃ",
       fields: []
     }
   ]);
@@ -165,7 +165,7 @@ function FormGeneratorContent() {
   const addSection = () => {
     const newSection: FormSection = {
       id: `section-${Date.now()}`,
-      title: `Section ${sections.length + 1}`,
+      title: `ክፍል ${sections.length + 1}`,
       fields: []
     };
     setSections([...sections, newSection]);
@@ -180,14 +180,14 @@ function FormGeneratorContent() {
   const addField = (sectionId: string, type: FormField['type'] = 'text') => {
     const newField: FormField = {
       id: `field-${Date.now()}`,
-      label: `New ${type} field`,
+      label: `አዲስ ${type} መስክ`,
       type,
       required: false,
-      placeholder: `Enter ${type}...`
+      placeholder: `${type} ያስገቡ...`
     };
 
     if (type === 'dropdown') {
-      newField.options = ['Option 1', 'Option 2', 'Option 3'];
+      newField.options = ['አማራጭ 1', 'አማራጭ 2', 'አማራጭ 3'];
     }
 
     setSections(sections.map(section => 
@@ -341,7 +341,7 @@ function FormGeneratorContent() {
       // Save draft to API
       const draftData = {
         title: formTitle.trim(),
-        description: formDescription.trim() || "No description provided",
+        description: formDescription.trim() || "የቅጽ ማብራሪያ አልተሰጠም provided",
         sections: sections,
         formId: currentDraftId // Will be set if updating existing draft
       };
@@ -470,7 +470,7 @@ function FormGeneratorContent() {
     return (
       <div className="flex items-center gap-2">
         <h2 className="text-xl sm:text-2xl font-bold text-white">
-          {formTitle || "Untitled Form"}
+          {formTitle || "የቅጽ ስም"}
         </h2>
         <Button
           variant="ghost"
@@ -511,7 +511,7 @@ function FormGeneratorContent() {
     return (
       <div className="flex items-start gap-2">
         <p className="text-sm sm:text-base text-blue-100">
-          {formDescription || "No description"}
+          {formDescription || "የቅጽ ማብራሪያ አልተሰጠም"}
         </p>
         <Button
           variant="ghost"
@@ -813,15 +813,15 @@ function FormGeneratorContent() {
               <Button
                 variant="outline"
                 onClick={() => setShowAddField(sectionId)}
-                className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/30 dark:hover:bg-blue-900/20 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 group-hover:border-blue-400 dark:group-hover:border-blue-500 group-hover:bg-blue-50/30 dark:group-hover:bg-blue-900/20"
+                className="w-full border-2 border-dashed border-gray-300 hover:border-[#f4be42] hover:bg-[#f4be42]/10 text-gray-600 hover:text-[#f4be42] transition-all duration-200 group-hover:border-[#f4be42] group-hover:bg-[#f4be42]/10"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add Field
+                ይጨምሩ
               </Button>
             </TooltipTrigger>
-            <TooltipContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-              <p className="text-gray-900 dark:text-white">Add a new field to this section</p>
+            <TooltipContent className="bg-white border-gray-200">
+              <p className="text-gray-900">አዲስ መስክ ወደዚህ ክፍል ጨምር</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -832,11 +832,11 @@ function FormGeneratorContent() {
   // Show loading state when in edit mode and loading form data
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f7f7f7' }}>
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">
-            {isEditMode ? "Loading form..." : "Loading..."}
+          <div className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#f4be42', borderTopColor: 'transparent' }}></div>
+          <p style={{ color: '#382606', opacity: 0.7 }}>
+            {isEditMode ? "ቅጽ በመጫን ላይ..." : "በመጫን ላይ..."}
           </p>
         </div>
       </div>
@@ -844,23 +844,23 @@ function FormGeneratorContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pb-20 md:pb-8">
+    <div className="min-h-screen pb-20 md:pb-8" style={{ backgroundColor: '#f7f7f7' }}>
       {/* Mobile Header */}
-      <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+      <div className="md:hidden bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <Button variant="ghost" size="sm" className="p-2 h-8 w-8 text-gray-700 hover:text-gray-900 hover:bg-gray-100">
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                  {isEditMode ? "Edit Form" : "Create Form"}
+                <h1 className="text-lg font-bold" style={{ color: '#382606' }}>
+                  {isEditMode ? "ቅጽ አርትዕ" : "ቅጽ ፍጠር"}
                 </h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  {isEditMode ? "Modify your form" : "Build your form"}
+                <p className="text-xs" style={{ color: '#382606', opacity: 0.7 }}>
+                  {isEditMode ? "ቅጽዎን አርትዕ" : "ቅጽዎን ይገንቡ"}
                 </p>
               </div>
             </div>
@@ -873,13 +873,13 @@ function FormGeneratorContent() {
                       size="sm" 
                       onClick={handleSaveDraft}
                       disabled={isPublishing}
-                      className="h-8 w-8 p-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                      className="h-8 w-8 p-0 border-gray-300 text-gray-700 hover:bg-gray-50"
                     >
                       <Save className="w-4 h-4" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <p className="text-gray-900 dark:text-white">Save as draft</p>
+                  <TooltipContent className="bg-white border-gray-200">
+                    <p className="text-gray-900">ረቂቅ አስቀምጥ</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -889,9 +889,10 @@ function FormGeneratorContent() {
                     size="sm" 
                     disabled={isPublishing}
                     onClick={handlePublishClick}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                    className="text-white border-0"
+                    style={{ backgroundColor: '#f4be42' }}
                   >
-                    {isEditMode ? "Update" : "Publish"}
+                    {isEditMode ? "አሻሽል" : "አትም"}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -996,7 +997,7 @@ function FormGeneratorContent() {
                             Publishing...
                           </div>
                         ) : (
-                          isEditMode ? "Update Form" : "Publish Form"
+                          isEditMode ? "Update Form" : "ቅስ ያትሙ"
                         )}
                       </Button>
                     </div>
@@ -1014,18 +1015,18 @@ function FormGeneratorContent() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <Button variant="ghost" size="sm" className="p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Dashboard
+                  ወደ ዳሽቦርድ ተመለስ
                 </Button>
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {isEditMode ? "Edit Form" : "Create Form"}
+                <h1 className="text-3xl font-bold" style={{ color: '#382606' }}>
+                  {isEditMode ? "ቅጽ አርትዕ" : "ቅጽ ፍጠር"}
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">
-                  {isEditMode ? "Modify your existing form" : "Build your form with our intuitive builder"}
-                </p>
+                {/* <p className="mt-1" style={{ color: '#382606', opacity: 0.7 }}>
+                  {isEditMode ? "ያለውን ቅጽዎን አርትዕ" : "ቅጽዎን በምታስተዋውቀው ገንቢ ይገንቡ"}
+                </p> */}
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -1033,19 +1034,20 @@ function FormGeneratorContent() {
                 variant="outline" 
                 onClick={handleSaveDraft}
                 disabled={isPublishing}
-                className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <Save className="w-4 h-4 mr-2" />
-                Save Draft
+                ረቂቅ አስቀምጥ
               </Button>
               <Dialog open={showPublishDialog} onOpenChange={setShowPublishDialog}>
                 <DialogTrigger asChild>
                   <Button 
                     disabled={isPublishing}
                     onClick={handlePublishClick}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                    className="text-white border-0"
+                    style={{ backgroundColor: '#f4be42' }}
                   >
-                    {isEditMode ? "Update Form" : "Publish Form"}
+                    {isEditMode ? "ቅጽ አሻሽል" : "ቅጽ አትም"}
                   </Button>
                 </DialogTrigger>
               </Dialog>
@@ -1055,29 +1057,29 @@ function FormGeneratorContent() {
 
         <div className="space-y-6">
           {/* Inline Form Builder */}
-          <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <Card className="border-0 shadow-lg bg-white">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
-                <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                Live Form Builder
+              <CardTitle className="flex items-center gap-2" style={{ color: '#382606' }}>
+                <Eye className="w-4 h-4" style={{ color: '#f4be42' }} />
+                ቀጥተኛ ቅጽ ገንቢ
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="w-full max-w-4xl mx-auto">
-                {/* Nebib Header */}
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 sm:p-6 rounded-t-xl">
+                {/* ፍሬ Form Header */}
+                <div className="text-white p-4 sm:p-6 rounded-t-xl" style={{ backgroundColor: '#f4be42' }}>
                   <div className="flex items-center justify-between mb-3 sm:mb-4">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg flex items-center justify-center">
                         <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
                       <div>
-                        <h1 className="text-base sm:text-lg font-bold">Nebib Forms</h1>
-                        <p className="text-xs sm:text-sm text-blue-100">Professional form builder</p>
+                        <h1 className="text-base sm:text-lg font-bold">ፍሬ Form</h1>
+                        <p className="text-xs sm:text-sm text-blue-100">የሙያ ቅጽ ገንቢ</p>
                       </div>
                     </div>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs">
-                      Powered by Nebib
+                      Powered by ፍሬ Form
                     </Badge>
                   </div>
                   
@@ -1092,15 +1094,15 @@ function FormGeneratorContent() {
                 </div>
 
                 {/* Form Content */}
-                <div className="bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-b-xl border border-gray-200 dark:border-gray-600">
+                <div className="bg-white p-4 sm:p-6 rounded-b-xl border border-gray-200">
                   <div className="space-y-6 sm:space-y-8">
                     {sections.map(section => (
                       <div key={section.id} className="space-y-3 sm:space-y-4">
                         {/* Section Header */}
-                        <div className="border-b border-gray-200 dark:border-gray-600 pb-2">
+                        <div className="border-b border-gray-200 pb-2">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#f4be42' }}></div>
                               {renderInlineSectionTitle(section)}
                             </div>
                             <div className="flex items-center gap-2">
@@ -1116,8 +1118,8 @@ function FormGeneratorContent() {
                               )}
                             </div>
                           </div>
-                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            {section.fields.length} field{section.fields.length !== 1 ? 's' : ''}
+                          <p className="text-xs sm:text-sm mt-1" style={{ color: '#382606', opacity: 0.7 }}>
+                            {section.fields.length} መስክ{section.fields.length !== 1 ? 'ዎች' : ''}
                           </p>
                         </div>
 
@@ -1281,7 +1283,7 @@ function FormGeneratorContent() {
                     ))}
 
                     {/* Add Section Button */}
-                    <div className="pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+                    {/* <div className="pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
                       <div className="group">
                         <Button
                           variant="outline"
@@ -1293,7 +1295,7 @@ function FormGeneratorContent() {
                           Add Section
                         </Button>
                       </div>
-                    </div>
+                    </div> */}
 
                     {/* Submit Button */}
                     <div className="pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
@@ -1303,7 +1305,7 @@ function FormGeneratorContent() {
                       >
                         <div className="flex items-center gap-2">
                           <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                          <span className="text-sm sm:text-base">Submit Form</span>
+                          <span className="text-sm sm:text-base">ቅስ ያስገቡ</span>
                         </div>
                       </Button>
                     </div>
@@ -1312,7 +1314,7 @@ function FormGeneratorContent() {
 
                 {/* Footer */}
                 <div className="text-center py-3 sm:py-4 text-xs text-gray-500">
-                  <p>This form was created with Nebib Forms</p>
+                  <p>ይህ ፎርም በፍሬ ፎርም ነው የተገነባው</p>
                 </div>
               </div>
             </CardContent>

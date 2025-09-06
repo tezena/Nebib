@@ -52,7 +52,7 @@ export default function QRDemoPage() {
         </h1>
         <p className="text-lg sm:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto px-4" style={{ color: '#382606', opacity: 0.8 }}>
           የላቀ QR ኮድ ፍጠራ እና የአስተዳዳሪ ክፍል ስካን ባህሪያትን ይሞክሩ። ለተማሪዎች QR ኮዶች ይፍጠሩ 
-          እና የአስተዳዳሪ ስካን ሂደቱን ለፈጣን ተገኝነት ምልክት ያስተውሉ።
+          እና የአስተዳዳሪ ስካን ሂደቱን ለፈጣን አቴንዳንስ ምልክት ያስተውሉ።
         </p>
       </section>
 
@@ -82,7 +82,7 @@ export default function QRDemoPage() {
                     QR ኮድ ይፍጠሩ
                   </CardTitle>
                   <CardDescription className="text-sm sm:text-base" style={{ color: '#382606', opacity: 0.7 }}>
-                    ለተገኝነት ክትትል የተማሪ ፎርም ማስገባት መረጃ ያለው QR ኮድ ይፍጠሩ
+                    ለአቴንዳንስ ክትትል የተማሪ ፎርም ማስገባት መረጃ ያለው QR ኮድ ይፍጠሩ
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -130,7 +130,7 @@ export default function QRDemoPage() {
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl" style={{ color: '#382606' }}>QR ኮድ ፍጠራ እንዴት ይሰራል</CardTitle>
                 <CardDescription className="text-sm sm:text-base" style={{ color: '#382606', opacity: 0.7 }}>
-                  ለተገኝነት ክትትል QR ኮዶችን ለመፍጠር እና ለመጠቀም የሂደቱን መረዳት
+                  ለአቴንዳንስ ክትትል QR ኮዶችን ለመፍጠር እና ለመጠቀም የሂደቱን መረዳት
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -159,7 +159,7 @@ export default function QRDemoPage() {
                     </div>
                     <h3 className="font-semibold mb-2" style={{ color: '#382606' }}>አስተዳዳሪ ኮድ ስካን</h3>
                     <p className="text-sm" style={{ color: '#382606', opacity: 0.7 }}>
-                      አስተዳዳሪ QR ኮዱን ይስካን በፈጣን ተገኝነት ለማስቀመጥ እና የተማሪ መረጃ ለማግኘት
+                      አስተዳዳሪ QR ኮዱን ይስካን በፈጣን አቴንዳንስ ለማስቀመጥ እና የተማሪ መረጃ ለማግኘት
                     </p>
                   </div>
                 </div>
@@ -177,7 +177,7 @@ export default function QRDemoPage() {
                     QR ኮድ ስካነር
                   </CardTitle>
                   <CardDescription className="text-sm sm:text-base" style={{ color: '#382606', opacity: 0.7 }}>
-                    የተማሪ QR ኮዶችን ለመንበብ እና ተገኝነት ለማስቀመጥ የአስተዳዳሪ ስካነር
+                    የተማሪ QR ኮዶችን ለመንበብ እና አቴንዳንስ ለማስቀመጥ የአስተዳዳሪ ስካነር
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -197,7 +197,7 @@ export default function QRDemoPage() {
                     የስካን ታሪክ
                   </CardTitle>
                   <CardDescription className="text-sm sm:text-base" style={{ color: '#382606', opacity: 0.7 }}>
-                    የቅርብ QR ኮድ ስካኖች እና የተገኝነት ምዝገባዎች
+                    የቅርብ QR ኮድ ስካኖች እና የአቴንዳንስ ምዝገባዎች
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -234,7 +234,7 @@ export default function QRDemoPage() {
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl" style={{ color: '#382606' }}>የስካነር ባህሪያት</CardTitle>
                 <CardDescription className="text-sm sm:text-base" style={{ color: '#382606', opacity: 0.7 }}>
-                  ተገኝነት ክትትልን የማያልቅ እና ውጤታማ የሚያደርጉ የላቀ ባህሪያት
+                  አቴንዳንስ ክትትልን የማያልቅ እና ውጤታማ የሚያደርጉ የላቀ ባህሪያት
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -261,9 +261,9 @@ export default function QRDemoPage() {
                     <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-2">
                       <Users className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <h4 className="font-medium text-sm" style={{ color: '#382606' }}>ተገኝነት ክትትል</h4>
+                    <h4 className="font-medium text-sm" style={{ color: '#382606' }}>አቴንዳንስ ክትትል</h4>
                     <p className="text-xs mt-1" style={{ color: '#382606', opacity: 0.7 }}>
-                      ራስ-ሰር የተገኝነት ምልክት እና ምዝገባዎች
+                      ራስ-ሰር የአቴንዳንስ ምልክት እና ምዝገባዎች
                     </p>
                   </div>
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -272,7 +272,7 @@ export default function QRDemoPage() {
                     </div>
                     <h4 className="font-medium text-sm" style={{ color: '#382606' }}>በትክክለኛ ጊዜ ዝማኔዎች</h4>
                     <p className="text-xs mt-1" style={{ color: '#382606', opacity: 0.7 }}>
-                      ወደ ተገኝነት ዳታቤዝ ቀጥተኛ ዝማኔዎች
+                      ወደ አቴንዳንስ ዳታቤዝ ቀጥተኛ ዝማኔዎች
                     </p>
                   </div>
                 </div>
@@ -286,10 +286,10 @@ export default function QRDemoPage() {
       <section className="container mx-auto px-4 py-20">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
-            QR ኮድ ተገኝነት ለመተግበር ዝግጁ ነዎት?
+            QR ኮድ አቴንዳንስ ለመተግበር ዝግጁ ነዎት?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
-            ለተለያዩ ተገኝነት ክትትል የፍሬ Form የQR ኮድ ቴክኖሎጂ ሙሉ ኃይል ያስተውሉ
+            ለተለያዩ አቴንዳንስ ክትትል የፍሬ Form የQR ኮድ ቴክኖሎጂ ሙሉ ኃይል ያስተውሉ
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/sign-in">

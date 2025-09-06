@@ -17,7 +17,7 @@ export default function FeaturesPage() {
           ዘመናዊ ፎርም አስተዳደር ለሚያስፈልጉ ሁሉም ነገር
         </h1>
         <p className="text-xl mb-8 max-w-3xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
-          ከአብሮገነት የፎርም ግንባታ እስከ የላቀ QR ኮድ ተገኝነት ክትትል ድረስ፣ 
+          ከአብሮገነት የፎርም ግንባታ እስከ የላቀ QR ኮድ አቴንዳንስ ክትትል ድረስ፣ 
           ፍሬ Form ከGoogle Forms የተሻለ ሙሉ መፍትሄ ይሰጣል።
         </p>
       </section>
@@ -124,10 +124,10 @@ export default function FeaturesPage() {
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#382606' }}>
-            የላቀ QR ኮድ ተገኝነት ስርዓት
+            የላቀ QR ኮድ አቴንዳንስ ስርዓት
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
-            ለእያንዳንዱ ተማሪ ልዩ QR ኮዶች ይፍጠሩ እና በቀጣይ ስካን ተገኝነት ይክትቱ
+            ለእያንዳንዱ ተማሪ ልዩ QR ኮዶች ይፍጠሩ እና በቀጣይ ስካን አቴንዳንስ ይክትቱ
           </p>
         </div>
 
@@ -139,7 +139,7 @@ export default function FeaturesPage() {
               </div>
               <CardTitle style={{ color: '#382606' }}>ልዩ QR ኮዶች</CardTitle>
               <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
-                ለእያንዳንዱ ተማሪ ልዩ QR ኮዶች ይፍጠሩ ከመረጃቸው ጋር ለአስተማማኝ ተገኝነት ክትትል የተካተተ።
+                ለእያንዳንዱ ተማሪ ልዩ QR ኮዶች ይፍጠሩ ከመረጃቸው ጋር ለአስተማማኝ አቴንዳንስ ክትትል የተካተተ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -151,7 +151,7 @@ export default function FeaturesPage() {
               </div>
               <CardTitle style={{ color: '#382606' }}>ቀጣይ ስካን</CardTitle>
               <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
-                አስተዳዳሪ የተማሪዎች QR ኮዶችን ለፈጣን ተገኝነት ምልክት በቀጣይ ስካን ችሎታ ይስካን።
+                አስተዳዳሪ የተማሪዎች QR ኮዶችን ለፈጣን አቴንዳንስ ምልክት በቀጣይ ስካን ችሎታ ይስካን።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -163,7 +163,7 @@ export default function FeaturesPage() {
               </div>
               <CardTitle style={{ color: '#382606' }}>በትክክለኛ ጊዜ ክትትል</CardTitle>
               <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
-                በትክክለኛ ጊዜ ተገኝነትን በፈጣን ዝማኔዎች እና ለማይገኙ ተማሪዎች ማሳወቂያዎች ይክትቱ።
+                በትክክለኛ ጊዜ አቴንዳንስን በፈጣን ዝማኔዎች እና ለማይገኙ ተማሪዎች ማሳወቂያዎች ይክትቱ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -185,9 +185,9 @@ export default function FeaturesPage() {
               <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
                 <Clock className="w-6 h-6 text-white" />
               </div>
-              <CardTitle style={{ color: '#382606' }}>የተገኝነት ታሪክ</CardTitle>
+              <CardTitle style={{ color: '#382606' }}>የአቴንዳንስ ታሪክ</CardTitle>
               <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
-                ዝርዝር የተገኝነት ታሪክን ከጊዜ ምልክቶች እና በጊዜ ሂደት የተገኝነት ቅደም ተከተሎች ጋር ይጠብቁ።
+                ዝርዝር የአቴንዳንስ ታሪክን ከጊዜ ምልክቶች እና በጊዜ ሂደት የአቴንዳንስ ቅደም ተከተሎች ጋር ይጠብቁ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -199,7 +199,7 @@ export default function FeaturesPage() {
               </div>
               <CardTitle style={{ color: '#382606' }}>የራስ-ሰር ማሳወቂያዎች</CardTitle>
               <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
-                ስለ ተገኝነት ሁኔታ ለወላጆች ወይም ለተጠባባቂዎች የራስ-ሰር ማሳወቂያዎች ይላኩ።
+                ስለ አቴንዳንስ ሁኔታ ለወላጆች ወይም ለተጠባባቂዎች የራስ-ሰር ማሳወቂያዎች ይላኩ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -213,7 +213,7 @@ export default function FeaturesPage() {
             ኃይለኛ ትንተና እና ሪፖርት
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
-            ወደ ፎርም ማስገባቶች፣ የተገኝነት መጠኖች እና ዝርዝር ሪፖርቶች ይፍጠሩ ግንዛቤ ያግኙ
+            ወደ ፎርም ማስገባቶች፣ የአቴንዳንስ መጠኖች እና ዝርዝር ሪፖርቶች ይፍጠሩ ግንዛቤ ያግኙ
           </p>
         </div>
 
@@ -225,7 +225,7 @@ export default function FeaturesPage() {
               </div>
               <CardTitle style={{ color: '#382606' }}>በትክክለኛ ጊዜ ትንተና</CardTitle>
               <CardDescription style={{ color: '#382606', opacity: 0.7 }}>
-                ፎርም ማስገባቶች፣ የተገኝነት መጠኖች እና የተጠቃሚ ተሳትፎ በትክክለኛ ጊዜ ዳሽቦርዶች ይክትቱ።
+                ፎርም ማስገባቶች፣ የአቴንዳንስ መጠኖች እና የተጠቃሚ ተሳትፎ በትክክለኛ ጊዜ ዳሽቦርዶች ይክትቱ።
               </CardDescription>
             </CardHeader>
           </Card>
@@ -385,7 +385,7 @@ export default function FeaturesPage() {
             የፎርም አስተዳደር ወደፊት ለማየት ዝግጁ ነዎት?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#382606', opacity: 0.8 }}>
-            የፎርም ፍጠራ እና ተገኝነት ክትትል ለማሻሻል ፍሬ Form ን የሚጠቀሙ በሺዎች የሚቆጠሩ ድርጅቶች ይቀላቀሉ።
+            የፎርም ፍጠራ እና አቴንዳንስ ክትትል ለማሻሻል ፍሬ Form ን የሚጠቀሙ በሺዎች የሚቆጠሩ ድርጅቶች ይቀላቀሉ።
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/sign-in">

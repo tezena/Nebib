@@ -26,7 +26,7 @@ const exampleForms = [
     iconName: "graduation-cap",
     color: "from-blue-500 to-indigo-500",
     submissions: 2156,
-    features: ["QR ኮድ ፍጠራ", "ተገኝነት ክትትል", "መረጃ ማውጣት"]
+    features: ["QR ኮድ ፍጠራ", "አቴንዳንስ ክትትል", "መረጃ ማውጣት"]
   },
   {
     id: "event-registration",
