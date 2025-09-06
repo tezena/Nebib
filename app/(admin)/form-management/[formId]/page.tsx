@@ -580,7 +580,7 @@ export default function FormDetailPage() {
               <DropdownMenuContent align="end" className="bg-white border-gray-200">
                 <DropdownMenuItem onClick={copyLink} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <Copy className="mr-2 h-4 w-4" />
-                  አገናኝ ቅዳ
+                  copy link
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={openFormLink} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
                   <ExternalLink className="mr-2 h-4 w-4" />
@@ -626,7 +626,7 @@ export default function FormDetailPage() {
                 <div className="flex items-center gap-3">
               <Button variant="outline" onClick={copyLink} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Copy className="w-4 h-4 mr-2" />
-                አገናኝ ቅዳ
+                copy link
               </Button>
               <Button variant="outline" onClick={handleEditForm} className="border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Edit className="w-4 h-4 mr-2" />
@@ -724,7 +724,7 @@ export default function FormDetailPage() {
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ የተቀረው</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ ያረፈደው</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{lateCount}</p>
               </div>
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
@@ -765,7 +765,7 @@ export default function FormDetailPage() {
                     {submissions.map((submission) => {
                       const isExpanded = expandedSubmission === submission.id
                       const qrCodeUrl = generateSubmissionQR(submission)
-                      const studentName = submission.name || `Student ${submission.id.slice(-6)}`
+                      const studentName = submission.name || submission.fields[0]?.value || `Student ${submission.id.slice(-6)}`
                       
                       return (
                         <div key={submission.id} className="border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
@@ -955,7 +955,7 @@ export default function FormDetailPage() {
                         <option value="all">ሁሉም ሁኔታ</option>
                         <option value="present">የተገኘ</option>
                         <option value="absent">ያልተገኘ</option>
-                        <option value="late">የተቀረ</option>
+                        <option value="late">ያረፈደ</option>
                       </select>
                     </div>
                     
@@ -1072,7 +1072,7 @@ export default function FormDetailPage() {
                                 } text-xs sm:text-sm`}
                               >
                                 <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                <span className="hidden sm:inline">የተቀረ</span>
+                                <span className="hidden sm:inline">ያረፈደ</span>
                                 <span className="sm:hidden">የተ</span>
                               </Button>
                 </div>
