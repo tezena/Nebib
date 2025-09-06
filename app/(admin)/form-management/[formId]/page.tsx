@@ -724,7 +724,7 @@ export default function FormDetailPage() {
             <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ የተቀረው</p>
+                  <p className="text-sm font-medium" style={{ color: '#382606', opacity: 0.7 }}>ዛሬ ያረፈደው</p>
                   <p className="text-2xl font-bold" style={{ color: '#382606' }}>{lateCount}</p>
               </div>
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f4be42', opacity: 0.2 }}>
@@ -955,7 +955,7 @@ export default function FormDetailPage() {
                         <option value="all">ሁሉም ሁኔታ</option>
                         <option value="present">የተገኘ</option>
                         <option value="absent">ያልተገኘ</option>
-                        <option value="late">የተቀረ</option>
+                        <option value="late">ያረፈደ</option>
                       </select>
                     </div>
                     
@@ -1072,7 +1072,7 @@ export default function FormDetailPage() {
                                 } text-xs sm:text-sm`}
                               >
                                 <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                                <span className="hidden sm:inline">የተቀረ</span>
+                                <span className="hidden sm:inline">ያረፈደ</span>
                                 <span className="sm:hidden">የተ</span>
                               </Button>
                 </div>
