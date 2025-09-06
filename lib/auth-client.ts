@@ -17,10 +17,11 @@ export const authClient = createAuthClient({
           }
           if (hostname.includes("amplifyapp.com") || 
               hostname.includes("railway.app") || 
-              hostname.includes("vercel.app")) {
+              hostname.includes("vercel.app") ||
+              hostname === "nebib-production-def4.up.railway.app") { // Added Railway URL
             return `https://${hostname}`;
           }
-          return "https://nebib-weld.vercel.app"; // Changed to Vercel fallback
+          return "https://nebib-weld.vercel.app"; // Vercel fallback
         })()
-      : "https://nebib-weld.vercel.app", // Changed to Vercel for server-side
+      : "https://nebib-weld.vercel.app", // Vercel for server-side
 });

@@ -8,6 +8,7 @@ export default async function middleware(request: NextRequest) {
     const origin = request.headers.get('origin');
     const allowedOrigins = [
       'https://nebib-weld.vercel.app',
+     ' https://nebib-production-def4.up.railway.app/',
       'https://nebib-forms-production-c7f6.up.railway.app',
       'https://nebib-forms-production.up.railway.app',
       'https://nebib-production.up.railway.app',
