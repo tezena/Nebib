@@ -1153,23 +1153,23 @@ export default function FormDetailPage() {
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 qr-scanner-modal"
           style={{ zIndex: 10000 }}
         >
-          <div className="bg-white rounded-lg p-6 max-w-md w-full border border-gray-200 shadow-xl">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full border-2 border-gray-300 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold" style={{ color: '#382606' }}>ተማሪ QR ኮድ አንብብ</h3>
+              <h3 className="text-lg font-bold text-gray-900">ተማሪ QR ኮድ አንብብ</h3>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 onClick={closeQRScanner}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 border-gray-400 font-semibold"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 font-bold" />
               </Button>
             </div>
             <div className="space-y-4">
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-gray-100 rounded-lg p-4 border-2 border-gray-300">
                 <QRScanner onScan={handleQRScan} />
               </div>
-              <p className="text-sm text-center" style={{ color: '#382606', opacity: 0.7 }}>
+              <p className="text-sm text-center text-gray-800 font-bold">
                 ተማሪውን የተገኘ ምልክት ለማድረግ በተማሪው QR ኮድ ላይ ካሜራውን ያቅኑ
               </p>
             </div>

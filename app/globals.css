@@ -137,5 +137,29 @@
     opacity: 1 !important;
   }
   
+  /* Fix for QR scanner modal visibility */
+  .qr-scanner-modal h3 {
+    color: #111827 !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+  }
+  
+  .qr-scanner-modal p {
+    color: #1f2937 !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+  }
+  
+  .qr-scanner-modal button {
+    color: #374151 !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+  }
+  
+  .qr-scanner-modal button:hover {
+    color: #111827 !important;
+    background-color: #f3f4f6 !important;
+    font-weight: 700 !important;
+  }
 }
 
