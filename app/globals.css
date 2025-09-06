@@ -67,3 +67,75 @@
   }
 }
 
+@layer components {
+  /* Fix for tabs visibility in production */
+  [data-state="inactive"] {
+    color: #382606 !important;
+    opacity: 1 !important;
+  }
+  
+  [data-state="active"] {
+    color: white !important;
+    background-color: #f4be42 !important;
+  }
+  
+  /* Ensure tab text is always visible */
+  .tabs-trigger {
+    color: #382606 !important;
+    opacity: 1 !important;
+  }
+  
+  .tabs-trigger[data-state="active"] {
+    color: white !important;
+    background-color: #f4be42 !important;
+  }
+  
+  /* Specific fix for Radix UI tabs in production */
+  [role="tab"] {
+    color: #382606 !important;
+    opacity: 1 !important;
+  }
+  
+  [role="tab"][data-state="active"] {
+    color: white !important;
+    background-color: #f4be42 !important;
+  }
+  
+  [role="tab"][data-state="inactive"] {
+    color: #382606 !important;
+    opacity: 1 !important;
+  }
+  
+  /* Fix for modal z-index issues */
+  .modal-overlay {
+    z-index: 9999 !important;
+  }
+  
+  /* Ensure QR scanner modal is always on top */
+  .qr-scanner-modal {
+    z-index: 10000 !important;
+  }
+  
+  /* Fix for action buttons visibility and hover states */
+  .attendance-action-button {
+    color: #374151 !important;
+    border-color: #d1d5db !important;
+    background-color: transparent !important;
+    opacity: 1 !important;
+  }
+  
+  .attendance-action-button:hover {
+    color: #111827 !important;
+    background-color: #f9fafb !important;
+    border-color: #9ca3af !important;
+    opacity: 1 !important;
+  }
+  
+  /* Ensure button text is always visible */
+  .attendance-action-button span {
+    color: inherit !important;
+    opacity: 1 !important;
+  }
+  
+}
+

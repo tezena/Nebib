@@ -11,8 +11,19 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Calendar, Clock, MapPin, Phone, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    router.push('/sign-in');
+  };
+
+  const handleLearnMore = () => {
+    router.push('/examples');
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -52,6 +63,7 @@ const HeroSection = () => {
             size="lg" 
             className="text-white border-0 px-8 py-4 text-lg"
             style={{ backgroundColor: '#f4be42' }}
+            onClick={handleGetStarted}
           >
             አሁኑኑ ይጀምሩ
           </Button>
@@ -59,6 +71,7 @@ const HeroSection = () => {
             size="lg" 
             variant="outline"
             className="border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg"
+            onClick={handleLearnMore}
           >
             ተጨማሪ ይማሩ
           </Button>
