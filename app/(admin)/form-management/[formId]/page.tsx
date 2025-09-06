@@ -1011,7 +1011,7 @@ export default function FormDetailPage() {
                     </div>
                             <div className="min-w-0 flex-1">
                               <div className="font-medium text-gray-900 dark:text-white truncate">
-                                {submission.name || `Student ${submission.id.slice(-6)}`}
+                                {submission.name || submission.fields[0].value || `Student ${submission.id.slice(-6)}`}
                       </div>
                               <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
                                 {submission.email || 'No email provided'}
