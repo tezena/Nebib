@@ -50,7 +50,7 @@ export default function PublicNavigation({
               </Button>
             </Link>
           )}
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Image
               src="/logo.png"
               alt="ፍሬ Form Logo"
@@ -59,7 +59,7 @@ export default function PublicNavigation({
               className="w-8 h-8 rounded-full"
             />
             <span className="text-xl font-bold" style={{ color: '#382606' }}>ፍሬ Form</span>
-          </div>
+          </Link>
         </div>
         
         {/* Desktop Navigation */}
